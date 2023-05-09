@@ -15,17 +15,13 @@ namespace FrontendApi.Controllers
       _proxyService = dashboardProxy;
     }
 
-    public async Task<IEnumerable<Dashboard>> GetDashboards()
+    [HttpGet("dashboard")]
+    public async Task<IEnumerable<DashboardDto>> GetDashboards()
     {
-      var dashboards = await _proxyService.DashboardAllAsync();
+      var dashboards = await _proxyService.GetAllAsync();
       return dashboards;
     }
 
-    public async Task<IEnumerable<Tile>> GetTiles(int dashboardId)
-    {
-      var dashboards = await _proxyService.DashboardAllAsync();
-      return null;
-    }
 
   }
 }

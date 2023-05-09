@@ -26,8 +26,8 @@ namespace Workshop.Controllers
     }
 
     // GET: api/<DashboardController>
-    [HttpGet]
-    [ProducesResponseType(typeof(IEnumerable<Dashboard>), StatusCodes.Status200OK)]
+    [HttpGet(Name = "GetAll")]
+    [ProducesResponseType(typeof(IEnumerable<DashboardDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
       _logger?.LogInformation("Get called");
@@ -36,7 +36,7 @@ namespace Workshop.Controllers
     }
 
     // GET api/<DashboardController>/abc
-    [HttpGet("{id:int:max(1999)}")] // 400 Bad Request
+    [HttpGet("{id:int:max(1999)}", Name = "Get")] // 400 Bad Request
     [ProducesResponseType(typeof(DashboardDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetId(int id)
@@ -46,14 +46,14 @@ namespace Workshop.Controllers
     }
 
     // GET api/<DashboardController>/search?name=db1&dddd
-    [HttpGet("search")]
-    public async Task<IActionResult> GetName([FromQuery] string name)
+    [HttpGet("search", Name = "Search")]
+    public async Task<IActionResult> SearchName([FromQuery] string name)
     {
       throw new NotImplementedException();
     }
 
     // POST api/<DashboardController>
-    [HttpPost]
+    [HttpPost(Name = "AddDashboard")]
     [ProducesResponseType(typeof(DashboardDto), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post([FromBody] DashboardDto value)
@@ -70,7 +70,7 @@ namespace Workshop.Controllers
     }
 
     // PUT api/<DashboardController>/5
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:int}", Name = "UpdateDashboard")]
     [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
     [ProducesResponseType(typeof(void), StatusCodes.Status400BadRequest)]
@@ -92,7 +92,7 @@ namespace Workshop.Controllers
     }
 
     // DELETE api/<DashboardController>/5
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}", Name = "RemoveDashboard")]
     [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Delete(int id)
     {

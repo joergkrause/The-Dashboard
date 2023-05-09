@@ -10,6 +10,7 @@
         "tags": [
           "Dashboard"
         ],
+        "operationId": "GetAll",
         "responses": {
           "500": {
             "description": "Server Error"
@@ -21,7 +22,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Dashboard"
+                    "$ref": "#/components/schemas/DashboardDto"
                   }
                 }
               }
@@ -33,21 +34,22 @@
         "tags": [
           "Dashboard"
         ],
+        "operationId": "AddDashboard",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Dashboard"
+                "$ref": "#/components/schemas/DashboardDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Dashboard"
+                "$ref": "#/components/schemas/DashboardDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Dashboard"
+                "$ref": "#/components/schemas/DashboardDto"
               }
             }
           }
@@ -61,7 +63,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Dashboard"
+                  "$ref": "#/components/schemas/DashboardDto"
                 }
               }
             }
@@ -87,6 +89,7 @@
         "tags": [
           "Dashboard"
         ],
+        "operationId": "Get",
         "parameters": [
           {
             "name": "id",
@@ -108,7 +111,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Dashboard"
+                  "$ref": "#/components/schemas/DashboardDto"
                 }
               }
             }
@@ -129,6 +132,7 @@
         "tags": [
           "Dashboard"
         ],
+        "operationId": "UpdateDashboard",
         "parameters": [
           {
             "name": "id",
@@ -144,17 +148,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Dashboard"
+                "$ref": "#/components/schemas/DashboardDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Dashboard"
+                "$ref": "#/components/schemas/DashboardDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Dashboard"
+                "$ref": "#/components/schemas/DashboardDto"
               }
             }
           }
@@ -178,6 +182,7 @@
         "tags": [
           "Dashboard"
         ],
+        "operationId": "RemoveDashboard",
         "parameters": [
           {
             "name": "id",
@@ -204,6 +209,7 @@
         "tags": [
           "Dashboard"
         ],
+        "operationId": "Search",
         "parameters": [
           {
             "name": "name",
@@ -223,10 +229,7 @@
   },
   "components": {
     "schemas": {
-      "Dashboard": {
-        "required": [
-          "name"
-        ],
+      "DashboardDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -234,43 +237,11 @@
             "format": "int32"
           },
           "name": {
-            "maxLength": 100,
-            "minLength": 3,
-            "type": "string"
-          },
-          "tiles": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Tile"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "Tile": {
-        "required": [
-          "title",
-          "url"
-        ],
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "maxLength": 100,
-            "minLength": 2,
-            "type": "string"
-          },
-          "url": {
-            "minLength": 1,
             "type": "string",
-            "format": "uri"
+            "nullable": true
           },
-          "dashboard": {
-            "$ref": "#/components/schemas/Dashboard"
+          "hasTiles": {
+            "type": "boolean"
           }
         },
         "additionalProperties": false
