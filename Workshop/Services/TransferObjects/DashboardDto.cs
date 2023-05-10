@@ -1,10 +1,14 @@
-﻿namespace Workshop.Services.TransferObjects;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Workshop.Services.TransferObjects;
 
 public class DashboardDto
 {
-    public int Id { get; set; }
+  public int Id { get; set; }
 
-    public string Name { get; set; }
+  [Required]
+  [StringLength(100, MinimumLength = 3)]
+  public string Name { get; set; }
 
   public bool HasTiles { get; set; }
 }
