@@ -1,0 +1,26 @@
+﻿<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title bg-success">@Title</h5>
+    @if (IsSubtitle)
+    {
+      <h6 class="card-subtitle mb-2 text-body-secondary">@Subtitle</h6>
+    }
+    <p class="card-text">@ChildContent</p>
+    <a href="@Url" target="_blank" class="card-link">@Url</a>
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public string Title { get; set; } = "n/a";
+  [Parameter]
+  public string? Subtitle { get; set; }
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+  [Parameter]
+  public string Url { get; set; }
+
+  private bool IsSubtitle => !string.IsNullOrEmpty(Subtitle);
+
+}

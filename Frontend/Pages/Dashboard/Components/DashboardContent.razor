@@ -1,0 +1,34 @@
+﻿@using Frontend.Proxy;
+@inject BackendService backendService
+
+@if (tiles == null || !tiles.Any())
+{
+  <span>Loading...</span>
+}
+else
+{
+  @foreach (var tile in tiles)
+  {
+    <Tile Title="@tile.Title" Url="@tile.Url">
+      <b>No Text</b>
+    </Tile>
+  }
+}
+
+@code {
+
+  [Parameter]
+  public int DashboardId { get; set; }
+
+  private IEnumerable<TileDto> tiles = new List<TileDto>();
+
+  protected override async Task OnInitializedAsync()
+  {
+    tiles = await backendService.GetTiles(DashboardId);
+  }
+
+  protected override async Task OnParametersSetAsync()
+  {
+    //tiles = await backendService.GetTiles(DashboardId);
+  }
+}

@@ -7,8 +7,10 @@ namespace Workshop.Services
   {
     void AddDashboard(DashboardDto dashboard);
     void DeleteDashboard(int id);
+    IEnumerable<TileDto> GetAllTiles(int id);
     DashboardDto GetDashboard(int id);
     IEnumerable<DashboardDto> GetDashboards();
+    TileDto GetTile(int id);
     void UpdateDashboard(DashboardDto dashboard);
   }
 }

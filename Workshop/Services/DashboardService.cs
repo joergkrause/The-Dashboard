@@ -59,4 +59,19 @@ public class DashboardService : IDashboardService
     dashboards.Remove(dashboard);
   }
 
+  public IEnumerable<TileDto>? GetAllTiles(int id)
+  {
+    var dashboard = dashboards.SingleOrDefault(d => d.Id == id);
+    if (dashboard == null)
+    {
+      return null;
+    }
+    return _mapper.Map<IEnumerable<TileDto>>(dashboard.Tiles);
+  }
+
+  public TileDto GetTile(int id)
+  {
+    var tile = dashboards.SelectMany(d => d.Tiles).Single(t => t.Id == id);
+    return _mapper.Map<TileDto>(tile);
+  }
 }
