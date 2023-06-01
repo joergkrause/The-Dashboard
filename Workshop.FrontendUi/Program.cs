@@ -1,13 +1,8 @@
-using Frontend.Proxy;
-using Frontend.Services;
-using Grpc.Net.Client;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using System.Reflection.Metadata.Ecma335;
-using static GrpcBackend.Dashboard;
-using static System.Net.WebRequestMethods;
+using Workshop.FrontendUi.Data;
 
-namespace Frontend
+namespace Workshop.FrontendUi
 {
   public class Program
   {
@@ -18,15 +13,7 @@ namespace Frontend
       // Add services to the container.
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
-
-      // builder.Services.AddSingleton<DashboardProxy>(new DashboardProxy("https://localhost:7165", new HttpClient()));
-      builder.Services.AddScoped<BackendService>(); // REST
-
-      builder.Services.AddSingleton<DashboardClient>(sp =>
-      {
-        var channel = GrpcChannel.ForAddress("https://localhost:7116");
-        return new DashboardClient(channel);
-      });
+      builder.Services.AddSingleton<WeatherForecastService>();
 
       var app = builder.Build();
 

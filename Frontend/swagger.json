@@ -2,8 +2,18 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Workshop API",
-    "version": "v1"
+    "version": "v1",
+    "contact": {
+      "email": "",
+      "name": "Workshop"
+    }
   },
+  "servers": [
+    {
+      "url": "https://localhost:5001",
+      "description": "Localhost"
+    }
+  ],
   "paths": {
     "/api/Dashboard": {
       "get": {

@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcBackend";
+
+package dashboard;
+
+// The greeting service definition.
+service Dashboard {
+  // Sends a greeting
+  rpc Get (DashboardRequest) returns (DashboardReply);
+  rpc GetAll (DashboardAllRequest) returns (DashboardAllReply);
+  rpc GetByName
+  GetByFilter(FilterRequest) returns (FilterReply);
+  ...
+}
+
+// The request message containing the user's name.
+message DashboardRequest {
+  int32 id = 1;
+}
+
+// The response message containing the greetings.
+message DashboardReply {
+
+  message Tile {
+    int32 id = 1;
+    string name = 2;
+    string text = 3;
+    string url = 4;
+  }
+
+  int32 id = 1;
+  string name = 2;
+  bool has_tiles = 3;
+  repeated Tile tiles = 4;
+}
+
+message DashboardAllRequest { 
+}
+
+message DashboardAllReply {
+  message Dashboard {
+    int32 id = 1;
+    string name = 2;
+    bool has_tiles = 3;
+  }
+  repeated Dashboard dashboards = 1;
+}
