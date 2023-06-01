@@ -27,15 +27,42 @@ services:
     ports:
       - "5500:80/tcp"
 
-  #dashboardservice:
-  #  image: dashboardservice:latest
-  #  profiles: [ all, backend ]
-  #  depends_on:
-  #    - eventbus
+  dashboardservice:
+    image: dashboardservice:latest
+    profiles: [ all, backend ]
+    build:
+      context: .
+      dockerfile: Workshop.DashbpoardService/Dockerfile
+      args:
+        CONFIGURATION: Release
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - eventbus
   
-  #tileservice:
-  #  image: tileservice:latest
-  #  profiles: [ all, backend ]
-  #  depends_on:
-  #    - eventbus
+  tileservice:
+    image: tileservice:latest
+    profiles: [ all, backend ]
+    build:
+      context: .
+      dockerfile: Workshop.TileService/Dockerfile
+      args:
+        CONFIGURATION: Release
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - eventbus
+ 
+  uiinfoservice:
+    image: uiinfoservice:latest
+    profiles: [ all, backend ]
+    build:
+      context: .
+      dockerfile: Workshop.UiInfoService/Dockerfile
+      args:
+        CONFIGURATION: Release
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - eventbus
   

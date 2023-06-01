@@ -5,10 +5,10 @@ namespace Workshop.Services
 {
   public interface IDashboardService
   {
-    void AddDashboard(DashboardDto dashboard);
-    void DeleteDashboard(Guid id);
-    DashboardDto GetDashboard(Guid id);
-    IEnumerable<DashboardDto> GetDashboards();
-    void UpdateDashboard(DashboardDto dashboard);
+    Task AddDashboard(DashboardDto dashboard);
+    Task DeleteDashboard(Guid id);
+    Task<DashboardDto> GetDashboard(Guid id);
+    Task<IEnumerable<DashboardDto>> GetDashboards();
+    Task UpdateDashboard(DashboardDto dashboard);
   }
 }

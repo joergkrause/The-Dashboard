@@ -8,7 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Localization\" />
+      <Compile Remove="Localization\**" />
+      <Content Remove="Localization\**" />
+      <EmbeddedResource Remove="Localization\**" />
+      <None Remove="Localization\**" />
     </ItemGroup>
 
     <ItemGroup>

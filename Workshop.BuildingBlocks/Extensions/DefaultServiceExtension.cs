@@ -13,9 +13,6 @@ public static class DefaultServiceExtension
   public static IServiceCollection AddDefaultServices(this IServiceCollection services)
   {
 
-    // services.AddAuthentication()
-
-    services.AddSwaggerGen();
     services.AddEndpointsApiExplorer();
 
     services.AddRouting();

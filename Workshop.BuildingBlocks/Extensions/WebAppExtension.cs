@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Workshop.BuildingBlocks.Exceptions;
 
 namespace Workshop.BuildingBlocks.Extensions;
 
@@ -12,13 +13,8 @@ public static class WebAppExtension
   public static IApplicationBuilder UseDefaultConfiguration(this IApplicationBuilder app)
   {
     var env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
-    if (env.IsDevelopment())
-    {
-      app.UseSwagger();
-      app.UseSwaggerUI();
-    }
 
-    //app.UseMiddleware<ExceptionHandlingMiddleware>();
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
 
     app.UseHealthChecks("/health");
 
@@ -28,8 +24,8 @@ public static class WebAppExtension
     app.UseAuthentication();
     app.UseAuthorization();
 
-    // app.UseMetricServer();
-    // app.UseHttpMetrics();
+    // app.UseMetricServer(); // Prometheus
+    // app.UseHttpMetrics(); // Prometheus
 
     app.UseEndpoints(endpoints =>
     {
