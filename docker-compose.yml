@@ -1,6 +1,24 @@
 version: '3.4'
 
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    profiles: [ all, backend ]
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "p@ssw0rd"
+      ACCEPT_EULA: "Y"
+    healthcheck:
+      test: [ "CMD", "sqlcmd", "-U", "sa", "-P", "p@ssw0rd", "-Q", "SELECT 1" ]
+      interval: 15s
+      timeout: 30s
+      retries: 3
+      start_period: 60s
+    volumes:
+     - D:/Volumes/sqlserver:/var/opt/mssql/data
+  
   eventbus:
     image: rabbitmq:3-management
     profiles: [ all, eventbus, backend ]
@@ -27,15 +45,34 @@ services:
     ports:
       - "5500:80/tcp"
 
-  #dashboardservice:
-  #  image: dashboardservice:latest
-  #  profiles: [ all, backend ]
-  #  depends_on:
-  #    - eventbus
+  dashboardservice:
+    image: dashboardservice:latest
+    profiles: [ all, backend ]
+    build:
+      context: .
+      dockerfile: Workshop.DashboardService/Dockerfile
+    depends_on:
+      - sqlserver
+      - eventbus
   
-  #tileservice:
-  #  image: tileservice:latest
-  #  profiles: [ all, backend ]
-  #  depends_on:
-  #    - eventbus
-  
+  tileservice:
+    image: ${DOCKER_REGISTRY-}tileservice
+    profiles: [ all, backend ]
+    build:
+      context: .
+      dockerfile: Workshop.TileService/Dockerfile
+    depends_on:
+      - sqlserver
+      - eventbus
+
+  uiinfoservice:
+    image: ${DOCKER_REGISTRY-}uiinfoservice
+    profiles: [ all, backend ]
+    build:
+      context: .
+      dockerfile: Workshop.UiInfoservice/Dockerfile
+    depends_on:
+      - eventbus
+
+volumes:
+  sqlserver: ~

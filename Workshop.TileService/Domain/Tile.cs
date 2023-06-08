@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Workshop.DatabaseLayer;
 
 namespace Workshop.Domain;
 
-public class Tile : EntityBase<Guid>
+public class Tile : IntEntityBase
 {
   [Required]
   [StringLength(100, MinimumLength = 2)]

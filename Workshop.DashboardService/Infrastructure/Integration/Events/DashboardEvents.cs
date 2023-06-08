@@ -3,11 +3,11 @@ using Workshop.Services.TransferObjects;
 
 namespace Workshop.DashboardService.Infrastructure.Integration.Events;
 
-public record DashboardCreatedEvent(Guid Id, string Name) : IntegrationEvent;
+public record DashboardCreatedEvent(int Id, string Name) : IntegrationEvent;
 
-public record DashboardDeletedEvent(Guid Id) : IntegrationEvent;
+public record DashboardDeletedEvent(int Id) : IntegrationEvent;
 
-public record DashboardUpdatedEvent(Guid Id, string Name) : IntegrationEvent;
+public record DashboardUpdatedEvent(int Id, string Name) : IntegrationEvent;
 
 
 // InsertOrUpdate

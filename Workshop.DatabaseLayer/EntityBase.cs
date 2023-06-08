@@ -1,6 +1,6 @@
-﻿namespace Workshop.Domain;
+﻿namespace Workshop.DatabaseLayer;
 
 public abstract class EntityBase<T> where T : IEquatable<T>
 {
-  public T Id { get; set; } = default!;
+  public int Id { get; set; } = default!;
 }

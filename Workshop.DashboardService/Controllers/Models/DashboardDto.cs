@@ -4,7 +4,7 @@ namespace Workshop.Services.TransferObjects;
 
 public class DashboardDto
 {
-  public Guid Id { get; set; }
+  public int Id { get; set; }
 
   [Required]
   [StringLength(100, MinimumLength = 3)]

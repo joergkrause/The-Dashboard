@@ -21,5 +21,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+// ExecuteMigrations();
 app.Run();

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Workshop.DatabaseSetup": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

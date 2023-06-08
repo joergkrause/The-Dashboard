@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Workshop.DatabaseLayer;
 
 namespace Workshop.Domain;
 

@@ -2,20 +2,22 @@
 using MassTransit;
 using MassTransit.Monitoring.Performance;
 using MassTransit.Transports;
+using Microsoft.EntityFrameworkCore;
 using Workshop.DashboardService.Infrastructure.Integration.Events;
+using Workshop.DatabaseLayer;
 using Workshop.Domain;
 using Workshop.Services.TransferObjects;
 
 namespace Workshop.Services;
 
-public class DashboardService : IDashboardService
+public class DashboardService : UnitOfWork, IDashboardService
 {
 
   private readonly List<Dashboard> dashboards;
   private readonly IMapper _mapper;
   private readonly IPublishEndpoint _publishEndpoint;
 
-  public DashboardService(IMapper mapper, IPublishEndpoint publishEndpoint)
+  public DashboardService(DbContext context, IMapper mapper, IPublishEndpoint publishEndpoint) : base(context)
   {
     _mapper = mapper;
     _publishEndpoint = publishEndpoint;
@@ -23,7 +25,7 @@ public class DashboardService : IDashboardService
     {
       new Dashboard()
       {
-        Id = Guid.NewGuid(),
+        Id = 1,
         Name = "Dashboard 1",
       }
     };
@@ -31,11 +33,12 @@ public class DashboardService : IDashboardService
 
   public IEnumerable<DashboardDto> GetDashboards()
   {
+    var models = this.dashboards.ToList();    
     var dtos = _mapper.Map<IEnumerable<DashboardDto>>(this.dashboards);
     return dtos;
   }
 
-  public DashboardDto GetDashboard(Guid id)
+  public DashboardDto GetDashboard(int id)
   {
     var model = dashboards.Single(d => d.Id == id);
     return _mapper.Map<DashboardDto>(model);
@@ -54,12 +57,27 @@ public class DashboardService : IDashboardService
     var dashboard = _mapper.Map<Dashboard>(dto);
     DeleteDashboard(dashboard.Id);
     dashboards.Add(dashboard);
+
   }
 
-  public void DeleteDashboard(Guid id)
+  public async Task DeleteDashboard(int id)
   {
-    var dashboard = dashboards.Single(d => d.Id == id);
-    dashboards.Remove(dashboard);
+    // V1
+    // Context.Set<Dashboard>().Remove(dashboards.Single(d => d.Id == id));
+
+    // V2
+    var dashboard = new Dashboard { Id = id };
+    Context.Entry(dashboard).State = EntityState.Deleted;
+
+    await Context.SaveChangesAsync();
+  }
+
+  public void CleanUp(int dashboradId) { 
+    BeginTransaction();
+
+    
+
+    Commit();
   }
 
 }
