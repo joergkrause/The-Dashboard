@@ -10,8 +10,8 @@
   },
   "codeGenerators": {
     "openApiToCSharpClient": {
-      "clientBaseClass": "$(Client)Base",
-      "configurationClass": "$(ConfigHelper)",
+      "clientBaseClass": null,
+      "configurationClass": null,
       "generateClientClasses": true,
       "generateClientInterfaces": true,
       "clientBaseInterface": null,
@@ -19,7 +19,7 @@
       "disposeHttpClient": false,
       "protectedMethods": [],
       "generateExceptionClasses": true,
-      "exceptionClass": "OpenApiException",
+      "exceptionClass": "$(Client)ApiException",
       "wrapDtoExceptions": true,
       "useHttpClientCreationMethod": false,
       "httpClientType": "System.Net.Http.HttpClient",
@@ -39,7 +39,7 @@
       "useRequestAndResponseSerializationSettings": false,
       "serializeTypeInformation": false,
       "queryNullValue": "",
-      "className": "{controller}Client",
+      "className": "$(Client)",
       "operationGenerationMode": "MultipleClientsFromOperationId",
       "additionalNamespaceUsages": [],
       "additionalContractNamespaceUsages": [],

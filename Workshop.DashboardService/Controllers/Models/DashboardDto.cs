@@ -8,5 +8,5 @@ public class DashboardDto
 
   [Required]
   [StringLength(100, MinimumLength = 3)]
-  public string Name { get; set; }  
+  public string Name { get; set; } = default!;
 }

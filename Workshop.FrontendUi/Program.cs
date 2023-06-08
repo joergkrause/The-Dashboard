@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Workshop.Clients;
 using Workshop.FrontendUi.Data;
 
 namespace Workshop.FrontendUi
@@ -13,7 +14,8 @@ namespace Workshop.FrontendUi
       // Add services to the container.
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
-      builder.Services.AddSingleton<WeatherForecastService>();
+      builder.Services.AddSingleton<DashboardClient>();
+      builder.Services.AddSingleton<TilesClient>();
 
       var app = builder.Build();
 

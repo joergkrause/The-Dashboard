@@ -11,8 +11,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.19.0" />
-    <PackageReference Include="NSwag.Generation.AspNetCore" Version="13.19.0" />
-  </ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="NSwag.MSBuild" Version="13.18.4">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=TilesClient,Namespace=Workshop.Clients,InputSwagger=openapi/tiles_openapi.json,ConfigHelper=IConfiguration" />
+		<Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=DashboardClient,Namespace=Workshop.Clients,InputSwagger=openapi/dashboard_openapi.json,ConfigHelper=IConfiguration" />
+	</Target>
 
 </Project>

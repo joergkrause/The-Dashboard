@@ -7,7 +7,7 @@ using Workshop.TileService.BusinessLogic;
 
 namespace Workshop.Controllers
 {
-    [Route("api/[controller]")]
+  [Route("api/[controller]")]
   [ApiController]
   [ProducesResponseType(500)]
   [Produces("application/json")]
@@ -25,7 +25,7 @@ namespace Workshop.Controllers
 
 
     // GET: api/<TilesController>
-    [HttpGet("dashboard/{id:int}", Name = "GetDashboardTiles")]
+    [HttpGet("tiles/{id:int}", Name = "GetDashboardTiles")]
     [ProducesResponseType(typeof(IEnumerable<TileDto>), StatusCodes.Status200OK)]
     public IEnumerable<TileDto> GetTiles(int id)
     {
@@ -46,7 +46,7 @@ namespace Workshop.Controllers
     {
     }
 
-    [HttpPost]
+    [HttpPost("hastiles", Name = "HasTiles")]
     public bool[] HasTiles([FromBody] Guid[] value)
     {
       throw new NotImplementedException();

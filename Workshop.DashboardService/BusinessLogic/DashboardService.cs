@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using MassTransit;
 using MassTransit.Monitoring.Performance;
 using MassTransit.Transports;
@@ -31,31 +32,32 @@ public class DashboardService : UnitOfWork, IDashboardService
     };
   }
 
-  public IEnumerable<DashboardDto> GetDashboards()
+  public async Task<IEnumerable<DashboardDto>> GetDashboards()
   {
     var models = this.dashboards.ToList();    
     var dtos = _mapper.Map<IEnumerable<DashboardDto>>(this.dashboards);
-    return dtos;
+    return await Task.FromResult(dtos);
   }
 
-  public DashboardDto GetDashboard(int id)
+  public async Task<DashboardDto> GetDashboard(int id)
   {
     var model = dashboards.Single(d => d.Id == id);
-    return _mapper.Map<DashboardDto>(model);
+    return await Task.FromResult(_mapper.Map<DashboardDto>(model));
   }
 
-  public void AddDashboard(DashboardDto dto)
+  public async Task AddDashboard(DashboardDto dto)
   {
     var dashboard = _mapper.Map<Dashboard>(dto);
     var createdEvent = new DashboardCreatedEvent(dashboard.Id, dashboard.Name);
-    _publishEndpoint.Publish(createdEvent);
+    await _publishEndpoint.Publish(createdEvent);
     dashboards.Add(dashboard);
+    await Task.CompletedTask;
   }
 
-  public void UpdateDashboard(DashboardDto dto)
+  public async Task UpdateDashboard(DashboardDto dto)
   {
     var dashboard = _mapper.Map<Dashboard>(dto);
-    DeleteDashboard(dashboard.Id);
+    await DeleteDashboard(dashboard.Id);
     dashboards.Add(dashboard);
 
   }

@@ -10,7 +10,7 @@ public class Dashboard : EntityBase<Guid>, IAuditableEntityBase, ISoftDeleteEnti
   [StringLength(100, MinimumLength = 3)]
   public string Name { get; set; } = default!;
 
-  public string Theme { get; set; }
+  public string Theme { get; set; } = default!;
 
   public int Version { get; set; }
   

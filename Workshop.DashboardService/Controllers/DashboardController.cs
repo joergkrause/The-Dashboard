@@ -31,7 +31,7 @@ namespace Workshop.Controllers
     public async Task<IActionResult> Get()
     {
       _logger?.LogInformation("Get called");
-      var models = _dashboardService.GetDashboards();
+      var models = await _dashboardService.GetDashboards();
       return Ok(models);
     }
 
@@ -60,7 +60,7 @@ namespace Workshop.Controllers
     {
       if (ModelState.IsValid)
       {
-        _dashboardService.AddDashboard(value);
+        await _dashboardService.AddDashboard(value);
         return CreatedAtAction(nameof(Get), new { id = value.Id }, value);
       }
       else
@@ -82,7 +82,7 @@ namespace Workshop.Controllers
       }
       if (ModelState.IsValid)
       {
-        _dashboardService.UpdateDashboard(value);
+        await _dashboardService.UpdateDashboard(value);
         return Accepted();  // 200/201/202/204 
       }
       else
@@ -96,7 +96,7 @@ namespace Workshop.Controllers
     [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Delete(int id)
     {
-      _dashboardService.DeleteDashboard(id);
+      await _dashboardService.DeleteDashboard(id);
       return Accepted();
     }
   }
