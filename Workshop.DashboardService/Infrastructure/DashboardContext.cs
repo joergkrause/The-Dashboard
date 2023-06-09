@@ -16,7 +16,7 @@ public class DashboardContext : DbContext
 
   public DashboardContext(DbContextOptions<DashboardContext> options) : base(options)
   {
-
+    base.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
   }
 
   public DbSet<Dashboard> Dashboards { get; set; }
@@ -24,7 +24,7 @@ public class DashboardContext : DbContext
   public DbSet<Tile> Tiles { get; set; }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  {
+  {    
     optionsBuilder.UseLoggerFactory(SqlLogger);
     optionsBuilder.EnableDetailedErrors();
     optionsBuilder.EnableSensitiveDataLogging();
@@ -37,7 +37,13 @@ public class DashboardContext : DbContext
 
     // modelBuilder.Entity<Setting>();
 
-    modelBuilder.Entity<Layout>().ToTable("Layouts");
+    modelBuilder.Entity<Layout>().ToTable("Layouts")
+      .HasDiscriminator<int>("LayoutType")
+      .HasValue<UserLayout>(1)
+      .HasValue<AdminLayout>(2);
+    modelBuilder.Entity<AdminLayout>().ToTable("Layouts");
+    modelBuilder.Entity<UserLayout>().ToTable("Layouts");
+
     modelBuilder.Entity<Tile>().ToTable("Tiles");
     modelBuilder.Entity<Tile>().Property(e => e.DashboardId).IsRequired(false);
     // modelBuilder.Entity<Tile>().Property(e => e.TileId).HasColumnType("");

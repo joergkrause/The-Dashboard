@@ -6,14 +6,14 @@ using MassTransit.Monitoring.Performance;
 using MassTransit.Transports;
 using Microsoft.EntityFrameworkCore;
 using Workshop.DashboardService.Infrastructure;
+using Workshop.Domain;
 using Workshop.DashboardService.Infrastructure.Integration.Events;
 using Workshop.DatabaseLayer;
-using Workshop.Domain;
 using Workshop.Services.TransferObjects;
 
 namespace Workshop.Services;
 
-public class DashboardService : UnitOfWork, IDashboardService
+public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
 {
 
   private readonly List<Dashboard> dashboards;
@@ -36,19 +36,24 @@ public class DashboardService : UnitOfWork, IDashboardService
 
   public async Task<IEnumerable<DashboardDto>> GetDashboards(params Expression<Func<Dashboard, object>>[] includes)
   {
+
     IQueryable<Dashboard> query = Context.Set<Dashboard>();
     foreach (var include in includes)
     {
       query = query.Include(include);
     }
 
-    var dtos = _mapper.Map<IEnumerable<DashboardDto>>(this.dashboards);
+    var dtos = _mapper.Map<IEnumerable<DashboardDto>>(query);
     return await Task.FromResult(dtos);
   }
 
-  public async Task<IEnumerable<DashboardDto>> GetDashboardWithTiles()
+  public async Task<IEnumerable<DashboardDto>> GetDashboardWithTiles(bool isActive = true)
   {
-    throw new NotImplementedException();
+    var model = await Context.Dashboards
+      .Include(d => d.Tiles)
+      .Where(e => e.Tiles.Any(t => t.IsActive == isActive))
+      .ToListAsync();
+    return _mapper.Map<IEnumerable<DashboardDto>>(model);
   }
 
   public async Task<DashboardDto> GetDashboard(Guid id)
@@ -68,9 +73,17 @@ public class DashboardService : UnitOfWork, IDashboardService
 
   public async Task UpdateDashboard(DashboardDto dto)
   {
-    var dashboard = _mapper.Map<Dashboard>(dto);
-    await DeleteDashboard(dashboard.Id);
-    dashboards.Add(dashboard);
+    try
+    {
+      var dashboard = _mapper.Map<Dashboard>(dto);
+      Context.Entry(dashboard).State = EntityState.Modified;
+      await Context.SaveChangesAsync();
+    }
+    catch (DbUpdateConcurrencyException)
+    {
+      // TODO: Behandle das!
+      throw;
+    }
 
   }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Workshop.DashboardService.Infrastructure;
 using Workshop.Domain;
 using Workshop.Services;
 using Workshop.Services.TransferObjects;
@@ -23,6 +24,7 @@ namespace Workshop.Controllers
     {
       _logger = serviceProvider.GetService<ILogger<DashboardController>>();
       _dashboardService = serviceProvider.GetRequiredService<IDashboardService>();
+
     }
 
     // GET: api/<DashboardController>

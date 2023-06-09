@@ -19,7 +19,15 @@ public static class SeedDatabase
     // context.Dashboards.Add(d1);
     // V2
     context.Set<Dashboard>().Add(d1);
+
     await context.SaveChangesAsync();
+
+    var d2 = context.Dashboards.First();
+
+    d2.Name = "Dashboard 3";
+
+    await context.SaveChangesAsync();
+    
   }
 
 }

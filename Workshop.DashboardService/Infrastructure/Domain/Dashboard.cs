@@ -42,16 +42,39 @@ public class Setting
 
   public DashboardType Type { get; set; }
 
-  // PropertyBag
+  [NotMapped]
+  public SettingDetails SettingDetail { get; set; }
+  
 }
 
-public class Layout : EntityBase<int>
+public class SettingDetails
+{
+  public int DefaultX { get; set; }
+
+  public int DefaultY { get; set; }
+
+  // 35 weitere...
+}
+
+public abstract class Layout : EntityBase<int>
 {
   public int XDimension { get; set; }
 
   public int YDimension { get; set; }
 
   public Guid DashboardId { get; set; } // 1:1
+}
+
+public class AdminLayout : Layout
+{
+  
+}
+
+public class UserLayout : Layout
+{
+  public DateTime ValidTo { get; set; }
+
+  public DateTime ValidFrom { get; set; }
 }
 
 public class Tile : EntityBase<int>

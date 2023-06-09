@@ -4,7 +4,7 @@ using Workshop.Services.TransferObjects;
 
 namespace Workshop.Services
 {
-  public interface IDashboardService
+    public interface IDashboardService
   {
     Task AddDashboard(DashboardDto dashboard);
     Task DeleteDashboard(Guid id);

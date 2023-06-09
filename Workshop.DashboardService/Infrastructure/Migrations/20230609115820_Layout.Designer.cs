@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Workshop.DashboardService.Infrastructure;
 
@@ -11,9 +12,10 @@ using Workshop.DashboardService.Infrastructure;
 namespace Workshop.DashboardService.Migrations
 {
     [DbContext(typeof(DashboardContext))]
-    partial class DashboardContextModelSnapshot : ModelSnapshot
+    [Migration("20230609115820_Layout")]
+    partial class Layout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,6 +248,9 @@ namespace Workshop.DashboardService.Migrations
                     b.Property<Guid>("DashboardId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("LayoutType")
+                        .HasColumnType("int");
+
                     b.Property<int>("XDimension")
                         .HasColumnType("int");
 
@@ -258,6 +263,8 @@ namespace Workshop.DashboardService.Migrations
                         .IsUnique();
 
                     b.ToTable("Layouts", (string)null);
+
+                    b.HasDiscriminator<int>("LayoutType");
                 });
 
             modelBuilder.Entity("Workshop.Domain.Tile", b =>
@@ -284,12 +291,39 @@ namespace Workshop.DashboardService.Migrations
                     b.ToTable("Tiles", (string)null);
                 });
 
+            modelBuilder.Entity("Workshop.Domain.AdminLayout", b =>
+                {
+                    b.HasBaseType("Workshop.Domain.Layout");
+
+                    b.ToTable("Layouts", (string)null);
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("Workshop.Domain.UserLayout", b =>
+                {
+                    b.HasBaseType("Workshop.Domain.Layout");
+
+                    b.Property<DateTime>("ValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ValidTo")
+                        .HasColumnType("datetime2");
+
+                    b.ToTable("Layouts", (string)null);
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
             modelBuilder.Entity("Workshop.Domain.Dashboard", b =>
                 {
                     b.OwnsOne("Workshop.Domain.Setting", "Settings", b1 =>
                         {
                             b1.Property<Guid>("DashboardId")
                                 .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("PropertyBag")
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<int>("Type")
                                 .HasColumnType("int");

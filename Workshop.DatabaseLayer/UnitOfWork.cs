@@ -3,14 +3,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Workshop.DatabaseLayer;
 
-public abstract class UnitOfWork : IUnitOfWork
+public abstract class UnitOfWork<T> : IUnitOfWork where T: DbContext
 {
 
-  public UnitOfWork(DbContext context)
+  public UnitOfWork(T context)
   {
     Context = context;
   }
-  protected DbContext Context { get; }
+  protected T Context { get; }
 
   public int SaveChanges()
   {

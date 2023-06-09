@@ -3,11 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Workshop.BuildingBlocks.Extensions;
 using Workshop.DashboardService.Infrastructure;
 using Workshop.Services;
-using Microsoft.EntityFrameworkCore;
-using Workshop.Services.Mappings;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Workshop.Domain;
+using Workshop.Services.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
