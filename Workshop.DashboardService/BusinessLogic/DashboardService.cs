@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
 using MassTransit;
 using MassTransit.Monitoring.Performance;
 using MassTransit.Transports;
 using Microsoft.EntityFrameworkCore;
+using Workshop.DashboardService.Infrastructure;
 using Workshop.DashboardService.Infrastructure.Integration.Events;
 using Workshop.DatabaseLayer;
 using Workshop.Domain;
@@ -18,7 +20,7 @@ public class DashboardService : UnitOfWork, IDashboardService
   private readonly IMapper _mapper;
   private readonly IPublishEndpoint _publishEndpoint;
 
-  public DashboardService(DbContext context, IMapper mapper, IPublishEndpoint publishEndpoint) : base(context)
+  public DashboardService(DashboardContext context, IMapper mapper, IPublishEndpoint publishEndpoint) : base(context)
   {
     _mapper = mapper;
     _publishEndpoint = publishEndpoint;
@@ -26,20 +28,30 @@ public class DashboardService : UnitOfWork, IDashboardService
     {
       new Dashboard()
       {
-        Id = 1,
+        Id = Guid.NewGuid(),
         Name = "Dashboard 1",
       }
     };
   }
 
-  public async Task<IEnumerable<DashboardDto>> GetDashboards()
+  public async Task<IEnumerable<DashboardDto>> GetDashboards(params Expression<Func<Dashboard, object>>[] includes)
   {
-    var models = this.dashboards.ToList();    
+    IQueryable<Dashboard> query = Context.Set<Dashboard>();
+    foreach (var include in includes)
+    {
+      query = query.Include(include);
+    }
+
     var dtos = _mapper.Map<IEnumerable<DashboardDto>>(this.dashboards);
     return await Task.FromResult(dtos);
   }
 
-  public async Task<DashboardDto> GetDashboard(int id)
+  public async Task<IEnumerable<DashboardDto>> GetDashboardWithTiles()
+  {
+    throw new NotImplementedException();
+  }
+
+  public async Task<DashboardDto> GetDashboard(Guid id)
   {
     var model = dashboards.Single(d => d.Id == id);
     return await Task.FromResult(_mapper.Map<DashboardDto>(model));
@@ -62,7 +74,7 @@ public class DashboardService : UnitOfWork, IDashboardService
 
   }
 
-  public async Task DeleteDashboard(int id)
+  public async Task DeleteDashboard(Guid id)
   {
     // V1
     // Context.Set<Dashboard>().Remove(dashboards.Single(d => d.Id == id));

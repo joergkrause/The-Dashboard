@@ -36,10 +36,10 @@ namespace Workshop.Controllers
     }
 
     // GET api/<DashboardController>/abc
-    [HttpGet("{id:int}", Name = "Get")] // 400 Bad Request
+    [HttpGet("{id:guid}", Name = "Get")] // 400 Bad Request
     [ProducesResponseType(typeof(DashboardDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> GetId(int id)
+    public async Task<IActionResult> GetId(Guid id)
     {
       var model = _dashboardService.GetDashboard(id);
       return await Task.FromResult(Ok(model));
@@ -92,9 +92,9 @@ namespace Workshop.Controllers
     }
 
     // DELETE api/<DashboardController>/5
-    [HttpDelete("{id:int}", Name = "RemoveDashboard")]
+    [HttpDelete("{id:guid}", Name = "RemoveDashboard")]
     [ProducesResponseType(typeof(void), StatusCodes.Status202Accepted)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(Guid id)
     {
       await _dashboardService.DeleteDashboard(id);
       return Accepted();

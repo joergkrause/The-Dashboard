@@ -2,5 +2,5 @@
 
 public abstract class EntityBase<T> where T : IEquatable<T>
 {
-  public int Id { get; set; } = default!;
+  public T Id { get; set; } = default!;
 }

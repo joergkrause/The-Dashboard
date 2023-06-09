@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.Xml;
+using Workshop.DashboardService.Infrastructure.Configuration;
 using Workshop.DatabaseLayer;
+using Workshop.Domain;
 
 namespace Workshop.DashboardService.Infrastructure;
 
@@ -16,6 +19,9 @@ public class DashboardContext : DbContext
 
   }
 
+  public DbSet<Dashboard> Dashboards { get; set; }
+  public DbSet<Layout> Layouts { get; set; }
+  public DbSet<Tile> Tiles { get; set; }
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
@@ -27,8 +33,18 @@ public class DashboardContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    // TODO: Mapping    
-    base.OnModelCreating(modelBuilder);
+    modelBuilder.ApplyConfiguration(new DashboardConfiguration());
+
+    // modelBuilder.Entity<Setting>();
+
+    modelBuilder.Entity<Layout>().ToTable("Layouts");
+    modelBuilder.Entity<Tile>().ToTable("Tiles");
+    modelBuilder.Entity<Tile>().Property(e => e.DashboardId).IsRequired(false);
+    // modelBuilder.Entity<Tile>().Property(e => e.TileId).HasColumnType("");
+
+    modelBuilder.AddInboxStateEntity();
+    modelBuilder.AddOutboxMessageEntity();
+    modelBuilder.AddOutboxStateEntity();
   }
 
   public override int SaveChanges()
