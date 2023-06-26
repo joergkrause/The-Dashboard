@@ -1,15 +1,9 @@
-﻿# Tile Service
+﻿# Data Consumer Service
 
-Define tiles, assign to a dashboard, and set the tile's position on the dashboard.
+A service that can manage data sources of all kind. It can be used to manage data sources for the dashboard.
 
-A tile contains the information about appearance, layout, and interactivity. It is the basic unit of a dashboard.
+## Getting Started
 
-The dashboard service references tiles by their Id. The tile service is responsible for creating, updating, and deleting tiles.
+### Prerequisites
 
-## Features
-
-- Create a tile
-- Update a tile
-- Delete a tile
-- Get a tile
-- Get all tiles related to a specific dashboard
+Docker, for local debugging SQL server is required.

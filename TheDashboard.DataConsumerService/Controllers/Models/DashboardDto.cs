@@ -1,4 +1,4 @@
-﻿namespace Workshop.Services.TransferObjects;
+﻿namespace TheDashboard.DataConsumerService.TransferObjects;
 
 public class DashboardDto
 {

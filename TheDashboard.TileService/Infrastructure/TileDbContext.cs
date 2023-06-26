@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using TheDashboard.TileService.Domain;
 
@@ -49,12 +50,12 @@ public class TileDbContext : DbContext
 
     modelBuilder.Entity<Transformer>().ToTable("Transformers");
     modelBuilder.Entity<Transformer>().Property(e => e.Name).HasMaxLength(100).IsRequired();
-    modelBuilder.Entity<Transformer>().Property(e => e.Description).HasMaxLength(512).IsRequired();
-    modelBuilder.Entity<Transformer>().Property(e => e.Template).HasMaxLength(8192).IsRequired(false);
+    modelBuilder.Entity<Transformer>().Property(e => e.Description).HasMaxLength(512).IsRequired(false);
+    modelBuilder.Entity<Transformer>().Property(e => e.Template).IsRequired(false);
 
-    modelBuilder.Entity<Visualizer>().ToTable("Vizalizers");
+    modelBuilder.Entity<Visualizer>().ToTable("Visualizers");
     modelBuilder.Entity<Visualizer>().Property(e => e.Name).HasMaxLength(100).IsRequired();
-    modelBuilder.Entity<Visualizer>().Property(e => e.Description).HasMaxLength(512).IsRequired();
+    modelBuilder.Entity<Visualizer>().Property(e => e.Description).HasMaxLength(512).IsRequired(false);
     modelBuilder.Entity<Visualizer>()
       .HasMany(e => e.Tiles)
       .WithOne(e => e.Visualizer)
@@ -65,5 +66,6 @@ public class TileDbContext : DbContext
       .WithMany(e => e.Visualizers)
       .OnDelete(DeleteBehavior.SetNull);
 
+    modelBuilder.AddInboxStateEntity();
   }
 }

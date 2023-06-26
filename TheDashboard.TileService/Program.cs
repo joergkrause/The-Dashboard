@@ -50,8 +50,8 @@ async Task ApplyMigration()
   var context = scope.ServiceProvider.GetRequiredService<TileDbContext>();
   bool newDatabase = !context.Database.GetService<IRelationalDatabaseCreator>().Exists();
   await context.Database.MigrateAsync();
-  var hasData = !newDatabase || await context.Set<Dashboard>().AnyAsync();
-  if (!hasData)
+  var hasData = await context.Set<Dashboard>().AnyAsync();
+  if (newDatabase || !hasData)
   {
     await SeedDatabase.Seed(context);
   }

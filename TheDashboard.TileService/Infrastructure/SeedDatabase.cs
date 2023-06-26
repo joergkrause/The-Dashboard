@@ -32,7 +32,10 @@ public static class SeedDatabase
         }
       }
     };
-    d1.Tiles.Add(t1);
+
+    t1.Dashboard = d1;
+
+    context.Set<Tile>().Add(t1);
     context.Set<Dashboard>().Add(d1);
 
     await context.SaveChangesAsync();   
