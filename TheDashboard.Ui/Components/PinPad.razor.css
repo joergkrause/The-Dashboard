@@ -1,0 +1,48 @@
+﻿.pin-pad-container {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+}
+
+.pin-pad {
+  width: 300px;
+  margin-top: 300px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  direction: rtl;
+}
+
+  .pin-pad .gradient-circle {
+    color: #ccc;
+    border: 2px solid #7c9bf9;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2em;
+    height: 2em;
+    font-size: 1.6rem;
+    position: relative;
+    padding: 2rem;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+
+    .pin-pad .gradient-circle:hover {
+      color: white;
+      background: rgba(124, 155, 249, 0.3);
+    }
+
+    .pin-pad .gradient-circle:active {
+      background: rgba(124, 155, 249, 0.6);
+    }
+
+  .pin-pad .last {
+    grid-column-start: 2;
+  }
+
+.pin-pad-pin {
+  box-shadow: 10px 10px 50px #7c9bf9;
+}

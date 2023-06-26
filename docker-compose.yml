@@ -35,22 +35,25 @@ services:
       retries: 3
       start_period: 60s
 
-  nginx:
-    container_name: nginx
-    image: nginx:stable-alpine
-    profiles: [ all, backend ]
+  frontend:
+    image: ${DOCKER_REGISTRY-}frontend:latest
+    profiles: [ all, frontend ]
     depends_on:
      - dashboardservice
      - tileservice
+     - dataconsumerservice
+     - uiinfoservice
     ports:
       - "5500:80/tcp"
 
   dashboardservice:
-    image: dashboardservice:latest
+    image: ${DOCKER_REGISTRY-}dashboardservice:latest
     profiles: [ all, backend ]
     build:
       context: .
-      dockerfile: Workshop.DashboardService/Dockerfile
+      dockerfile: TheDashboard.DashboardService/Dockerfile
+    ports:
+      - "5100:80/tcp"
     depends_on:
       - sqlserver
       - eventbus
@@ -60,7 +63,21 @@ services:
     profiles: [ all, backend ]
     build:
       context: .
-      dockerfile: Workshop.TileService/Dockerfile
+      dockerfile: TheDashboard.TileService/Dockerfile
+    ports:
+      - "5200:80/tcp"
+    depends_on:
+      - sqlserver
+      - eventbus
+
+  dataconsumerservice:
+    image: ${DOCKER_REGISTRY-}dataconsumerservice
+    profiles: [ all, backend ]
+    build:
+      context: .
+      dockerfile: TheDashboard.DataConsumerService/Dockerfile
+    ports:
+      - "5300:80/tcp"
     depends_on:
       - sqlserver
       - eventbus
@@ -70,8 +87,11 @@ services:
     profiles: [ all, backend ]
     build:
       context: .
-      dockerfile: Workshop.UiInfoservice/Dockerfile
+      dockerfile: TheDashboard.UiInfoservice/Dockerfile
+    ports:
+      - "5400:80/tcp"
     depends_on:
+      - sqlserver
       - eventbus
 
 volumes:

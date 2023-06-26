@@ -1,0 +1,38 @@
+﻿@using System.Reflection;
+<dl>
+  <dt title="@labelHint">
+    @labelText
+  </dt>
+  <dd>
+    @if (labelData == null)
+    {
+      <span class="badge bg-warning">@NoDataText</span>
+    } else
+    {
+      @labelData
+    }
+  </dd>
+</dl>
+@code {
+
+  private string labelText;
+  private string labelHint;
+  private string labelData;
+
+  [Parameter]
+  public object DataObject { get; set; }
+
+  [Parameter]
+  public string Property { get; set; }
+
+  [Parameter]
+  public string NoDataText { get; set; } = string.Empty;
+
+  protected override void OnParametersSet()
+  {
+    labelText = DataObject.GetType().GetProperty(Property).GetCustomAttribute<DisplayAttribute>()?.Name ?? Property;
+    labelHint = DataObject.GetType().GetProperty(Property).GetCustomAttribute<DisplayAttribute>()?.Description ?? string.Empty;
+    labelData = DataObject.GetType().GetProperty(Property).GetValue(DataObject, null)?.ToString();
+  }
+
+}

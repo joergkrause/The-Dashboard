@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "Trustme.Ui": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:59159;http://localhost:59167"
+    }
+  }
+}

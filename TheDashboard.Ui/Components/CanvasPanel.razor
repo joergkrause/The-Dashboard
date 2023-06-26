@@ -1,0 +1,33 @@
+﻿<Blazorise.Button Color="Blazorise.Color.Link" Disabled="@Disabled" data-bs-toggle="offcanvas" data-bs-target="@($"#offcanvas{uniqueName}")" >
+  @ButtonText
+</Blazorise.Button>
+
+<div class="offcanvas offcanvas-end w-50" tabindex="-1" id="@($"offcanvas{uniqueName}")" @ref="Canvas">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">@Title</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    @Content
+  </div>
+</div>
+
+
+@code {
+
+  private string uniqueName = Guid.NewGuid().ToString().Replace("-", "");
+
+  private ElementReference Canvas;
+
+  [Parameter]
+  public RenderFragment ButtonText { get; set; }
+
+  [Parameter]
+  public RenderFragment Content { get; set; }
+
+  [Parameter]
+  public RenderFragment Title { get; set; }
+
+  [Parameter]
+  public bool Disabled { get; set; }
+}

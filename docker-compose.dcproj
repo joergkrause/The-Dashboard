@@ -5,6 +5,10 @@
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>5f8feee1-7b85-495e-afc2-6fb574b1bc1b</ProjectGuid>
   </PropertyGroup>
+  <PropertyGroup>
+    <DockerLaunchAction>None</DockerLaunchAction>
+    <DockerServiceName>dashboardservice</DockerServiceName>
+  </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>

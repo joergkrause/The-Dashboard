@@ -1,0 +1,119 @@
+﻿@using Microsoft.JSInterop
+@using System.Diagnostics
+@typeparam TModel
+
+@if (fields != null)
+{
+  foreach (var field in fields)
+  {
+    var hide = !field.Visible ? "d-none" : "d-block";
+    if (FieldTemplate != null)
+    {
+      <div class="mt-2 @hide">
+        @FieldTemplate(field)
+      </div>
+    }
+    else
+    {
+      field.Enabled = Enabled;
+      if (field.PropertyType.Name != "Boolean")
+      {
+        <div class="mt-2 @hide">
+          @if (field.Visible)
+          {
+            if (field.ShowHelp)
+            {
+              <AutoFormHelp HelpHeader=@field.DisplayName>
+                @field.Description
+              </AutoFormHelp>
+            }
+            <label class="form-label" for="@field.EditorId">@field.DisplayName</label>
+            @field.EditorTemplate
+            @field.FieldValidationTemplate
+          }
+        </div>
+      }
+      else
+      {
+        <div class="mt-2 @hide">
+          @if (field.Visible)
+          {
+            if (field.ShowHelp)
+            {
+              <AutoFormHelp HelpHeader=@field.DisplayName>
+                @field.Description
+              </AutoFormHelp>
+            }
+            @field.EditorTemplate
+            @field.FieldValidationTemplate
+          }
+        </div>
+      }
+    }
+  }
+}
+
+@code {
+
+  // https://github.com/meziantou/Meziantou.Framework
+  internal string BaseEditorId { get; } = Guid.NewGuid().ToString();
+
+  internal List<AutoFormField<TModel>>? fields;
+
+  [Parameter]
+  public TModel? Model { get; set; }
+
+  [Parameter]
+  public EventCallback<TModel> ModelChanged { get; set; }
+
+  [Parameter]
+  public bool EnableFieldValidation { get; set; } = true;
+
+  [Parameter]
+  public string? EditorClass { get; set; } = "form-control";
+
+  [Parameter]
+  public string? CheckboxClass { get; set; } = "form-check";
+
+  [Parameter]
+  public string? SelectClass { get; set; } = "form-select";
+
+  [Parameter]
+  public RenderFragment<AutoFormField<TModel>>? FieldTemplate { get; set; }
+
+  [Parameter]
+  public bool Enabled { get; set; } = false;
+
+  public void Rerender()
+  {
+    base.StateHasChanged();
+  }
+
+  protected override void OnParametersSet()
+  {
+    base.OnParametersSet();
+  }
+
+  protected override void OnInitialized()
+  {
+    if (Model != null)
+    {
+      fields = AutoFormField<TModel>.Create(this).OrderBy(f => f.Order).ToList();
+      foreach (var field in fields)
+      {
+        field.ValueChanged += OnValueChanged;
+        AutoFormField<TModel>.CheckDependencies(this, field.Property.Name);
+      }
+    }
+    else
+    {
+      fields = null;
+    }
+  }
+
+  private void OnValueChanged(object? sender, EventArgs e)
+  {
+    var task = Task.Run(async () => await ModelChanged.InvokeAsync(Model));
+    task.Wait();
+  }
+}

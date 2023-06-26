@@ -1,0 +1,40 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime jsRuntime
+
+<div class="float-end d-none d-md-block">
+  <i class="bx bx-help-circle" @onmouseover=@((e) => ShowHelp(e))></i>
+  <div class="popover fade bs-popover-end" @ref="BigHelp" role="tooltip" style=@($"position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate({HelpPosition});")>
+    <div class="popover-arrow" style="position: relative; top: 0px; transform: translate(0px, 47px);"></div>
+    <h3 class="popover-header" style="font-weight: bold; margin-top: -16px;">@HelpHeader</h3>
+    <div class="popover-body">@ChildContent</div>
+  </div>
+</div>
+
+@code {
+
+  [Parameter]
+  public string HelpHeader { get; set; }
+
+  [Parameter]
+  public RenderFragment ChildContent { get; set; }
+
+  [Parameter]
+  public int XOffset { get; set; } = -250;
+
+  [Parameter]
+  public int YOffset { get; set; } = +55;
+
+  ElementReference SmallHelp;
+  ElementReference BigHelp;
+
+  private string HelpPosition = "";
+  private bool show;
+
+  private async Task ShowHelp(MouseEventArgs e) {
+    await jsRuntime.InvokeVoidAsync("removeHelpers");
+    HelpPosition = $"{e.PageX + XOffset}px, {e.PageY - YOffset}px";
+    await jsRuntime.InvokeVoidAsync("showHelper", BigHelp);
+    await jsRuntime.InvokeVoidAsync("removeHelpersDelayed");
+  }
+
+} 
