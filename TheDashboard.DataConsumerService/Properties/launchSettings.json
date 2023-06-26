@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "Workshop.TileService": {
+    "TheDashboard.DataConsumerService": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

@@ -39,14 +39,14 @@ services:
     image: ${DOCKER_REGISTRY-}frontend:latest
     profiles: [ all, frontend ]
     depends_on:
-     - dashboardservice
-     - tileservice
-     - dataconsumerservice
-     - uiinfoservice
+     - thedashboard.dashboardservice
+     - thedashboard.tileservice
+     - thedashboard.dataconsumerservice
+     - thedashboard.uiinfoservice
     ports:
       - "5500:80/tcp"
 
-  dashboardservice:
+  thedashboard.dashboardservice:
     image: ${DOCKER_REGISTRY-}dashboardservice:latest
     profiles: [ all, backend ]
     build:
@@ -58,7 +58,7 @@ services:
       - sqlserver
       - eventbus
   
-  tileservice:
+  thedashboard.tileservice:
     image: ${DOCKER_REGISTRY-}tileservice
     profiles: [ all, backend ]
     build:
@@ -70,7 +70,7 @@ services:
       - sqlserver
       - eventbus
 
-  dataconsumerservice:
+  thedashboard.dataconsumerservice:
     image: ${DOCKER_REGISTRY-}dataconsumerservice
     profiles: [ all, backend ]
     build:
@@ -82,7 +82,7 @@ services:
       - sqlserver
       - eventbus
 
-  uiinfoservice:
+  thedashboard.uiinfoservice:
     image: ${DOCKER_REGISTRY-}uiinfoservice
     profiles: [ all, backend ]
     build:

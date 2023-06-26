@@ -4,7 +4,10 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "workshop.databasesetup": "StartDebugging"
+        "thedashboard.dashboardservice": "StartDebugging",
+        "thedashboard.tileservice": "StartDebugging",
+        "thedashboard.dataconsumerservice": "StartDebugging",
+        "thedashboard.uiinfoservice": "StartDebugging"
       }
     }
   }
