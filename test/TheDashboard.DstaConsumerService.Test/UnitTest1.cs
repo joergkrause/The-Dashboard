@@ -7,5 +7,14 @@ namespace TheDashboard.DstaConsumerService.Test
     public void TestMethod1()
     {
     }
+
+    // useful tests against database model
+
+    [TestMethod]
+    public void TestMethod2()
+    {
+
+    }
+
   }
 }

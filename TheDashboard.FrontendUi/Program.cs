@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.ResponseCompression;
 using TheDashboard.Clients;
+using TheDashboard.FrontendUi.Hubs;
 
 namespace TheDashboard.FrontendUi
 {
@@ -10,11 +12,18 @@ namespace TheDashboard.FrontendUi
     {
       var builder = WebApplication.CreateBuilder(args);
 
-      // Add services to the container.
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor();
-      builder.Services.AddSingleton<DashboardClient>();
-      builder.Services.AddSingleton<TilesClient>();
+
+      builder.Services.AddSingleton<IDashboardClient, DashboardClient>();
+      builder.Services.AddSingleton<ITilesClient, TilesClient>();
+      builder.Services.AddSingleton<IDataConsumerClient, DataConsumerClient > ();
+
+      builder.Services.AddResponseCompression(opts =>
+      {
+        opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+              new[] { "application/octet-stream" });
+      });
 
       var app = builder.Build();
 
@@ -27,6 +36,7 @@ namespace TheDashboard.FrontendUi
       }
       
       app.UseHttpsRedirection();
+      app.UseResponseCompression();
 
       app.UseStaticFiles();
 
@@ -34,6 +44,8 @@ namespace TheDashboard.FrontendUi
 
       app.MapBlazorHub();
       app.MapFallbackToPage("/_Host");
+
+      app.MapHub<DataHub>("/datahub");
 
       app.Run();
     }
