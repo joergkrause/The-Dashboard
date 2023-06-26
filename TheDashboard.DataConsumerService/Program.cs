@@ -17,9 +17,8 @@ builder.Services.AddDbContext<DataConsumerDbContext>(opt =>
   opt.UseSqlServer(cs);
 });
 
-
 builder.Services.AddScoped<IDashboardService, DashboardService>();
-
+builder.Services.AddScoped<IDataConsumerService, DataConsumerService>();
 
 builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameof(DashboardService));
 

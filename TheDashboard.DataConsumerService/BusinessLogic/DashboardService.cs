@@ -32,7 +32,7 @@ public class DashboardService : IDashboardService
 
   public async Task<IEnumerable<DashboardDto>> GetAllDashboards()
   {
-    var model = await _dataconsumerDbContext.Set<DashboardDto>().ToListAsync();
+    var model = await _dataconsumerDbContext.Set<Dashboard>().ToListAsync();
     return _mapper.Map<IEnumerable<DashboardDto>>(model);
   }
 
@@ -58,7 +58,7 @@ public class DashboardService : IDashboardService
 
   public async Task<bool> HasDashboards()
   {
-    return await _dataconsumerDbContext.Set<DashboardDto>().AnyAsync();
+    return await _dataconsumerDbContext.Set<Dashboard>().AnyAsync();
   }
 
   public async Task<bool> HasDashboard(Guid dashboardId)

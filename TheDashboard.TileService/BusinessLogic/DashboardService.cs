@@ -22,7 +22,7 @@ public class DashboardService : IDashboardService
 
   public async Task<DashboardDto?> GetDashboard(Guid dashboardId)
   {
-    var model = await _tileDbContext.Set<DashboardDto>().SingleOrDefaultAsync(e => e.Id == dashboardId);
+    var model = await _tileDbContext.Set<Dashboard>().SingleOrDefaultAsync(e => e.Id == dashboardId);
     if (model == null)
     {
       return null;
@@ -32,7 +32,7 @@ public class DashboardService : IDashboardService
 
   public async Task<IEnumerable<DashboardDto>> GetAllDashboards()
   {
-    var model = await _tileDbContext.Set<DashboardDto>().ToListAsync();
+    var model = await _tileDbContext.Set<Dashboard>().ToListAsync();
     return _mapper.Map<IEnumerable<DashboardDto>>(model);
   }
 
@@ -58,7 +58,7 @@ public class DashboardService : IDashboardService
 
   public async Task<bool> HasDashboards()
   {
-    return await _tileDbContext.Set<DashboardDto>().AnyAsync();
+    return await _tileDbContext.Set<Dashboard>().AnyAsync();
   }
 
   public async Task<bool> HasDashboard(Guid dashboardId)
