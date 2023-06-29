@@ -165,8 +165,6 @@ namespace TheDashboard.FrontendUi
       app.MapBlazorHub();
       app.MapFallbackToPage("/_Host");
 
-      app.MapHub<DataHub>("/datahub");
-
       app.Run();
     }
   }

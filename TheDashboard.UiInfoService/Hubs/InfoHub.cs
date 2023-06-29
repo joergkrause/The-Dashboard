@@ -6,14 +6,14 @@ public class InfoHub : Hub
 {
 
 
-  public async Task SendMessage(string user, string message)
+  public async Task SendMessage(int tileId, string message)
   {
-    await Clients.All.SendAsync("DataUpdate", user, message);
+    await Clients.All.SendAsync("DataUpdate", tileId, message);
   }
 
-  public async Task SendGroupMessage(string user, string message)
+  public async Task SendGroupMessage(int tileId, string message)
   {
-    await Clients.Group("SignalR Users").SendAsync("DataUpdate", user, message);
+    await Clients.Group("SignalR Users").SendAsync("DataUpdate", tileId, message);
   }
 
   public override async Task OnConnectedAsync()

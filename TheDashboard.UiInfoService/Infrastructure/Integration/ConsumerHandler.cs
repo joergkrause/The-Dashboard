@@ -4,7 +4,7 @@ using TheDashboard.UiInfoService.Infrastructure.Integration.Events;
 
 namespace TheDashboard.UiInfoService.Infrastructure.Integration;
 
-public class ConsumerHandler : IConsumer<ConsumerEvent>
+public class ConsumerHandler<T> : IConsumer<ConsumerEvent<T>> where T : class, new()
 {
 
   private readonly InfoHub _infoHub;
@@ -15,9 +15,9 @@ public class ConsumerHandler : IConsumer<ConsumerEvent>
   }
 
 
-  public async Task Consume(ConsumeContext<ConsumerEvent> context)
+  public async Task Consume(ConsumeContext<ConsumerEvent<T>> context)
   {
-    // need tile id here
-    await _infoHub.SendMessage("", context.Message.Data);
+    var tileId = context.Message.TileId;
+    await _infoHub.SendMessage(tileId, context.Message.Data?.ToString()!);
   }
 }

@@ -6,4 +6,4 @@ using TheDashboard.UiInfoService.Infrastructure.Integration.Events;
 
 namespace TheDashboard.UiInfoService.Infrastructure.Integration;
 
-public record ConsumerEvent(int Id, string Data) : IntegrationEvent;
+public record ConsumerEvent<T>(int TileId, T Data) : IntegrationEvent where T : class, new();
