@@ -33,8 +33,7 @@ public class ConsumerJob : IJob
     // execute desired action
     var url = source.Url;
     var client = new HttpClient();    
-    var response = await client.GetStreamAsync(url);
-
+    var response = await client.GetStringAsync(url);    
     // publish result to queue
     await _publishEndpoint.Publish(new DataConsumerMessage { Data = response });
   }

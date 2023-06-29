@@ -1,7 +1,6 @@
-﻿namespace TheDashboard.DataConsumerService.Jobs
+﻿namespace TheDashboard.DataConsumerService.Jobs;
+
+public class DataConsumerMessage
 {
-  internal class DataConsumerMessage : Type
-  {
-    public Stream Data { get; set; }
-  }
+  public string Data { get; set; }
 }

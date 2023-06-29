@@ -39,6 +39,7 @@
 
   protected override async Task OnInitializedAsync()
   {
+    // TODO: Move to service
     hubConnection = new HubConnectionBuilder()
         .WithUrl("https://localhost:5400/datahub")
         .Build();

@@ -17,6 +17,6 @@ public class DashboardCreatedHandler : IConsumer<DashboardCreatedEvent>
 
   public async Task Consume(ConsumeContext<DashboardCreatedEvent> context)
   {
-    await _infoHub.SendMessage("", context.Message.Name);
+    await _infoHub.SendMessage(1, context.Message.Name);
   }
 }

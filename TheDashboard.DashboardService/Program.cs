@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using TheDashboard.Services.Mappings;
 using TheDashboard.DashboardService.Domain;
+using TheDashboard.DatabaseLayer.Interfaces;
+using TheDashboard.DatabaseLayer.Interceptors;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,9 @@ builder.Services.AddDbContext<DashboardContext>(options =>
 {
   options.UseSqlServer(cs);
 });
-
+builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<IUser, CurrentUser>();
+builder.Services.AddScoped<IDateTime, CurrentDateTime>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ILayoutService, LayoutService>();
 

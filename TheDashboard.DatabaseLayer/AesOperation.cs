@@ -3,10 +3,10 @@ using System.Text;
 
 namespace TheDashboard.DatabaseLayer;
 
-public static class AesOperation
+internal static class AesOperation
 {
 
-  public static string EncryptString(string key, string plainText)
+  internal static string EncryptString(string key, string plainText)
   {
     byte[] iv = new byte[16];
     byte[] array;
@@ -31,7 +31,7 @@ public static class AesOperation
     return Convert.ToBase64String(array);
   }
 
-  public static string DecryptString(string key, string cipherText)
+  internal static string DecryptString(string key, string cipherText)
   {
     byte[] iv = new byte[16];
     byte[] buffer = Convert.FromBase64String(cipherText);

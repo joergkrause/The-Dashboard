@@ -2,6 +2,11 @@
 
 Boilerplate project for modern service architecture.
 
+## Credits
+
+https://github.com/Amitpnk/Clean-Architecture-ASP.NET-Core#readme
+https://github.com/jasontaylordev/CleanArchitecture
+
 ## Purpose
 
 Build a Dashboard App.
