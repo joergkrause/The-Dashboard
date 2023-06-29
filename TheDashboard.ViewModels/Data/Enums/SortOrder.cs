@@ -4,28 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheDashboard.ViewModels.Data.ViewModels.Enums;
+namespace TheDashboard.ViewModels.Data.Enums;
 
 public enum SortOrder
 {
-  Asc,
-  Desc,
-  None
+    Asc,
+    Desc,
+    None
 }
 
 public enum DataAction
 {
-  Add,
-  Remove,
-  Create,
-  Read,
-  Update,
-  Delete
+    Add,
+    Remove,
+    Create,
+    Read,
+    Update,
+    Delete
 }
 
 public enum ClaimUsage
 {
-  Input,
-  Display,
-  Output
+    Input,
+    Display,
+    Output
 }

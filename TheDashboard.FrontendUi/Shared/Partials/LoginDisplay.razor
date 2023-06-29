@@ -1,0 +1,26 @@
+﻿@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthStateProvider
+
+<AuthorizeView>
+  <Authorized>
+    <span>      
+      @DisplayName <a href="MicrosoftIdentity/Account/SignOut">Sign Out</a>
+    </span>
+  </Authorized>
+  <NotAuthorized>
+    <a href="MicrosoftIdentity/Account/SignIn">SignIn</a>
+  </NotAuthorized>
+</AuthorizeView>
+
+@code {
+
+  private string DisplayName = "...";
+
+  protected async override Task OnInitializedAsync()
+  {
+    var state = await AuthStateProvider.GetAuthenticationStateAsync();
+    DisplayName = state.User.Identity?.Name ?? "";
+  }
+
+}

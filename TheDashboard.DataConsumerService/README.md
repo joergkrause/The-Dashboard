@@ -7,3 +7,5 @@ A service that can manage data sources of all kind. It can be used to manage dat
 ### Prerequisites
 
 Docker, for local debugging SQL server is required.
+
+RabbitMQ to get dashboard information froim Dashboard service.

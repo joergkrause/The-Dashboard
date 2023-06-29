@@ -2,36 +2,37 @@
 @inject NavigationManager Navigation
 @implements IAsyncDisposable
 
-<PageTitle>Index</PageTitle>
-
-<div class="form-group">
-  <label>
-    User:
-    <input @bind="userInput" />
-  </label>
+<div class="@positioningClass">
+  <h3>@Title</h3>
+  <h4>@Subtitle</h4>
+  @Content
 </div>
-<div class="form-group">
-  <label>
-    Message:
-    <input @bind="messageInput" size="50" />
-  </label>
-</div>
-<button @onclick="Send" disabled="@(!IsConnected)">Send</button>
-
-<hr>
-
-<ul id="messagesList">
-  @foreach (var message in messages)
-  {
-    <li>@message</li>
-  }
-</ul>
 
 @code {
   private HubConnection? hubConnection;
   private List<string> messages = new List<string>();
   private string? userInput;
   private string? messageInput;
+
+  private string positioningClass => $"col-{Width} offset-{X} offset-{Y}";
+
+  [Parameter]
+  public int X { get; set; }
+
+  [Parameter]
+  public int Y { get; set; }
+
+  [Parameter]
+  public int Width { get; set; }
+
+  [Parameter]
+  public string Title { get; set; }
+
+  [Parameter]
+  public string Subtitle { get; set; }
+
+  [Parameter]
+  public RenderFragment Content { get; set; }
 
   protected override async Task OnInitializedAsync()
   {

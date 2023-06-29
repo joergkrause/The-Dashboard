@@ -5,27 +5,24 @@
     "version": "v1"
   },
   "paths": {
-    "/api/Tiles/tiles/{id}": {
+    "/api/Tile/tile/{dashboardId}": {
       "get": {
         "tags": [
-          "Tiles"
+          "Tile"
         ],
         "operationId": "GetDashboardTiles",
         "parameters": [
           {
-            "name": "id",
+            "name": "dashboardId",
             "in": "path",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "type": "string",
+              "format": "uuid"
             }
           }
         ],
         "responses": {
-          "500": {
-            "description": "Server Error"
-          },
           "200": {
             "description": "Success",
             "content": {
@@ -38,14 +35,17 @@
                 }
               }
             }
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       }
     },
-    "/api/Tiles/{id}": {
+    "/api/Tile/{id}": {
       "get": {
         "tags": [
-          "Tiles"
+          "Tile"
         ],
         "operationId": "GetTile",
         "parameters": [
@@ -60,9 +60,6 @@
           }
         ],
         "responses": {
-          "500": {
-            "description": "Server Error"
-          },
           "200": {
             "description": "Success",
             "content": {
@@ -72,12 +69,18 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Server Error"
           }
         }
       },
       "put": {
         "tags": [
-          "Tiles"
+          "Tile"
         ],
         "parameters": [
           {
@@ -110,6 +113,16 @@
           }
         },
         "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TileDto"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Server Error"
           }
@@ -117,7 +130,7 @@
       },
       "delete": {
         "tags": [
-          "Tiles"
+          "Tile"
         ],
         "parameters": [
           {
@@ -131,16 +144,26 @@
           }
         ],
         "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TileDto"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Server Error"
           }
         }
       }
     },
-    "/api/Tiles": {
+    "/api/Tile": {
       "post": {
         "tags": [
-          "Tiles"
+          "Tile"
         ],
         "requestBody": {
           "content": {
@@ -162,50 +185,61 @@
           }
         },
         "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TileDto"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Server Error"
           }
         }
       }
     },
-    "/api/Tiles/hastiles": {
+    "/api/Tile/hastiles": {
       "post": {
         "tags": [
-          "Tiles"
+          "Tile"
         ],
         "operationId": "HasTiles",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "type": "string",
+                "format": "uuid"
               }
             },
             "text/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "type": "string",
+                "format": "uuid"
               }
             },
             "application/*+json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "uuid"
-                }
+                "type": "string",
+                "format": "uuid"
               }
             }
           }
         },
         "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Server Error"
           }
@@ -219,10 +253,14 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "int32"
           },
           "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "subTitle": {
             "type": "string",
             "nullable": true
           },
@@ -233,6 +271,30 @@
           "dashboardId": {
             "type": "string",
             "format": "uuid"
+          },
+          "dataSourceId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "visualizerId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "xOffset": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "yOffset": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "width": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "height": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

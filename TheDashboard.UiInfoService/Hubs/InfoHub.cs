@@ -11,4 +11,15 @@ public class InfoHub : Hub
     await Clients.All.SendAsync("DataUpdate", user, message);
   }
 
+  public async Task SendGroupMessage(string user, string message)
+  {
+    await Clients.Group("SignalR Users").SendAsync("DataUpdate", user, message);
+  }
+
+  public override async Task OnConnectedAsync()
+  {
+
+    await base.OnConnectedAsync();
+  }
+
 }

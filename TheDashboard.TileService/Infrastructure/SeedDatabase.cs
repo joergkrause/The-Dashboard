@@ -15,6 +15,8 @@ public static class SeedDatabase
     };
     var t1 = new Tile
     {
+      Title = "Demo Tile 1",
+      SubTitle = "More text here...",
       Name = "Tile 1",
       Description = "Init Tile",
       StaticText = "Demo",

@@ -38,6 +38,9 @@ services:
   frontend:
     image: ${DOCKER_REGISTRY-}frontend:latest
     profiles: [ all, frontend ]
+    build:
+      context: .
+      dockerfile: TheDashboard.FrontendUi/Dockerfile
     depends_on:
      - thedashboard.dashboardservice
      - thedashboard.tileservice

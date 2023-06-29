@@ -23,12 +23,12 @@ namespace TheDashboard.Clients
     {
         /// <returns>Success</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(int id);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(System.Guid dashboardId);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(System.Guid dashboardId, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>Success</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
@@ -39,33 +39,41 @@ namespace TheDashboard.Clients
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<TileDto> GetTileAsync(int id, System.Threading.CancellationToken cancellationToken);
 
+        /// <returns>Accepted</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task TilesPUTAsync(int id, TileDto body);
+        System.Threading.Tasks.Task<TileDto> TilePUTAsync(int id, TileDto body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Accepted</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task TilesPUTAsync(int id, TileDto body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<TileDto> TilePUTAsync(int id, TileDto body, System.Threading.CancellationToken cancellationToken);
 
+        /// <returns>No Content</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task TilesDELETEAsync(int id);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task TilesDELETEAsync(int id, System.Threading.CancellationToken cancellationToken);
-
-        /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task TilesPOSTAsync(TileDto body);
+        System.Threading.Tasks.Task<TileDto> TileDELETEAsync(int id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>No Content</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task TilesPOSTAsync(TileDto body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<TileDto> TileDELETEAsync(int id, System.Threading.CancellationToken cancellationToken);
 
+        /// <returns>Created</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task HasTilesAsync(System.Collections.Generic.IEnumerable<System.Guid> body);
+        System.Threading.Tasks.Task<TileDto> TilePOSTAsync(TileDto body);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Created</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task HasTilesAsync(System.Collections.Generic.IEnumerable<System.Guid> body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<TileDto> TilePOSTAsync(TileDto body, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>Success</returns>
+        /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> HasTilesAsync(System.Guid? body);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<bool> HasTilesAsync(System.Guid? body, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -106,22 +114,22 @@ namespace TheDashboard.Clients
 
         /// <returns>Success</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(int id)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(System.Guid dashboardId)
         {
-            return GetDashboardTilesAsync(id, System.Threading.CancellationToken.None);
+            return GetDashboardTilesAsync(dashboardId, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTilesAsync(System.Guid dashboardId, System.Threading.CancellationToken cancellationToken)
         {
-            if (id == null)
-                throw new System.ArgumentNullException("id");
+            if (dashboardId == null)
+                throw new System.ArgumentNullException("dashboardId");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tiles/tiles/{id}");
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tile/tile/{dashboardId}");
+            urlBuilder_.Replace("{dashboardId}", System.Uri.EscapeDataString(ConvertToString(dashboardId, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -153,12 +161,6 @@ namespace TheDashboard.Clients
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 500)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
-                        }
-                        else
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<TileDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
@@ -167,6 +169,12 @@ namespace TheDashboard.Clients
                                 throw new TilesClientApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
@@ -204,7 +212,7 @@ namespace TheDashboard.Clients
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tiles/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tile/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -237,12 +245,6 @@ namespace TheDashboard.Clients
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 500)
-                        {
-                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
-                        }
-                        else
                         if (status_ == 200)
                         {
                             var objectResponse_ = await ReadObjectResponseAsync<TileDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
@@ -251,6 +253,18 @@ namespace TheDashboard.Clients
                                 throw new TilesClientApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
                             }
                             return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ == 404)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new TilesClientApiException("Not Found", status_, responseText_, headers_, null);
+                        }
+                        else
+                        if (status_ == 500)
+                        {
+                            string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
                         }
                         else
                         {
@@ -272,21 +286,23 @@ namespace TheDashboard.Clients
             }
         }
 
+        /// <returns>Accepted</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task TilesPUTAsync(int id, TileDto body)
+        public virtual System.Threading.Tasks.Task<TileDto> TilePUTAsync(int id, TileDto body)
         {
-            return TilesPUTAsync(id, body, System.Threading.CancellationToken.None);
+            return TilePUTAsync(id, body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Accepted</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task TilesPUTAsync(int id, TileDto body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TileDto> TilePUTAsync(int id, TileDto body, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tiles/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tile/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -300,6 +316,7 @@ namespace TheDashboard.Clients
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -322,17 +339,20 @@ namespace TheDashboard.Clients
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
+                        if (status_ == 202)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<TileDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new TilesClientApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
                         if (status_ == 500)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
-                        }
-                        else
-
-                        if (status_ == 200 || status_ == 204)
-                        {
-
-                            return;
                         }
                         else
                         {
@@ -354,21 +374,23 @@ namespace TheDashboard.Clients
             }
         }
 
+        /// <returns>No Content</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task TilesDELETEAsync(int id)
+        public virtual System.Threading.Tasks.Task<TileDto> TileDELETEAsync(int id)
         {
-            return TilesDELETEAsync(id, System.Threading.CancellationToken.None);
+            return TileDELETEAsync(id, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>No Content</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task TilesDELETEAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TileDto> TileDELETEAsync(int id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tiles/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tile/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -378,6 +400,7 @@ namespace TheDashboard.Clients
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("DELETE");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -400,17 +423,20 @@ namespace TheDashboard.Clients
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
+                        if (status_ == 204)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<TileDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new TilesClientApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
                         if (status_ == 500)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
-                        }
-                        else
-
-                        if (status_ == 200 || status_ == 204)
-                        {
-
-                            return;
                         }
                         else
                         {
@@ -432,18 +458,20 @@ namespace TheDashboard.Clients
             }
         }
 
+        /// <returns>Created</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task TilesPOSTAsync(TileDto body)
+        public virtual System.Threading.Tasks.Task<TileDto> TilePOSTAsync(TileDto body)
         {
-            return TilesPOSTAsync(body, System.Threading.CancellationToken.None);
+            return TilePOSTAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Created</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task TilesPOSTAsync(TileDto body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<TileDto> TilePOSTAsync(TileDto body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tiles");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tile");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -456,6 +484,7 @@ namespace TheDashboard.Clients
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -478,17 +507,20 @@ namespace TheDashboard.Clients
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
+                        if (status_ == 201)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<TileDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new TilesClientApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
                         if (status_ == 500)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
-                        }
-                        else
-
-                        if (status_ == 200 || status_ == 204)
-                        {
-
-                            return;
                         }
                         else
                         {
@@ -510,18 +542,20 @@ namespace TheDashboard.Clients
             }
         }
 
+        /// <returns>Success</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task HasTilesAsync(System.Collections.Generic.IEnumerable<System.Guid> body)
+        public virtual System.Threading.Tasks.Task<bool> HasTilesAsync(System.Guid? body)
         {
             return HasTilesAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Success</returns>
         /// <exception cref="TilesClientApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task HasTilesAsync(System.Collections.Generic.IEnumerable<System.Guid> body, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<bool> HasTilesAsync(System.Guid? body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tiles/hastiles");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Tile/hastiles");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -534,6 +568,7 @@ namespace TheDashboard.Clients
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -556,17 +591,20 @@ namespace TheDashboard.Clients
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<bool>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new TilesClientApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
                         if (status_ == 500)
                         {
                             string responseText_ = ( response_.Content == null ) ? string.Empty : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new TilesClientApiException("Server Error", status_, responseText_, headers_, null);
-                        }
-                        else
-
-                        if (status_ == 200 || status_ == 204)
-                        {
-
-                            return;
                         }
                         else
                         {
@@ -695,16 +733,37 @@ namespace TheDashboard.Clients
     public partial class TileDto
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Newtonsoft.Json.JsonProperty("title", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Title { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("subTitle", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string SubTitle { get; set; }
 
         [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Url { get; set; }
 
         [Newtonsoft.Json.JsonProperty("dashboardId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Guid DashboardId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("dataSourceId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid DataSourceId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("visualizerId", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int VisualizerId { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("xOffset", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int XOffset { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("yOffset", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int YOffset { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Width { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int Height { get; set; }
 
         public string ToJson()
         {

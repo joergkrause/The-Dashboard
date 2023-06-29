@@ -21,5 +21,17 @@ public class Tile : NamedEntity<int>
 
   public Visualizer? Visualizer { get; set; }
 
+  public Position Position { get; set; } = new Position();
 
+}
+
+public class Position
+{
+  public int XOffset { get; set; }
+
+  public int YOffset { get; set; }
+
+  public int Width { get; set; } = 3;
+
+  public int Height { get; set; } = 2;
 }

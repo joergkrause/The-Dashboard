@@ -48,6 +48,9 @@ public class TileDbContext : DbContext
       .WithMany(e => e.Tiles)
       .OnDelete(DeleteBehavior.SetNull);
 
+    modelBuilder.Entity<Tile>()
+      .OwnsOne(e => e.Position);      
+
     modelBuilder.Entity<Transformer>().ToTable("Transformers");
     modelBuilder.Entity<Transformer>().Property(e => e.Name).HasMaxLength(100).IsRequired();
     modelBuilder.Entity<Transformer>().Property(e => e.Description).HasMaxLength(512).IsRequired(false);

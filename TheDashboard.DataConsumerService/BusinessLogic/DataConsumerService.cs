@@ -65,5 +65,11 @@ public class DataConsumerService : IDataConsumerService
     }
   }
 
+  public async Task SendMessageForSource(int id, object message)
+  {
+    // publish message through rabbit mq
+
+
+  }
 
 }
