@@ -1,15 +1,16 @@
-version: '3.4'
+version: '3.9'
 
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
-    profiles: [ all, backend ]
+    profiles: [ all, backend, dashboard ]
     ports:
       - "1433:1433"
     environment:
       SA_PASSWORD: "p@ssw0rd"
       ACCEPT_EULA: "Y"
+      MSYS_NO_PATHCONV: 1
     healthcheck:
       test: [ "CMD", "sqlcmd", "-U", "sa", "-P", "p@ssw0rd", "-Q", "SELECT 1" ]
       interval: 15s
@@ -17,11 +18,13 @@ services:
       retries: 3
       start_period: 60s
     volumes:
-     - D:/Volumes/sqlserver:/var/opt/mssql/data
+     - type: bind
+       source: D:\Volumes\sqldata
+       target: /var/opt/mssql/data
   
   eventbus:
     image: rabbitmq:3-management
-    profiles: [ all, eventbus, backend ]
+    profiles: [ all, eventbus, backend, dashboard ]
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -51,7 +54,7 @@ services:
 
   thedashboard.dashboardservice:
     image: ${DOCKER_REGISTRY-}dashboardservice:latest
-    profiles: [ all, backend ]
+    profiles: [ all, backend, dashboard ]
     build:
       context: .
       dockerfile: TheDashboard.DashboardService/Dockerfile
@@ -96,6 +99,3 @@ services:
     depends_on:
       - sqlserver
       - eventbus
-
-volumes:
-  sqlserver: ~

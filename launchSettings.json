@@ -3,11 +3,13 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
-      "serviceActions": {
-        "thedashboard.dashboardservice": "StartDebugging",
-        "thedashboard.tileservice": "StartDebugging",
-        "thedashboard.dataconsumerservice": "StartDebugging",
-        "thedashboard.uiinfoservice": "StartDebugging"
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "frontend",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
+      "composeProfile": {
+        "includes": [
+          "all"
+        ]
       }
     }
   }

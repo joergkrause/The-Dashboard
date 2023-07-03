@@ -37,19 +37,24 @@ namespace TheDashboard.FrontendUi
       builder.Services.AddAzureAppConfiguration();
       builder.Services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>();
 
-      builder.Configuration.AddAzureAppConfiguration(options =>
+      var appConfConnectionString = builder.Configuration.GetConnectionString("AppConfig");
+      // this is an options, to run outside of Azure use local appsettings.json
+      if (!String.IsNullOrEmpty(appConfConnectionString))
       {
-        var appConfConnectionString = builder.Configuration.GetConnectionString("AppConfig");
-        options.Connect(appConfConnectionString)
-          .UseFeatureFlags(options => options.Label = "Block")
-          .ConfigureRefresh(refresh =>
-          {
-            refresh.Register("FeatureManagement", refreshAll: true).SetCacheExpiration(new TimeSpan(0, 5, 0));
-          })
-          .ConfigureKeyVault(kv => kv.SetCredential(new DefaultAzureCredential(new DefaultAzureCredentialOptions())
-          ))
-          .Select(KeyFilter.Any, LabelFilter.Null);
-      });
+        builder.Configuration.AddAzureAppConfiguration(options =>
+        {
+
+          options.Connect(appConfConnectionString)
+            .UseFeatureFlags(options => options.Label = "Block")
+            .ConfigureRefresh(refresh =>
+            {
+              refresh.Register("FeatureManagement", refreshAll: true).SetCacheExpiration(new TimeSpan(0, 5, 0));
+            })
+            .ConfigureKeyVault(kv => kv.SetCredential(new DefaultAzureCredential(new DefaultAzureCredentialOptions())
+            ))
+            .Select(KeyFilter.Any, LabelFilter.Null);
+        });
+      }
 
       builder.Services.AddResponseCaching();
       builder.Services.AddControllers();

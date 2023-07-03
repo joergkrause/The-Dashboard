@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Quartz;
 using Quartz.AspNetCore;
@@ -29,6 +30,20 @@ builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameo
 builder.Services.AddQuartz(config =>
 {
   config.UseMicrosoftDependencyInjectionJobFactory();
+
+  // configure persistence with EF Core
+  config.UsePersistentStore(opt =>
+  {    
+    opt.UseProperties = true;
+    opt.RetryInterval = TimeSpan.FromSeconds(15);
+    opt.UseClustering();
+    opt.UseSqlServer(ado => {
+      ado.TablePrefix = "QRTZ_";
+      ado.ConnectionString = cs;      
+    });
+    opt.UseJsonSerializer();
+  });
+
   var consumerKey = new JobKey("ConsumerJob");
   config.AddJob<ConsumerJob>(opt => opt.WithIdentity(consumerKey));
 

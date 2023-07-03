@@ -9,19 +9,40 @@ using TheDashboard.Services.Mappings;
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.DatabaseLayer.Interfaces;
 using TheDashboard.DatabaseLayer.Interceptors;
+using TheDashboard.DatabaseLayer.Configurations;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultServices();
+
+builder.Services.AddLogging(config => config.AddConsole());
 
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DashboardContext>(options =>
 {
   options.UseSqlServer(cs);
 });
+
+Console.WriteLine("******************************* Setup Configurations");
+// get logger
+var logger = builder.Services.BuildServiceProvider().GetService<ILogger<Program>>();
+logger?.LogDebug("******************************* Setup Configurations");
+
+foreach (var type in typeof(DashboardContext).Assembly.DefinedTypes
+            .Where(t => !t.IsAbstract
+                        && !t.IsGenericTypeDefinition
+                        && typeof(EntityTypeConfigurationDependency).IsAssignableFrom(t)))
+{
+  Console.WriteLine("******************************* Configure " + type.Name);
+  logger?.LogDebug("******************************* Configure " + type.Name);
+  builder.Services.AddSingleton(typeof(EntityTypeConfigurationDependency), type);
+}
+
 builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
-builder.Services.AddScoped<IUser, CurrentUser>();
+
 builder.Services.AddScoped<IDateTime, CurrentDateTime>();
+builder.Services.AddScoped<IUser, CurrentUser>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ILayoutService, LayoutService>();
 

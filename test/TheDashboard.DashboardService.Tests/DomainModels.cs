@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.DashboardService.Infrastructure;
+using TheDashboard.DashboardService.Infrastructure.Configurations;
+using TheDashboard.DatabaseLayer.Configurations;
+using TheDashboard.DatabaseLayer.Interfaces;
 
 namespace TheDashboard.DashboardService.Tests
 {
@@ -12,6 +16,12 @@ namespace TheDashboard.DashboardService.Tests
 
     private DbContextOptions<DashboardContext> options;
 
+    private Mock<IUser> userMock;
+    private Mock<IDateTime> dateTimeMock ;
+    private Mock<IEncryptionService> encryptMock ;
+
+    private List<EntityTypeConfigurationDependency> configurations;
+
     [TestInitialize]
     public void Init()
     {
@@ -19,15 +29,25 @@ namespace TheDashboard.DashboardService.Tests
       builder.UseSqlServer(TESTDB, opt => opt.CommandTimeout(30));
       options = builder.Options;
 
-      using var context = new DashboardContext(options);
+      userMock = new Mock<IUser>();
+      dateTimeMock = new Mock<IDateTime>();
+      encryptMock = new Mock<IEncryptionService>();
+
+      configurations = new List<EntityTypeConfigurationDependency>
+      {
+        new DashboardConfiguration(encryptMock.Object, null!),
+        new LayoutConfiguration()
+      };
+
+      using var context = new DashboardContext(options, configurations, encryptMock.Object, userMock.Object, dateTimeMock.Object);
       context.Database.EnsureDeleted();
       context.Database.Migrate();
     }
 
     [TestMethod]
     public async Task CreateDashboard()
-    {      
-      var context = new DashboardContext(options);
+    {
+      using var context = new DashboardContext(options, configurations, encryptMock.Object, userMock.Object, dateTimeMock.Object);
 
       context.Set<Dashboard>().Add(new Dashboard
       {
@@ -51,7 +71,7 @@ namespace TheDashboard.DashboardService.Tests
     [TestMethod]
     public async Task CreateDashboardAndLayout()
     {
-      var context = new DashboardContext(options);
+      using var context = new DashboardContext(options, configurations, encryptMock.Object, userMock.Object, dateTimeMock.Object);
 
       context.Set<Dashboard>().Add(new Dashboard
       {

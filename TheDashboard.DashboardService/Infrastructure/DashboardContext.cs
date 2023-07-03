@@ -5,6 +5,7 @@ using TheDashboard.DashboardService.Domain;
 using TheDashboard.DashboardService.Infrastructure.Configurations;
 using TheDashboard.DatabaseLayer;
 using TheDashboard.DatabaseLayer.Attributes;
+using TheDashboard.DatabaseLayer.Configurations;
 using TheDashboard.DatabaseLayer.Interceptors;
 using TheDashboard.DatabaseLayer.Interfaces;
 
@@ -15,16 +16,29 @@ public class DashboardContext : DbContext
 
   public static readonly ILoggerFactory SqlLogger = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
+  private readonly IEnumerable<EntityTypeConfigurationDependency> _configurations;
+
+  private readonly ILogger<DashboardContext> _logger;
   private readonly IEncryptionService _encryptionService;
   private readonly IUser _user;
   private readonly IDateTime _datetime;
 
-  public DashboardContext(DbContextOptions<DashboardContext> options, IEncryptionService encryptionService, IUser user, IDateTime dateTime) : base(options)
+  public DashboardContext(
+    ILogger<DashboardContext> logger,
+    DbContextOptions<DashboardContext> options,
+    IEnumerable<EntityTypeConfigurationDependency> configurations,
+    IEncryptionService encryptionService, 
+    IUser user, 
+    IDateTime dateTime) : base(options)
   {
     base.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+    _logger = logger;
+    _configurations = configurations;
     _encryptionService = encryptionService;
     _user = user;
     _datetime = dateTime;
+
+    _logger?.LogDebug("******************************* _configurations " + _configurations ==  null ? "NOTHING": _configurations.Count().ToString());
   }
 
   public DbSet<Dashboard> Dashboards { get; set; } = default!;
@@ -46,8 +60,13 @@ public class DashboardContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    modelBuilder.ApplyConfiguration(new DashboardConfiguration());
-    modelBuilder.ApplyConfiguration(new LayoutConfiguration());
+    if (_configurations != null)
+    {
+      foreach (var entityTypeConfiguration in _configurations)
+      {
+        entityTypeConfiguration.Configure(modelBuilder);
+      }
+    }
 
     modelBuilder.Entity<AdminLayout>().ToTable("Layouts");
     modelBuilder.Entity<UserLayout>().ToTable("Layouts");
