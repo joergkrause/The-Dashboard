@@ -24,18 +24,14 @@ builder.Services.AddDbContext<DashboardContext>(options =>
   options.UseSqlServer(cs);
 });
 
-Console.WriteLine("******************************* Setup Configurations");
 // get logger
-var logger = builder.Services.BuildServiceProvider().GetService<ILogger<Program>>();
-logger?.LogDebug("******************************* Setup Configurations");
+// var logger = builder.Services.BuildServiceProvider().GetService<ILogger<Program>>();
 
 foreach (var type in typeof(DashboardContext).Assembly.DefinedTypes
             .Where(t => !t.IsAbstract
                         && !t.IsGenericTypeDefinition
                         && typeof(EntityTypeConfigurationDependency).IsAssignableFrom(t)))
 {
-  Console.WriteLine("******************************* Configure " + type.Name);
-  logger?.LogDebug("******************************* Configure " + type.Name);
   builder.Services.AddSingleton(typeof(EntityTypeConfigurationDependency), type);
 }
 
@@ -52,7 +48,7 @@ builder.Services.AddSwaggerGen(config =>
 {
   config.SwaggerDoc("v1", new() { Title = "Dashboard API", Version = "v1" });
 });
-
+builder.Services.AddHealthChecks();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();

@@ -11,6 +11,18 @@
           "all"
         ]
       }
+    },
+    "SingleService": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "thedashboard.dashboardservice",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "composeProfile": {
+        "includes": [
+          "dashboard"
+        ]
+      }
     }
   }
 }

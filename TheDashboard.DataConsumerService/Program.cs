@@ -64,7 +64,7 @@ builder.Services.AddSwaggerGen(config =>
 {
   config.SwaggerDoc("v1", new() { Title = "DataConsumer API", Version = "v1" });
 });
-
+builder.Services.AddHealthChecks();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();

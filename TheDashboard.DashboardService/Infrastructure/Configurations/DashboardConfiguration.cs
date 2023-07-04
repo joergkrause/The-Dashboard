@@ -25,7 +25,7 @@ public class DashboardConfiguration : EntityTypeConfigurationDependency<Dashboar
     builder.ToTable("Dashboards");
     builder.HasKey(e => e.Id);
     builder.Property(e => e.Name).HasMaxLength(100).IsUnicode(false).IsRequired();
-    builder.Property(e => e.Name).HasConversion(str => str, b => _encryptService.DecryptString(_configuration.GetValue<string>("Key"), b));
+    builder.Property(e => e.Name).HasConversion(str => str, b => _encryptService.DecryptString(_configuration.GetValue<string>("Encryption:Cipher"), b));
     builder.HasIndex(e => e.Name).IsUnique();
 
     builder.Property(e => e.Version).HasColumnName("VER");
@@ -47,7 +47,6 @@ public class DashboardConfiguration : EntityTypeConfigurationDependency<Dashboar
     builder
       .HasOne(e => e.Layout)
       .WithMany()
-      .HasForeignKey(nameof(LayoutDto.DashboardId))
       .OnDelete(DeleteBehavior.NoAction);
 
   }

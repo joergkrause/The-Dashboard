@@ -10,6 +10,6 @@ public class DashboardDto
   [StringLength(100, MinimumLength = 3)]
   public string Name { get; set; } = default!;
 
-  public string LayoutKind { get; set; } = default!;
+  public int LayoutId { get; set; }
 
 }

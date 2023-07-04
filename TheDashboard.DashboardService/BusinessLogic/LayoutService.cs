@@ -55,7 +55,7 @@ public class LayoutService : UnitOfWork<DashboardContext>, ILayoutService
     {
       return false;
     }
-    layout.DashboardId = dashboardId;
+    dashboard.Layout = layout;
     return await Context.SaveChangesAsync() > 0;
   }
 

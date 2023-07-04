@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Moq;
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.DashboardService.Infrastructure;
@@ -18,7 +20,9 @@ namespace TheDashboard.DashboardService.Tests
 
     private Mock<IUser> userMock;
     private Mock<IDateTime> dateTimeMock ;
-    private Mock<IEncryptionService> encryptMock ;
+    private Mock<IEncryptionService> encryptMock ;    
+    private Mock<ILogger<DashboardContext>> loggerMock ;
+    private Mock<IConfiguration> configMock;
 
     private List<EntityTypeConfigurationDependency> configurations;
 
@@ -32,6 +36,8 @@ namespace TheDashboard.DashboardService.Tests
       userMock = new Mock<IUser>();
       dateTimeMock = new Mock<IDateTime>();
       encryptMock = new Mock<IEncryptionService>();
+      loggerMock = new Mock<ILogger<DashboardContext>>();
+      configMock = new Mock<IConfiguration>();
 
       configurations = new List<EntityTypeConfigurationDependency>
       {
@@ -39,7 +45,7 @@ namespace TheDashboard.DashboardService.Tests
         new LayoutConfiguration()
       };
 
-      using var context = new DashboardContext(options, configurations, encryptMock.Object, userMock.Object, dateTimeMock.Object);
+      using var context = new DashboardContext(loggerMock.Object, options, configurations, configMock.Object, encryptMock.Object, userMock.Object, dateTimeMock.Object);
       context.Database.EnsureDeleted();
       context.Database.Migrate();
     }
@@ -47,7 +53,7 @@ namespace TheDashboard.DashboardService.Tests
     [TestMethod]
     public async Task CreateDashboard()
     {
-      using var context = new DashboardContext(options, configurations, encryptMock.Object, userMock.Object, dateTimeMock.Object);
+      using var context = new DashboardContext(loggerMock.Object, options, configurations, configMock.Object, encryptMock.Object, userMock.Object, dateTimeMock.Object);
 
       context.Set<Dashboard>().Add(new Dashboard
       {
@@ -71,7 +77,7 @@ namespace TheDashboard.DashboardService.Tests
     [TestMethod]
     public async Task CreateDashboardAndLayout()
     {
-      using var context = new DashboardContext(options, configurations, encryptMock.Object, userMock.Object, dateTimeMock.Object);
+      using var context = new DashboardContext(loggerMock.Object, options, configurations, configMock.Object, encryptMock.Object, userMock.Object, dateTimeMock.Object);
 
       context.Set<Dashboard>().Add(new Dashboard
       {

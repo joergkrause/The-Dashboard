@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceName>frontend</DockerServiceName>
+    <DockerServiceName>thedashboard.dashboardservice</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

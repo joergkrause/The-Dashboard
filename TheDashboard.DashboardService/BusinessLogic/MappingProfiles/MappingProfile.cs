@@ -9,7 +9,7 @@ public class MappingProfile : Profile
   public MappingProfile()
   {
     CreateMap<Dashboard, DashboardDto>()
-      .ForMember(e => e.LayoutKind, opt => opt.MapFrom(e => e.Layout.GetType().Name));
+      .ForMember(e => e.LayoutId, opt => opt.MapFrom(e => e.Layout.Id));
 
     CreateMap<DashboardDto, Dashboard>()
       .ForMember(e => e.Layout, opt => opt.Ignore());

@@ -17,7 +17,7 @@ public class DashboardContext : DbContext
   public static readonly ILoggerFactory SqlLogger = LoggerFactory.Create(builder => { builder.AddConsole(); });
 
   private readonly IEnumerable<EntityTypeConfigurationDependency> _configurations;
-
+  private readonly IConfiguration _configuration;
   private readonly ILogger<DashboardContext> _logger;
   private readonly IEncryptionService _encryptionService;
   private readonly IUser _user;
@@ -27,31 +27,34 @@ public class DashboardContext : DbContext
     ILogger<DashboardContext> logger,
     DbContextOptions<DashboardContext> options,
     IEnumerable<EntityTypeConfigurationDependency> configurations,
+    IConfiguration configuration,
     IEncryptionService encryptionService, 
     IUser user, 
     IDateTime dateTime) : base(options)
-  {
-    base.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+  {    
     _logger = logger;
     _configurations = configurations;
+    _configuration = configuration;
     _encryptionService = encryptionService;
     _user = user;
     _datetime = dateTime;
 
-    _logger?.LogDebug("******************************* _configurations " + _configurations ==  null ? "NOTHING": _configurations.Count().ToString());
+    base.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
   }
 
   public DbSet<Dashboard> Dashboards { get; set; } = default!;
   public DbSet<Layout> Layouts { get; set; } = default!;
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  {    
+  {
+#if DEBUG
     optionsBuilder.UseLoggerFactory(SqlLogger);
     optionsBuilder.EnableDetailedErrors();
     optionsBuilder.EnableSensitiveDataLogging();
+#endif
 
     optionsBuilder.AddInterceptors(
-      new EncryptSaveChangesInterceptor(_encryptionService),      
+      new EncryptSaveChangesInterceptor(_encryptionService, _configuration),      
       new AuditableEntitySaveChangesInterceptor(_user, _datetime)
     );
 
@@ -60,12 +63,9 @@ public class DashboardContext : DbContext
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-    if (_configurations != null)
+    foreach (var entityTypeConfiguration in _configurations)
     {
-      foreach (var entityTypeConfiguration in _configurations)
-      {
-        entityTypeConfiguration.Configure(modelBuilder);
-      }
+      entityTypeConfiguration.Configure(modelBuilder);
     }
 
     modelBuilder.Entity<AdminLayout>().ToTable("Layouts");

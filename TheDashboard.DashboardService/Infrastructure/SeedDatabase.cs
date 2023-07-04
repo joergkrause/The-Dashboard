@@ -23,7 +23,7 @@ public static class SeedDatabase
       Version = 1,
       IsDefault = true,
       Settings = new Setting { Type = DashboardType.User },
-      Layout = l1
+      Layout = l1      
     };
     context.Set<Dashboard>().Add(d1);
     await context.SaveChangesAsync();

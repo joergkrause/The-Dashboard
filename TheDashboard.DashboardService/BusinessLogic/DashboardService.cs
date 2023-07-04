@@ -13,14 +13,15 @@ namespace TheDashboard.Services;
 
 public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
 {
-
+  private readonly ILogger<DashboardService> _logger;
   private readonly IMapper _mapper;
-  private readonly IPublishEndpoint _publishEndpoint;
+  private readonly IPublishEndpoint? _publishEndpoint;
 
-  public DashboardService(DashboardContext context, IMapper mapper, IPublishEndpoint publishEndpoint) : base(context)
+  public DashboardService(ILogger<DashboardService> logger, DashboardContext context, IServiceProvider serviceProvider) : base(context)
   {
-    _mapper = mapper;
-    _publishEndpoint = publishEndpoint;
+    _logger = logger;
+    _mapper = serviceProvider.GetRequiredService<IMapper>();
+    _publishEndpoint = serviceProvider.GetService<IPublishEndpoint>();
   }
 
   public async Task<IEnumerable<DashboardDto>> GetDashboards(params Expression<Func<Dashboard, object>>[] includes)
@@ -54,10 +55,23 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
   public async Task AddDashboard(DashboardDto dto)
   {
     var dashboard = _mapper.Map<Dashboard>(dto);
+    // add some defaults
+    var defaultLayout = await Context.Layouts.SingleAsync(l => l.Id == dto.LayoutId);
+    dashboard.Layout = defaultLayout;
+    dashboard.Theme = "Light";
     var createdEvent = new DashboardCreatedEvent(dashboard.Id, dashboard.Name);
-    await _publishEndpoint.Publish(createdEvent);
+    await (_publishEndpoint?.Publish(createdEvent) ?? Task.CompletedTask);
     Context.Dashboards.Add(dashboard);
-    await Context.SaveChangesAsync();
+    Context.Entry(defaultLayout).State = EntityState.Unchanged;
+    try
+    {
+      await Context.SaveChangesAsync();
+    }
+    catch (DbUpdateException ex)
+    {
+      _logger.LogError("Exception adding Dashboard: {Message}", ex.Message);
+      throw; // TODO: enapsulate exceptions
+    }
   }
 
   public async Task UpdateDashboard(DashboardDto dto)
