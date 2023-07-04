@@ -1,25 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using TheDashboard.UiInfoService.Infrastructure.Integration.Models;
 
 namespace TheDashboard.UiInfoService.Hubs;
 
-public class InfoHub : Hub
+public class InfoHub : Hub<ITileDataMessage>
 {
 
-
-  public async Task SendMessage(int tileId, string message)
-  {
-    await Clients.All.SendAsync("DataUpdate", tileId, message);
-  }
-
-  public async Task SendGroupMessage(int tileId, string message)
-  {
-    await Clients.Group("SignalR Users").SendAsync("DataUpdate", tileId, message);
-  }
-
-  public override async Task OnConnectedAsync()
-  {
-
-    await base.OnConnectedAsync();
-  }
+  public async Task SendTileData(string user, string data) => await Clients.All.SendTileData(new TileData(user, data));
 
 }

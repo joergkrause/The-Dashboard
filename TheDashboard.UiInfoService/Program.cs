@@ -11,10 +11,18 @@ namespace TheDashboard.UiInfoService
     {
       var builder = WebApplication.CreateBuilder(args);
 
-      // Add services to the container.
+      builder.Services.AddDefaultServices();
+      builder.Services.AddLogging(config => config.AddConsole());
 
       builder.Services.AddSignalR();
+
+      // we receive all data through the queue and push them to the clients
       builder.Services.AddTransient<ConsumerHandler<TileData>>();
+
+      builder.Services.AddSwaggerGen(config =>
+      {
+        config.SwaggerDoc("v1", new() { Title = "UiInfo API", Version = "v1" });
+      });      
 
       builder.Services.AddAuthorization();
 
@@ -31,13 +39,16 @@ namespace TheDashboard.UiInfoService
             });
       });
 
-      var app = builder.Build();
+      var app = builder.Build();      
 
-      // Configure the HTTP request pipeline.
-
-      app.UseHttpsRedirection();
+      app.UseSwagger();
+      app.UseSwaggerUI(config =>
+      {
+        config.SwaggerEndpoint("/swagger/v1/swagger.json", "UiInfo API v1");
+      });
+      
+      app.UseDefaultConfiguration();
       app.UseCors("AllowBlazorApp");
-      app.UseAuthorization();
 
       app.MapHub<InfoHub>("/Info").RequireCors("AllowBlazorApp");
 

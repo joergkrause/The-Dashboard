@@ -5,6 +5,7 @@ public static class DefaultServiceExtension
 
   public static IServiceCollection AddDefaultServices(this IServiceCollection services)
   {
+    services.AddHealthChecks();
 
     services.AddEndpointsApiExplorer();
 

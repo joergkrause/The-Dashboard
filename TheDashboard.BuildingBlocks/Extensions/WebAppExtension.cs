@@ -23,13 +23,14 @@ public static class WebAppExtension
 
     app.UseCors("");
     app.UseRouting();
+    app.UseHttpsRedirection();
 
     app.UseAuthentication();
     app.UseAuthorization();
 
     // app.UseMetricServer(); // Prometheus
     // app.UseHttpMetrics(); // Prometheus
-
+    
     app.UseEndpoints(endpoints =>
     {
       endpoints.MapControllers();

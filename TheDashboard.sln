@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DashboardServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.TileService.Test", "test\TheDashboard.TileService.Test\TheDashboard.TileService.Test.csproj", "{D01D6EE3-DD12-4C1D-9EDF-78FADC050981}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DstaConsumerService.Test", "test\TheDashboard.DstaConsumerService.Test\TheDashboard.DstaConsumerService.Test.csproj", "{3D81F982-03C1-41E8-87C3-BA99E411AE48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DataConsumerService.Test", "test\TheDashboard.DstaConsumerService.Test\TheDashboard.DataConsumerService.Test.csproj", "{3D81F982-03C1-41E8-87C3-BA99E411AE48}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.UiInfoService.Test", "test\TheDashboard.UiInfoService.Test\TheDashboard.UiInfoService.Test.csproj", "{5291F46D-D6EB-41D1-AF2A-380447AF1ED3}"
 EndProject

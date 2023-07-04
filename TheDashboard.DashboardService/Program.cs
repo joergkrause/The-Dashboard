@@ -15,7 +15,6 @@ using System.Diagnostics;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultServices();
-
 builder.Services.AddLogging(config => config.AddConsole());
 
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -48,7 +47,7 @@ builder.Services.AddSwaggerGen(config =>
 {
   config.SwaggerDoc("v1", new() { Title = "Dashboard API", Version = "v1" });
 });
-builder.Services.AddHealthChecks();
+
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();

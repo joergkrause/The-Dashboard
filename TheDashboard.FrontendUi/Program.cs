@@ -131,9 +131,9 @@ namespace TheDashboard.FrontendUi
       options.SaveTokens = true;
     });
 
-      builder.Services.AddSingleton<IDashboardClient, DashboardClient>();
-      builder.Services.AddSingleton<ITilesClient, TilesClient>();
-      builder.Services.AddSingleton<IDataConsumerClient, DataConsumerClient>();
+      builder.Services.AddSingleton<IDashboardClient>(new DashboardClient(builder.Configuration["Services:Dashboard"], new HttpClient()));
+      builder.Services.AddSingleton<ITilesClient>(new TilesClient(builder.Configuration["Services:Tiles"], new HttpClient()));
+      builder.Services.AddSingleton<IDataConsumerClient>(new DataConsumerClient(builder.Configuration["Services:DataConsumer"], new HttpClient()));
 
       builder.Services.AddSingleton<IDashboardViewerService, DashboardViewerService>();
 
