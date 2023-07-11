@@ -1,3 +1,4 @@
+using TheDashboard.DatabaseLayer.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
@@ -76,19 +77,8 @@ app.UseSwaggerUI(config =>
 });
 
 app.UseHttpsRedirection();
-await ApplyMigration();
+
+await app.ExecuteMigration<DataConsumerDbContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));
+
 app.Run();
 
-async Task ApplyMigration()
-{
-  using var scope = app.Services.CreateScope();
-  var context = scope.ServiceProvider.GetRequiredService<DataConsumerDbContext>();
-  bool newDatabase = !context.Database.GetService<IRelationalDatabaseCreator>().Exists();
-  await context.Database.MigrateAsync();
-  var hasData = await context.Set<Dashboard>().AnyAsync();
-  if (newDatabase || !hasData)
-  {
-    await SeedDatabase.Seed(context);
-  }
-  context.Dispose();
-}

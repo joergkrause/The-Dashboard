@@ -21,7 +21,7 @@ public class GenericRepository<C, T, U> : IGenericRepository<T, U>
 
   public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> predicate)
   {
-    var count = _context.Set<T>().Count(predicate);
+    var count = await _context.Set<T>().CountAsync(predicate);
     if (count > 10000)
     {
       throw new ArgumentOutOfRangeException(nameof(predicate), "Count for {predicate} excceds maximum. Consider using paged methods.");

@@ -1,4 +1,4 @@
-using AutoMapper;
+using TheDashboard.DatabaseLayer.Extensions;
 using Microsoft.EntityFrameworkCore;
 using TheDashboard.BuildingBlocks.Extensions;
 using TheDashboard.DashboardService.Infrastructure;
@@ -59,19 +59,8 @@ app.UseSwaggerUI(config =>
 });
 
 app.UseDefaultConfiguration();
-await ApplyMigration();
+
+await app.ExecuteMigration<DashboardContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));
+
 app.Run();
 
-async Task ApplyMigration()
-{
-  using var scope = app.Services.CreateScope();
-  var context = scope.ServiceProvider.GetRequiredService<DashboardContext>();
-  bool newDatabase = !context.Database.GetService<IRelationalDatabaseCreator>().Exists();
-  await context.Database.MigrateAsync();
-  var hasData = await context.Set<Dashboard>().AnyAsync();
-  if (newDatabase || !hasData)
-  {
-    await SeedDatabase.Seed(context);
-  }
-  context.Dispose();
-}

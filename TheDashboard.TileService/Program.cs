@@ -1,3 +1,4 @@
+using TheDashboard.DatabaseLayer.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,6 +8,7 @@ using TheDashboard.TileService.BusinessLogic.MappingProfiles;
 using TheDashboard.TileService.Domain;
 using TheDashboard.TileService.Infrastructure;
 using TheDashboard.TileService.Infrastructure.Integration;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,7 @@ builder.Services.AddDefaultServices();
 
 builder.Services.AddDbContext<TileDbContext>(opt =>
 {
-  opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+  opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 
 builder.Services.AddScoped<IDashboardService, DashboardService>();
@@ -41,19 +43,7 @@ app.UseSwaggerUI(config =>
 });
 
 app.UseHttpsRedirection();
-await ApplyMigration();
-app.Run();
 
-async Task ApplyMigration()
-{
-  using var scope = app.Services.CreateScope();
-  var context = scope.ServiceProvider.GetRequiredService<TileDbContext>();
-  bool newDatabase = !context.Database.GetService<IRelationalDatabaseCreator>().Exists();
-  await context.Database.MigrateAsync();
-  var hasData = await context.Set<Dashboard>().AnyAsync();
-  if (newDatabase || !hasData)
-  {
-    await SeedDatabase.Seed(context);
-  }
-  context.Dispose();
-}
+await app.ExecuteMigration<TileDbContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));
+
+app.Run();
