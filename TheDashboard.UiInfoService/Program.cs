@@ -50,7 +50,7 @@ namespace TheDashboard.UiInfoService
       app.UseDefaultConfiguration();
       app.UseCors("AllowBlazorApp");
 
-      app.MapHub<InfoHub>("/Info").RequireCors("AllowBlazorApp");
+      app.MapHub<InfoHub>("/TileData").RequireCors("AllowBlazorApp");
 
       app.Run();
     }

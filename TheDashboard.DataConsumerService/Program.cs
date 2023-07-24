@@ -40,7 +40,7 @@ builder.Services.AddQuartz(config =>
     opt.UseClustering();
     opt.UseSqlServer(ado => {
       ado.TablePrefix = "QRTZ_";
-      ado.ConnectionString = cs;      
+      ado.ConnectionString = cs!;      
     });
     opt.UseJsonSerializer();
   });
@@ -48,6 +48,7 @@ builder.Services.AddQuartz(config =>
   var consumerKey = new JobKey("ConsumerJob");
   config.AddJob<ConsumerJob>(opt => opt.WithIdentity(consumerKey));
 
+  // heartbeat job
   config.AddTrigger(opt => opt
      .ForJob(consumerKey)
         .WithIdentity("ConsumerJobTrigger")

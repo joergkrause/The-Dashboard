@@ -11,16 +11,19 @@ namespace TheDashboard.BuildingBlocks.Extensions;
 public static class EventBusExtension
 {
 
-  public static IServiceCollection AddEventbus<T>(this IServiceCollection services, IConfiguration configuration, string serviceName)
+  public static IServiceCollection AddEventbus<T>(this IServiceCollection services, IConfiguration configuration, string serviceName, bool receiveOnly = false)
     where T: DbContext
   {
     services.AddMassTransit(x =>
     {
-      x.AddEntityFrameworkOutbox<T>(options =>
+      if (!receiveOnly)
       {
-        options.UseSqlServer();
-        options.UseBusOutbox();
-      });
+        x.AddEntityFrameworkOutbox<T>(options =>
+        {
+          options.UseSqlServer();
+          options.UseBusOutbox();
+        });
+      }
 
       x.AddConsumersFromNamespaceContaining<T>();
       x.UsingRabbitMq((context, cfg) =>

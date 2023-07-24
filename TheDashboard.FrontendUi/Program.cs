@@ -131,6 +131,16 @@ namespace TheDashboard.FrontendUi
       options.SaveTokens = true;
     });
 
+      // Hub
+      builder.Services.AddSingleton<ITileDataService, TileDataService>(sp =>
+      {
+        var logger = sp.GetRequiredService<ILogger<TileDataService>>();
+        var ts = new TileDataService(logger, builder.Configuration);
+        ts.Init().RunSynchronously();
+        return ts;
+      });
+      
+      // Services
       builder.Services.AddSingleton<IDashboardClient>(new DashboardClient(builder.Configuration["Services:Dashboard"], new HttpClient()));
       builder.Services.AddSingleton<ITilesClient>(new TilesClient(builder.Configuration["Services:Tiles"], new HttpClient()));
       builder.Services.AddSingleton<IDataConsumerClient>(new DataConsumerClient(builder.Configuration["Services:DataConsumer"], new HttpClient()));

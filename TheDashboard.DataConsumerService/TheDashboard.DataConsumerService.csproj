@@ -29,4 +29,14 @@
     <ProjectReference Include="..\TheDashboard.DatabaseLayer\TheDashboard.DatabaseLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\Migrations\QuartzSql\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Infrastructure\Migrations\QuartzSql\sqlserver.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

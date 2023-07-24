@@ -27,8 +27,16 @@ public class ConsumerJob : IJob
   {
     var map = context.MergedJobDataMap;
     var consumerId = map.GetInt("dataConsumerId");
+    if (consumerId == 0)
+    {
+      // if no id is sent we assume this is the heartbeat job
+      await _publishEndpoint.Publish(new DataConsumerMessage { Data = DateTime.Now.ToLongTimeString() });
+      return;
+    }
+    
     // get task data
     var source = await _dataConsumerService.GetDataSource(consumerId);
+    if (source == null) return;
 
     // execute desired action
     var url = source.Url;

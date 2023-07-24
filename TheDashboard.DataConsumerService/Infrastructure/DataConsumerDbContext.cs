@@ -37,5 +37,7 @@ public class DataConsumerDbContext : DbContext
     modelBuilder.Entity<HttpDataSource>().ToTable("DataSources");
 
     modelBuilder.AddInboxStateEntity();
+    modelBuilder.AddOutboxMessageEntity();
+    modelBuilder.AddOutboxStateEntity();
   }
 }

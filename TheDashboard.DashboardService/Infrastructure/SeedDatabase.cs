@@ -7,6 +7,9 @@ public static class SeedDatabase
 
   public static async Task Seed(DashboardContext context)
   {
+    var hasSeed = context.Set<Dashboard>().Any(e => e.Id == Guid.Parse("8BFE41C6-45BC-420A-8AF9-356D96B200AB"));
+    if (hasSeed) return;
+
     var seedId = new Guid("8BFE41C6-45BC-420A-8AF9-356D96B200AB");
 
     var l1 = new AdminLayout

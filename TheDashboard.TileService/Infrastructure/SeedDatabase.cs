@@ -8,6 +8,10 @@ public static class SeedDatabase
 
   public static async Task Seed(TileDbContext context)
   {
+
+    var hasSeed = context.Set<Dashboard>().Any();
+    if (hasSeed) return;
+
     var d1 = new Dashboard
     {
       Id = Guid.NewGuid(),

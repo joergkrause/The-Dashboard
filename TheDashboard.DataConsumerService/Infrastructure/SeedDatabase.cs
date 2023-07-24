@@ -9,6 +9,10 @@ public static class SeedDatabase
 
   public static async Task Seed(DataConsumerDbContext context)
   {
+
+    var hasSeed = context.Set<DataSource>().Any();
+    if (hasSeed) return;
+
     var d1 = new Dashboard
     {
       Id = Guid.NewGuid(),
