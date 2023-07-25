@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MassTransit.Transports;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TheDashboard.DatabaseLayer.Domain.Contracts;
+using TheDashboard.DataConsumerService.Infrastructure.Integration;
 using TheDashboard.UiInfoService.Infrastructure.Integration;
 using TheDashboard.UiInfoService.Infrastructure.Integration.Models;
 
@@ -11,9 +14,9 @@ public class ValuesController : ControllerBase
 {
 
   private readonly ILogger<ValuesController> _logger;
-  private readonly ConsumerHandler<TileData> _consumerHandler;
+  private readonly ConsumerHandler<DataConsumerMessage> _consumerHandler;
 
-  public ValuesController(ILogger<ValuesController> logger, ConsumerHandler<TileData> consumerHandler)
+  public ValuesController(ILogger<ValuesController> logger, ConsumerHandler<DataConsumerMessage> consumerHandler)
   {
     _logger = logger;
     _consumerHandler = consumerHandler;
@@ -27,7 +30,7 @@ public class ValuesController : ControllerBase
   {
     if (ModelState.IsValid)
     {
-      var evt = new ConsumerEvent<TileData>(tileId, new TileData("User", value));
+      var evt = new DataEvent(value);
       await _consumerHandler.ConsumeTest(evt);
       return Ok();
     }

@@ -57,7 +57,7 @@ app.UseSwaggerUI(config =>
 {
   config.SwaggerEndpoint("/swagger/v1/swagger.json", "Dashboard API v1");  
 });
-
+app.MapControllers();
 app.UseDefaultConfiguration();
 
 await app.ExecuteMigration<DashboardContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));

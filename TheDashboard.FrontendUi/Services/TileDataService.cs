@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace TheDashboard.FrontendUi.Services;
 
-public delegate void OnMessageEvent(int tileId, string message);
+public delegate void OnMessageEvent(Guid tileId, string message);
 
 public class TileDataService : ITileDataService
 {
@@ -19,7 +19,8 @@ public class TileDataService : ITileDataService
 
     hubConnection = new HubConnectionBuilder().WithUrl(_configuration["HubUrl"]!).Build();
 
-    hubConnection.On<int, string>("ReceiveData", (tileId, message) =>
+    // listen to the hub from uiservice
+    hubConnection.On<Guid, string>("SendTileData", (tileId, message) =>
     {
       OnMessage(tileId, message);
     });
@@ -32,12 +33,36 @@ public class TileDataService : ITileDataService
     {
       throw new ArgumentNullException("hubConnection not set");
     }
-    await hubConnection.StartAsync();
+    var retryCount = 0;
+    var maxRetryAttempts = 12; // You can change this to fit your needs
+    var delay = TimeSpan.FromSeconds(5);
+
+    while (retryCount < maxRetryAttempts)
+    {
+      try
+      {
+        await hubConnection.StartAsync();
+        break; // connection is established, exit the loop
+      }
+      catch (Exception ex)
+      {
+        _logger?.LogWarning(ex.Message);
+        // Handle exception here. It's often useful to log this error
+
+        retryCount++;
+        await Task.Delay(delay);
+      }
+    }
+
+    if (retryCount == maxRetryAttempts)
+    {
+      // Handle the scenario when the connection was not established within the given attempts and delay.
+    }
   }
 
   public event OnMessageEvent Message;
 
-  private void OnMessage(int tileId, string message)
+  private void OnMessage(Guid tileId, string message)
   {
     Message?.Invoke(tileId, message);
   }

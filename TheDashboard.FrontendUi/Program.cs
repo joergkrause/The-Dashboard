@@ -11,7 +11,6 @@ using Microsoft.FeatureManagement.FeatureFilters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.FeatureManagement;
 using TheDashboard.Clients;
-using TheDashboard.FrontendUi.Hubs;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
 using Blazorise.RichTextEdit;
@@ -23,9 +22,10 @@ using TheDashboard.FrontendUi.Services;
 
 namespace TheDashboard.FrontendUi
 {
+
   public class Program
   {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
       var builder = WebApplication.CreateBuilder(args);
 
@@ -84,8 +84,8 @@ namespace TheDashboard.FrontendUi
       builder.Services.AddBlazoriseRichTextEdit(options => { });
 
       builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    // for B2C service
-    .AddMicrosoftIdentityWebApp(options =>
+        // for B2C service
+        .AddMicrosoftIdentityWebApp(options =>
     {
       builder.Configuration.Bind("AzureAdB2C", options);
       options.TokenValidationParameters.ValidateIssuerSigningKey = false;
@@ -136,10 +136,9 @@ namespace TheDashboard.FrontendUi
       {
         var logger = sp.GetRequiredService<ILogger<TileDataService>>();
         var ts = new TileDataService(logger, builder.Configuration);
-        ts.Init().RunSynchronously();
         return ts;
       });
-      
+
       // Services
       builder.Services.AddSingleton<IDashboardClient>(new DashboardClient(builder.Configuration["Services:Dashboard"], new HttpClient()));
       builder.Services.AddSingleton<ITilesClient>(new TilesClient(builder.Configuration["Services:Tiles"], new HttpClient()));
@@ -165,7 +164,6 @@ namespace TheDashboard.FrontendUi
         app.UseHsts();
       }
 
-      app.UseCors();
       app.UseHttpsRedirection();
       if (!app.Environment.IsDevelopment())
       {
@@ -176,11 +174,20 @@ namespace TheDashboard.FrontendUi
       app.UseStaticFiles();
 
       app.UseRouting();
-
       app.MapBlazorHub();
       app.MapFallbackToPage("/_Host");
 
+      await InitHubAsync(app.Services.GetRequiredService<IServiceProvider>());
+
       app.Run();
+
     }
+
+    static async Task InitHubAsync(IServiceProvider serviceProvider)
+    {
+      var tileDataService = serviceProvider.GetRequiredService<ITileDataService>();
+      await tileDataService.Init();
+    }
+
   }
 }

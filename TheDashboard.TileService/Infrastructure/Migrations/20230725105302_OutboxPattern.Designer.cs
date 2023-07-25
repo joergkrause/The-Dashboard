@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheDashboard.TileService.Infrastructure;
 
@@ -11,9 +12,10 @@ using TheDashboard.TileService.Infrastructure;
 namespace TheDashboard.TileService.Infrastructure.Migrations
 {
     [DbContext(typeof(TileDbContext))]
-    partial class TileDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230725105302_OutboxPattern")]
+    partial class OutboxPattern
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

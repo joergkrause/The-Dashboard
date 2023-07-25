@@ -1,4 +1,4 @@
-﻿namespace TheDashboard.DatabaseLayer.Interceptors
+﻿namespace TheDashboard.DatabaseLayer.Domain
 {
   internal class BaseAuditableEntity
   {

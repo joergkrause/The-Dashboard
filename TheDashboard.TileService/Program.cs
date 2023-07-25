@@ -43,7 +43,7 @@ app.UseSwaggerUI(config =>
 });
 
 app.UseHttpsRedirection();
-
+app.MapControllers();
 await app.ExecuteMigration<TileDbContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));
 
 app.Run();

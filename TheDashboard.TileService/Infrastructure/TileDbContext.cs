@@ -70,5 +70,7 @@ public class TileDbContext : DbContext
       .OnDelete(DeleteBehavior.SetNull);
 
     modelBuilder.AddInboxStateEntity();
+    modelBuilder.AddOutboxMessageEntity();
+    modelBuilder.AddOutboxStateEntity();
   }
 }

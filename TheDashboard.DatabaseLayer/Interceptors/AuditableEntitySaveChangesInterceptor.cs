@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TheDashboard.DatabaseLayer.Interfaces;
+using TheDashboard.DatabaseLayer.Domain;
 
 namespace TheDashboard.DatabaseLayer.Interceptors;
 

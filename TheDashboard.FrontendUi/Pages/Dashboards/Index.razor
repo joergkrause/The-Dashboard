@@ -31,7 +31,7 @@
   protected async override Task OnInitializedAsync()
   {
     await TileDataService.Init();
-    TileDataService.Message += (int tileId, string message) => dataMessage = message;
+    TileDataService.Message += (Guid tileId, string message) => dataMessage = message;
   }
 
 }

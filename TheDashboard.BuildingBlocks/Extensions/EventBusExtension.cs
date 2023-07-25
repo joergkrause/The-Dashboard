@@ -28,7 +28,8 @@ public static class EventBusExtension
       x.AddConsumersFromNamespaceContaining<T>();
       x.UsingRabbitMq((context, cfg) =>
       {
-        cfg.Host(configuration["RabbitMq:Host"], "/", h =>
+        // rabbitmq://
+        cfg.Host($"{configuration["RabbitMq:Host"]}", "/", h =>
         {
           h.Username(configuration["RabbitMq:User"]);
           h.Password(configuration["RabbitMq:Password"]);

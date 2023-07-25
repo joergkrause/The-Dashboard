@@ -11,4 +11,6 @@ public class DataSourceDto
   public string Url { get; set; } = default!;
 
   public Guid DashboardId { get; set; }
+
+  public string SourceType { get; set; } = default!;
 }

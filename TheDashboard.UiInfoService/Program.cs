@@ -1,4 +1,6 @@
+using MassTransit;
 using TheDashboard.BuildingBlocks.Extensions;
+using TheDashboard.DatabaseLayer.Domain.Contracts;
 using TheDashboard.UiInfoService.Hubs;
 using TheDashboard.UiInfoService.Infrastructure.Integration;
 using TheDashboard.UiInfoService.Infrastructure.Integration.Models;
@@ -14,10 +16,30 @@ namespace TheDashboard.UiInfoService
       builder.Services.AddDefaultServices();
       builder.Services.AddLogging(config => config.AddConsole());
 
+      builder.Services.AddMassTransit(x =>
+      {
+        // listen for messages from dataconsumer service (and others that have something to tell)
+        x.AddConsumer<ConsumerHandler<DataConsumerMessage>>();
+        x.UsingRabbitMq((context, cfg) =>
+        {
+          cfg.Host(builder.Configuration["RabbitMq:Host"], "/", h =>
+          {
+            h.Username(builder.Configuration["RabbitMq:User"]);
+            h.Password(builder.Configuration["RabbitMq:Password"]);
+          });
+          cfg.ReceiveEndpoint("DataConsumerService", e =>
+          {
+            e.ConfigureConsumers(context);
+            // TODO: use typesafe form
+            e.Bind("TheDashboard.DatabaseLayer.Domain.Contracts:DataConsumerMessage");
+          });
+        });
+      });
+      
       builder.Services.AddSignalR();
 
       // we receive all data through the queue and push them to the clients
-      builder.Services.AddTransient<ConsumerHandler<TileData>>();
+      builder.Services.AddTransient<ConsumerHandler<DataConsumerMessage>>();
 
       builder.Services.AddSwaggerGen(config =>
       {
@@ -31,8 +53,8 @@ namespace TheDashboard.UiInfoService
       {
         options.AddPolicy("AllowBlazorApp",
             builder =>
-            {
-              builder.WithOrigins("https://localhost")
+            { // .WithOrigins("https://localhost")
+              builder.WithOrigins("https://localhost", "http://localhost:5500", "http://frontend", "http://frontend:5500")
                      .AllowAnyHeader()
                      .AllowAnyMethod()
                      .AllowCredentials(); // SignalR requires this
@@ -47,9 +69,9 @@ namespace TheDashboard.UiInfoService
         config.SwaggerEndpoint("/swagger/v1/swagger.json", "UiInfo API v1");
       });
       
-      app.UseDefaultConfiguration();
-      app.UseCors("AllowBlazorApp");
+      app.UseDefaultConfiguration("AllowBlazorApp");
 
+      app.MapControllers();
       app.MapHub<InfoHub>("/TileData").RequireCors("AllowBlazorApp");
 
       app.Run();

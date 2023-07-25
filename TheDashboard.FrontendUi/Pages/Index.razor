@@ -1,11 +1,14 @@
 ﻿@page "/"
+@using TheDashboard.FrontendUi.Services;
+
+@inject ITileDataService TileData
 
 <PageTitle>Dashboard Manager</PageTitle>
 
 <h1>Manage your Dashboards</h1>
 
 <p>
-<NavLink class="btn btn-primary" href="dashboard">Create new Dashboard</NavLink>
+  <NavLink class="btn btn-primary" href="dashboard">Create new Dashboard</NavLink>
 </p>
 
 <p>
@@ -13,3 +16,21 @@
   Any data source can be used. The dashboard will be rendered as a web page. You can share the URL with others.
   Add an manage users to protect your dashboard. Set refresh rates and design rules.
 </p>
+
+<b>@Data</b>
+
+@code {
+
+  public string Data { get; set; }
+
+  protected override async Task OnInitializedAsync()
+  {
+    TileData.Message += async (tileId, message) => await OnDataReceived(tileId, message);
+  }
+
+  private async Task OnDataReceived(Guid tileId, string message)
+  {
+    Data = message;
+    await InvokeAsync(() => StateHasChanged());
+  }
+}

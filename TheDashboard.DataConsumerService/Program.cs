@@ -25,7 +25,7 @@ builder.Services.AddDbContext<DataConsumerDbContext>(opt =>
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IDataConsumerService, DataConsumerService>();
 
-builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameof(DashboardService));
+builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameof(DataConsumerService));
 // add eventbus channel for direct publish
 
 builder.Services.AddQuartz(config =>
@@ -76,7 +76,7 @@ app.UseSwaggerUI(config =>
 {
   config.SwaggerEndpoint("/swagger/v1/swagger.json", "DataConsumer API v1");  
 });
-
+app.MapControllers();
 app.UseHttpsRedirection();
 
 await app.ExecuteMigration<DataConsumerDbContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));

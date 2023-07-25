@@ -13,7 +13,7 @@ namespace TheDashboard.BuildingBlocks.Extensions;
 
 public static class WebAppExtension
 {
-  public static IApplicationBuilder UseDefaultConfiguration(this IApplicationBuilder app)
+  public static IApplicationBuilder UseDefaultConfiguration(this IApplicationBuilder app, string? corsConfig = null)
   {
     var env = app.ApplicationServices.GetRequiredService<IWebHostEnvironment>();
 
@@ -21,9 +21,13 @@ public static class WebAppExtension
 
     app.UseHealthChecks("/health");
 
-    app.UseCors("");
     app.UseRouting();
     app.UseHttpsRedirection();
+
+    if (corsConfig != null)
+    {
+      app.UseCors(corsConfig);
+    }
 
     app.UseAuthentication();
     app.UseAuthorization();
