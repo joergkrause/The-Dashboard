@@ -44,15 +44,8 @@ public class TileController : ControllerBase
     return Ok(tile);
   }
 
-  [HttpPost]
-  [ProducesResponseType(typeof(TileDto), StatusCodes.Status201Created)]
-  public async Task<IActionResult> Insert([FromBody] TileDto tileDto)
-  {
-    var tile = await _tileService.AddTile(tileDto);
-    return CreatedAtAction(nameof(GetTile), new { id = tile.Id }, tile);
-  }
 
-  [HttpPost("hastiles", Name = "HasTiles")]
+  [HttpGet("hastiles", Name = "HasTiles")]
   [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
   public async Task<IActionResult> HasTiles([FromBody] Guid dashboardId)
   {
@@ -60,20 +53,4 @@ public class TileController : ControllerBase
     return Ok(hasTiles);
   }
 
-  [HttpPut("{id}")]
-  [ProducesResponseType(typeof(TileDto), StatusCodes.Status202Accepted)]
-  public async Task<IActionResult> Update(int id, [FromBody] TileDto tileDto)
-  {
-    tileDto.Id = id;
-    var tile = await _tileService.UpdateTile(tileDto);
-    return Accepted(tile);
-  }
-
-  [HttpDelete("{id}")]
-  [ProducesResponseType(typeof(TileDto), StatusCodes.Status204NoContent)]
-  public async Task<IActionResult> Delete(int id)
-  {
-    await _tileService.DeleteTile(id);
-    return NoContent();
-  }
 }

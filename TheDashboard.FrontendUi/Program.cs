@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Diagnostics;
 using TheDashboard.FrontendUi.Services.Mapper;
 using TheDashboard.FrontendUi.Services;
+using EventStore.Client;
 
 namespace TheDashboard.FrontendUi
 {
@@ -56,6 +57,12 @@ namespace TheDashboard.FrontendUi
         });
       }
 
+      /** Event Sourcing using EventStore **/
+      var settings = EventStoreClientSettings.Create("undefined");
+      var client = new EventStoreClient(settings);
+      builder.Services.AddSingleton(client);
+
+      /* Blazor */
       builder.Services.AddResponseCaching();
       builder.Services.AddControllers();
       builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();

@@ -1,6 +1,7 @@
 ﻿@page "/"
-@using TheDashboard.FrontendUi.Services;
+@using TheDashboard.FrontendUi.Services
 
+@implements IDisposable
 @inject ITileDataService TileData
 
 <PageTitle>Dashboard Manager</PageTitle>
@@ -23,14 +24,21 @@
 
   public string Data { get; set; }
 
-  protected override async Task OnInitializedAsync()
+  protected override void OnInitialized()
   {
     TileData.Message += async (tileId, message) => await OnDataReceived(tileId, message);
   }
+
 
   private async Task OnDataReceived(Guid tileId, string message)
   {
     Data = message;
     await InvokeAsync(() => StateHasChanged());
   }
+
+  public void Dispose()
+  {
+    TileData.Message -= async(tileId, message) => await OnDataReceived(tileId, message);
+  }
+  
 }

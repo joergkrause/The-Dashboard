@@ -1,6 +1,58 @@
 version: '3.9'
 
 services:
+  volumes-provisioner:
+    image: hasnat/volumes-provisioner
+    environment:
+      PROVISION_DIRECTORIES: "1000:1000:0755:/tmp/certs"
+    volumes:
+      - "./certs:/tmp/certs"
+    network_mode: none
+
+  cert-gen:
+    image: eventstore/es-gencert-cli:1.0.2
+    entrypoint: bash
+    user: "1000:1000"
+    command: >
+      -c "mkdir -p ./certs && cd /certs
+      && es-gencert-cli create-ca
+      && es-gencert-cli create-node -out ./node1 -ip-addresses 127.0.0.1,172.30.240.11 -dns-names localhost
+      && find . -type f -print0 | xargs -0 chmod 666"
+    volumes:
+      - "./certs:/certs"
+    depends_on:
+      - volumes-provisioner
+
+  eventstore:
+    build: ./
+    environment:
+      - EVENTSTORE_GOSSIP_SEED=172.30.240.12:2113,172.30.240.13:2113
+      - EVENTSTORE_INT_IP=172.30.240.11
+      - EVENTSTORE_CERTIFICATE_FILE=/etc/eventstore/certs/node1/node.crt
+      - EVENTSTORE_CERTIFICATE_PRIVATE_KEY_FILE=/etc/eventstore/certs/node1/node.key
+      - EVENTSTORE_ADVERTISE_HOST_TO_CLIENT_AS=127.0.0.1
+      - EVENTSTORE_ADVERTISE_HTTP_PORT_TO_CLIENT_AS=2111
+      - EVENTSTORE_ADVERTISE_TCP_PORT_TO_CLIENT_AS=1111
+      - EVENTSTORE_CLUSTER_SIZE=3
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_INT_TCP_PORT=1112
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_TRUSTED_ROOT_CERTIFICATES_PATH=/etc/eventstore/certs/ca
+      - EVENTSTORE_DISCOVER_VIA_DNS=false
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - 1113:1113
+      - 2113:2113
+    networks:
+      clusternetwork:
+        ipv4_address: 172.30.240.11
+    volumes:
+      - ./certs:/etc/eventstore/certs
+    restart: unless-stopped
+    depends_on:
+      - cert-gen
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
@@ -45,6 +97,7 @@ services:
       context: .
       dockerfile: TheDashboard.FrontendUi/Dockerfile
     depends_on:
+     - eventstore
      - thedashboard.dashboardservice
      - thedashboard.tileservice
      - thedashboard.dataconsumerservice
@@ -61,6 +114,7 @@ services:
     ports:
       - "5100:80/tcp"
     depends_on:
+      - eventstore
       - sqlserver
       - eventbus
   
@@ -73,6 +127,7 @@ services:
     ports:
       - "5200:80/tcp"
     depends_on:
+      - eventstore
       - sqlserver
       - eventbus
 
@@ -85,6 +140,7 @@ services:
     ports:
       - "5300:80/tcp"
     depends_on:
+      - eventstore
       - sqlserver
       - eventbus
 
@@ -97,5 +153,15 @@ services:
     ports:
       - "5400:80/tcp"
     depends_on:
+      - eventstore
       - sqlserver
       - eventbus
+
+networks:
+  clusternetwork:
+    name: eventstoredb.local
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.30.240.0/24
