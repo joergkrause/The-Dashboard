@@ -12,7 +12,7 @@ public static class EventBusExtension
 {
 
   public static IServiceCollection AddEventbus<T>(this IServiceCollection services, IConfiguration configuration, string serviceName, bool receiveOnly = false)
-    where T: DbContext
+    where T : DbContext
   {
     services.AddMassTransit(x =>
     {
@@ -38,6 +38,23 @@ public static class EventBusExtension
       });
     });
     // services.AddMassTransitHostedService();
+    return services;
+  }
+
+  public static IServiceCollection AddEventbus(this IServiceCollection services, IConfiguration configuration)    
+  {
+    services.AddMassTransit(x =>
+    {
+      x.UsingRabbitMq((context, cfg) =>
+      {
+        // rabbitmq://
+        cfg.Host($"{configuration["RabbitMq:Host"]}", "/", h =>
+        {
+          h.Username(configuration["RabbitMq:User"]);
+          h.Password(configuration["RabbitMq:Password"]);
+        });
+      });
+    });
     return services;
   }
 

@@ -1,5 +1,21 @@
-﻿<h3>DashboardManager</h3>
+﻿@page "/tenants/dashboardmanager"
+@using TheDashboard.Clients;
+@using TheDashboard.FrontendUi.EventSourcing;
+@using TheDashboard.FrontendUi.Services;
+
+@inject ICommandServiceRepository CommandRepo
+
+<h3>DashboardManager</h3>
+
+<button class="btn btn-outline-primary" @onclick="AddDashboard" >Add Dashboard</button>
+
 
 @code {
 
+
+
+  private async Task AddDashboard()
+  {
+    await CommandRepo.StoreAndPublish<DashboardDto, DashboardAdded>(new DashboardDto { Id = Guid.NewGuid(), Name = "New 1" }, CancellationToken.None);
+  } 
 }

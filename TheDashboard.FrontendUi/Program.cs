@@ -20,6 +20,7 @@ using System.Diagnostics;
 using TheDashboard.FrontendUi.Services.Mapper;
 using TheDashboard.FrontendUi.Services;
 using EventStore.Client;
+using TheDashboard.BuildingBlocks.Extensions;
 
 namespace TheDashboard.FrontendUi
 {
@@ -58,9 +59,9 @@ namespace TheDashboard.FrontendUi
       }
 
       /** Event Sourcing using EventStore **/
-      var settings = EventStoreClientSettings.Create("undefined");
-      var client = new EventStoreClient(settings);
-      builder.Services.AddSingleton(client);
+      builder.Services.AddEventStoreClient(builder.Configuration.GetSection("EventStore")!.Get<string>()!);
+      /** Masstransit publishing only, no outbox pattern **/
+      builder.Services.AddEventbus(builder.Configuration);
 
       /* Blazor */
       builder.Services.AddResponseCaching();
@@ -147,11 +148,13 @@ namespace TheDashboard.FrontendUi
       });
 
       // Services
+      builder.Services.AddSingleton<ICommandServiceRepository, CommandServiceRepository>();
+
       builder.Services.AddSingleton<IDashboardClient>(new DashboardClient(builder.Configuration["Services:Dashboard"], new HttpClient()));
       builder.Services.AddSingleton<ITilesClient>(new TilesClient(builder.Configuration["Services:Tiles"], new HttpClient()));
       builder.Services.AddSingleton<IDataConsumerClient>(new DataConsumerClient(builder.Configuration["Services:DataConsumer"], new HttpClient()));
 
-      builder.Services.AddSingleton<IDashboardViewerService, DashboardViewerService>();
+      builder.Services.AddSingleton<IDashboardService, DashboardService>();
 
       builder.Services.AddAutoMapper(typeof(ModelMappings).Assembly);
 

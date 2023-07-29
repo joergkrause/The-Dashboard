@@ -38,11 +38,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\TheDashboard.BuildingBlocks\TheDashboard.BuildingBlocks.csproj" />
       <ProjectReference Include="..\TheDashboard.ViewModels\TheDashboard.ViewModels.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="EventSourcing\" />
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

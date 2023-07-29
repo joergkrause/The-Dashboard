@@ -1,0 +1,24 @@
+﻿using AutoMapper;
+using TheDashboard.Clients;
+using TheDashboard.FrontendUi.EventSourcing;
+using TheDashboard.ViewModels.Data;
+
+namespace TheDashboard.FrontendUi.Services.Mapper;
+
+public class EventMapping : Profile
+{
+  public EventMapping()
+  {
+    CreateMap<DashboardDto, DashboardAdded>()
+      .ForCtorParam(nameof(DashboardAdded.Id), opt => opt.MapFrom(s => s.Id))
+      .ForCtorParam(nameof(DashboardAdded.Name), opt => opt.MapFrom(s => s.Name));
+
+    CreateMap<DashboardDto, DashboardRemoved>()
+      .ForCtorParam(nameof(DashboardRemoved.Id), opt => opt.MapFrom(s => s.Id));
+
+    CreateMap<DashboardDto, DashboardUpdated>()
+      .ForCtorParam(nameof(DashboardUpdated.Id), opt => opt.MapFrom(s => s.Id))
+      .ForCtorParam(nameof(DashboardUpdated.Name), opt => opt.MapFrom(s => s.Name));
+  }
+}
+

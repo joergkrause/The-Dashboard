@@ -4,7 +4,7 @@ using TheDashboard.ViewModels.Data;
 
 namespace TheDashboard.FrontendUi.Services;
 
-public class DashboardViewerService : IDashboardViewerService
+public class DashboardService : IDashboardService
 {
   private readonly IMapper _mapper;
 
@@ -12,7 +12,7 @@ public class DashboardViewerService : IDashboardViewerService
   private readonly ITilesClient _tilesClient;
   private readonly IDataConsumerClient _dataConsumerClient;
 
-  public DashboardViewerService(IMapper mapper, IDashboardClient dashboardClient, ITilesClient tilesClient, IDataConsumerClient dataConsumerClient)
+  public DashboardService(IMapper mapper, IDashboardClient dashboardClient, ITilesClient tilesClient, IDataConsumerClient dataConsumerClient)
   {
     _mapper = mapper;
 

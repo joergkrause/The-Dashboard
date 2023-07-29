@@ -2,7 +2,7 @@
 
 namespace TheDashboard.FrontendUi.Services
 {
-  public interface IDashboardViewerService
+  public interface IDashboardService
   {
     Task<IList<TileViewModel>> GetTiles(Guid dashboardId);
   }
