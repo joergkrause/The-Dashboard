@@ -7,6 +7,9 @@ namespace TheDashboard.FrontendUi.Services.Mapper;
 
 public class EventMapping : Profile
 {
+  /// <summary>
+  /// This mapping takes care of converting class instances into record instances.
+  /// </summary>
   public EventMapping()
   {
     CreateMap<DashboardDto, DashboardAdded>()

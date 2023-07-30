@@ -10,7 +10,7 @@ using TheDashboard.DashboardService.Domain;
 using TheDashboard.DatabaseLayer.Interfaces;
 using TheDashboard.DatabaseLayer.Interceptors;
 using TheDashboard.DatabaseLayer.Configurations;
-using System.Diagnostics;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

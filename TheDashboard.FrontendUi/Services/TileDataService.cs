@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System.Runtime.CompilerServices;
+using TheDashboard.BuildingBlocks.Core.EventStore;
+using TheDashboard.Clients;
 
 namespace TheDashboard.FrontendUi.Services;
 
@@ -67,6 +69,11 @@ public class TileDataService : ITileDataService
     Message?.Invoke(tileId, message);
   }
 
-  public bool IsConnected { get => hubConnection?.State == HubConnectionState.Connected; }
+    public Task InvokeCommand<TEvent>(TileDto dto) where TEvent : Command
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool IsConnected { get => hubConnection?.State == HubConnectionState.Connected; }
 
 }

@@ -3,31 +3,29 @@ version: '3.9'
 # Note: Volume bindings are for Windows. For Linux, use the following:
 
 services:
-
   # Consider secure mode in prod as described here: https://developers.eventstore.com/server/v20.10/installation.html#use-docker-compose
-
   eventstore:
-   image: eventstore/eventstore:latest
-   container_name: eventstore
-   environment:
-     - EVENTSTORE_CLUSTER_SIZE=1
-     - EVENTSTORE_RUN_PROJECTIONS=All
-     - EVENTSTORE_START_STANDARD_PROJECTIONS=true
-     - EVENTSTORE_EXT_TCP_PORT=1113
-     - EVENTSTORE_HTTP_PORT=2113
-     - EVENTSTORE_INSECURE=true
-     - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
-     - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-   ports:
-     - "1113:1113"
-     - "2113:2113"
-   volumes:
-     - type: bind
-       source: D:\Volumes\eventstore\data
-       target: /var/lib/eventstore
-     - type: bind
-       source: D:\Volumes\eventstore\logs
-       target: /var/log/eventstore
+    image: eventstore/eventstore:latest
+    container_name: eventstore
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - "1113:1113"
+      - "2113:2113"
+    volumes:
+      - type: bind
+        source: D:\Volumes\eventstore\data
+        target: /var/lib/eventstore
+      - type: bind
+        source: D:\Volumes\eventstore\logs
+        target: /var/log/eventstore
 
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
@@ -75,12 +73,25 @@ services:
       dockerfile: TheDashboard.FrontendUi/Dockerfile
     depends_on:
      - eventstore
+     - proxy
      - thedashboard.dashboardservice
      - thedashboard.tileservice
      - thedashboard.dataconsumerservice
      - thedashboard.uiinfoservice
     ports:
       - "5500:80/tcp"
+
+  proxy:
+    image: ${DOCKER_REGISTRY-}proxy:latest
+    profiles: [ all, backend, dashboard ]
+    build:
+      context: .
+      dockerfile: TheDashboard.Proxy/Dockerfile
+    ports:
+      - "5000:80/tcp"
+    depends_on:
+      - eventstore
+      - eventbus      
 
   thedashboard.dashboardservice:
     image: ${DOCKER_REGISTRY-}dashboardservice:latest

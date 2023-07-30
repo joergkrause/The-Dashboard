@@ -28,6 +28,19 @@ The app is split in multiple micro services based on that CQRS pattern, it has a
 Each service can (if it makes sense) store it's own "projected data" in database for efficient querying. 
 The services will have only GET methods to retrieve data, but all insert/update/delete operations will come through the event messaging as a command. 
 
+### Overview
+
+#### Querying Data
+
+Frontend (DMZ) <-- Proxy (YARP) <-- Services (WebAPi, inner zone) <-- Database
+
+#### Invoke Commands
+
+Frontend (DMZ) --> Proxy (YARP) --> Command Store (EventStore, inner zone) --> Queue (RabbitMQ, inner zone) --> Services (WebAPi, inner zone) --> Database
+
+Because of the complete asynchronisity of the system, the frontend will receive updates as SignalR messages through a message hub. The messages are just simple "new data available" messages,
+the frontend will then query the data from the services.
+
 ### Basics
 
 In an event sourcing architecture note that all changes to the application state are stored as a sequence of events in the event store. The event store is indeed the single source of truth 
@@ -96,3 +109,24 @@ The solution file (TheDashboard.sln) is in the root directory, along with Docker
 The individual services (DashboardService, TileService, etc.) are organized into their own projects within the solution.
 
 For more detailed information, please visit the project page.
+
+# Further Reading
+
+The purpose of the event store in this architecture is multifold:
+
+* Single Source of Truth: All changes to the application state are stored as a series of events. This makes it the authoritative source of what has happened in your system. Each event is a fact that has happened at a particular time and cannot be changed or deleted. This gives you a strong audit log out-of-the-box.
+* Event Sourcing: Your application state at any point in time can be derived by replaying the events from the event store. This is in contrast to traditional CRUD-based systems, where you overwrite the state and don't keep the history of changes.
+* Temporal Queries: Because each event has a timestamp, you can query how the system looked at any point in time. This can be useful for debugging or understanding user behavior.
+
+The data flow in such a system would look something like this:
+
+1. A user interacts with your Blazor server app, causing it to dispatch a command (for example, "AddItem").
+2. The command is handled by the command handler, which generates an event (for example, "ItemAdded") and stores it in the event store. The same event is then published to the message bus.
+3. Microservices subscribed to the "ItemAdded" event receive it from the message bus. Each service may update its own read model (stored in its own database) based on the event. For example, an inventory service might decrement the quantity of the added item, while an analytics service might increment a counter of total items added.
+4. When a user queries data (for example, to view a list of items), the query is handled by the appropriate microservice, which serves the data from its read model.
+
+As you've probably noted, the same event might be stored in multiple places (once in the event store, and again in each service's read model), which might seem redundant. 
+However, this is a trade-off that's made in order to decouple the services from each other and allow each to optimize its own data storage for the queries it needs to serve.
+
+It's also worth noting that in this architecture, the event store and the read models serve different purposes: the event store is the source of truth for what has happened, 
+while the read models are optimized for querying the current state of the system.

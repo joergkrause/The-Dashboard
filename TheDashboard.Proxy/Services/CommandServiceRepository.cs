@@ -1,12 +1,10 @@
-﻿using AutoMapper;
-using EventStore.Client;
+﻿using EventStore.Client;
 using MassTransit;
 using System.Text.Json;
 using System.Threading;
-using TheDashboard.Clients;
-using TheDashboard.FrontendUi.EventSourcing;
+using TheDashboard.BuildingBlocks.Core.EventStore;
 
-namespace TheDashboard.FrontendUi.Services;
+namespace TheDashboard.Proxy.Services;
 
 /// <summary>
 /// Follow the CQRS pattern, all user actions are commands and go into the command service and then into event store.
@@ -14,21 +12,17 @@ namespace TheDashboard.FrontendUi.Services;
 /// </summary>
 public class CommandServiceRepository : ICommandServiceRepository
 {
-  private readonly IMapper _mapper;
   private readonly EventStoreClient _client;
   private readonly IPublishEndpoint _publishEndpoint;
 
-  public CommandServiceRepository(IMapper mapper, EventStoreClient client, IPublishEndpoint publishEndpoint)
+  public CommandServiceRepository(EventStoreClient client, IPublishEndpoint publishEndpoint)
   {
-    _mapper = mapper;
     _client = client;
     _publishEndpoint = publishEndpoint;
   }
 
-  public async Task StoreAndPublish<TDto, TEvent>(TDto dto, CancellationToken cancellationToken)
+  public async Task StoreAndPublish<TEvent>(TEvent evt, CancellationToken cancellationToken) where TEvent : Command
   {
-    var evt = _mapper.Map<TEvent>(dto);
-
     var eventData = new EventData(
         Uuid.NewUuid(),
         typeof(TEvent).Name,
