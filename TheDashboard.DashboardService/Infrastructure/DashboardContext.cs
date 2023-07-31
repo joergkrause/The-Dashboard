@@ -47,7 +47,7 @@ public class DashboardContext : DbContext
 
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
-#if DEBUG
+#if SQLDEBUG
     optionsBuilder.UseLoggerFactory(SqlLogger);
     optionsBuilder.EnableDetailedErrors();
     optionsBuilder.EnableSensitiveDataLogging();

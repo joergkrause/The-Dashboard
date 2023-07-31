@@ -79,7 +79,7 @@ services:
      - thedashboard.dataconsumerservice
      - thedashboard.uiinfoservice
     ports:
-      - "5500:80/tcp"
+      - "80:80/tcp"
 
   proxy:
     image: ${DOCKER_REGISTRY-}proxy:latest
@@ -88,7 +88,7 @@ services:
       context: .
       dockerfile: TheDashboard.Proxy/Dockerfile
     ports:
-      - "5000:80/tcp"
+      - "5000:5000/tcp"
     depends_on:
       - eventstore
       - eventbus      
@@ -144,3 +144,6 @@ services:
       - eventstore
       - sqlserver
       - eventbus
+
+networks:
+  proxynet:
