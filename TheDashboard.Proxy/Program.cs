@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http.Extensions;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
+using System.Text.Json;
+using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.BuildingBlocks.Extensions;
 using TheDashboard.Proxy.Middleware;
 using TheDashboard.Proxy.Services;
@@ -75,38 +77,56 @@ public class Program
             //var transformer = new ServiceTransformer(app.Services.GetRequiredService<ICommandServiceRepository>()); // or HttpTransformer.Default;
             var store = app.Services.GetRequiredService<ICommandServiceRepository>();
             var forwarder = app.Services.GetRequiredService<IHttpForwarder>();
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new CommandConverter());
 
             endpoints.MapReverseProxy(proxyPipeline =>
             {
-                proxyPipeline.Use((context, next) =>
+                proxyPipeline.Use(async (context, next) =>
                 {
                     var lf = proxyPipeline.ApplicationServices.GetRequiredService<ILoggerFactory>();
                     var logger = lf.CreateLogger("ReverseProxy");
                     logger.LogInformation("Proxying request: {0}", context.Request.GetDisplayUrl());
-                    return next();
+
+                    // filter POST only and retrieve request body
+                    if (context.Request.Method == "POST")
+                    {
+                        context.Request.EnableBuffering();
+                        var requestBody = context.Request.Body;
+                        using var reader = new StreamReader(requestBody);
+                        var body = await reader.ReadToEndAsync();
+                        context.Request.Body.Position = 0;
+                        try
+                        {
+                            var evt = JsonSerializer.Deserialize<Command>(body, options);
+                            if (evt != null)
+                            {
+                                await store.StoreAndPublish(evt, default);
+                                // we have a proper handling achieved and answer this
+                                context.Response.StatusCode = StatusCodes.Status200OK;
+                                await context.Response.WriteAsync("Command processed");
+                                return;
+                            } else
+                            {
+                                logger.LogWarning("Invalid request: {0}", body);
+                                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                                await context.Response.WriteAsync("Invalid request");
+                                return;
+                            }
+                        }
+                        catch
+                        {
+                            logger.LogWarning("Invalid request error: {0}", body);
+                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                            await context.Response.WriteAsync("Error deserializing request");
+                            return;
+                        }
+                    }
+
+                    await next();
                 });
             });
 
-            // TODO: Get POST working and forward to store service
-
-            endpoints.MapGet("api/query/{route}/{**catch-all}", async httpContext =>
-            {
-                // get part of route and store in variable
-                var route = httpContext.Request.RouteValues["route"];
-                var remainder = httpContext.Request.RouteValues["catch-all"];
-
-                // await store.StoreAndPublish(, CancellationToken.None);
-
-                var requestUrl = $"http://TheDashboard.{route}/{remainder}";
-                var error = await forwarder.SendAsync(httpContext, requestUrl,
-                httpClient, requestConfig, HttpTransformer.Default);
-                // Check if the operation was successful
-                if (error != ForwarderError.None)
-                {
-                    var errorFeature = httpContext.GetForwarderErrorFeature();
-                    var exception = errorFeature.Exception;
-                }
-            });
         });
 
         app.Run();

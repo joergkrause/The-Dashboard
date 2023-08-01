@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
+using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.Clients;
-using TheDashboard.FrontendUi.EventSourcing;
-using TheDashboard.ViewModels.Data;
 
 namespace TheDashboard.FrontendUi.Services.Mapper;
 

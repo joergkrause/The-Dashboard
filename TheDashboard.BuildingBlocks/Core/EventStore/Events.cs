@@ -1,8 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using TheDashboard.BuildingBlocks.Core.EventStore;
-using TheDashboard.Clients;
-
-namespace TheDashboard.FrontendUi.EventSourcing;
+﻿namespace TheDashboard.BuildingBlocks.Core.EventStore;
 
 public record DashboardAdded(Guid Id, string Name): Command;
 
