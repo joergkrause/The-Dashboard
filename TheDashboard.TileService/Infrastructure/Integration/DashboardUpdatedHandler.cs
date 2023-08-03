@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MassTransit;
+using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.TileService.BusinessLogic;
 
 namespace TheDashboard.TileService.Infrastructure.Integration;
 
-public class DashboardUpdatedHandler : IConsumer<DashboardCreatedEvent>
+public class DashboardUpdatedHandler : IConsumer<DashboardUpdated>
 {
 
   private readonly IMapper _mapper;
@@ -17,7 +18,7 @@ public class DashboardUpdatedHandler : IConsumer<DashboardCreatedEvent>
   }
 
 
-  public async Task Consume(ConsumeContext<DashboardCreatedEvent> context)
+  public async Task Consume(ConsumeContext<DashboardUpdated> context)
   {
     var id = context.Message.Id;    
     var dashboard = await _dashboardService.GetDashboard(id);

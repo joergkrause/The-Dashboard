@@ -1,11 +1,9 @@
 ﻿using MassTransit;
-using MassTransit.Transports;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using TheDashboard.DatabaseLayer.Domain.Contracts;
 using TheDashboard.DataConsumerService.Infrastructure.Integration;
 using TheDashboard.UiInfoService.Hubs;
-using TheDashboard.UiInfoService.Infrastructure.Integration.Models;
 
 namespace TheDashboard.UiInfoService.Infrastructure.Integration;
 

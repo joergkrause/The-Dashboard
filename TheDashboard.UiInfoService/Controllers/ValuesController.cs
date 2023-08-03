@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using TheDashboard.DatabaseLayer.Domain.Contracts;
 using TheDashboard.DataConsumerService.Infrastructure.Integration;
 using TheDashboard.UiInfoService.Infrastructure.Integration;
-using TheDashboard.UiInfoService.Infrastructure.Integration.Models;
 
 namespace TheDashboard.UiInfoService.Controllers;
 

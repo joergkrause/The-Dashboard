@@ -22,6 +22,7 @@ using TheDashboard.FrontendUi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace TheDashboard.FrontendUi
 {
@@ -109,7 +110,7 @@ namespace TheDashboard.FrontendUi
       })        
         ;
 
-      builder.Services.AddAuthorization();
+      builder.Services.AddAuthorization();    
 
       #endregion Auth
 
@@ -178,6 +179,14 @@ namespace TheDashboard.FrontendUi
 
       app.UseAuthentication();
       app.UseAuthorization();
+
+      app.UseRewriter(new RewriteOptions().Add(context =>
+    {
+      if (context.HttpContext.Request.Path == "/MicrosoftIdentity/Account/SignedOut")
+      {
+        context.HttpContext.Response.Redirect("/SignedOut");
+      }
+    }));
 
       app.UseEndpoints(endpoints =>
       {

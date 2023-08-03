@@ -7,7 +7,6 @@ using MassTransit.Transports;
 using Microsoft.EntityFrameworkCore;
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.DashboardService.Infrastructure;
-using TheDashboard.DashboardService.Infrastructure.Integration.Events;
 using TheDashboard.DatabaseLayer;
 using TheDashboard.Services.TransferObjects;
 

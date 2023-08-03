@@ -13,14 +13,14 @@ public class EventMapping : Profile
   {
     CreateMap<DashboardDto, DashboardAdded>()
       .ForCtorParam(nameof(DashboardAdded.Id), opt => opt.MapFrom(s => s.Id))
-      .ForCtorParam(nameof(DashboardAdded.Name), opt => opt.MapFrom(s => s.Name));
+      .ForCtorParam(nameof(DashboardAdded.Item), opt => opt.MapFrom(s => s));
 
     CreateMap<DashboardDto, DashboardRemoved>()
       .ForCtorParam(nameof(DashboardRemoved.Id), opt => opt.MapFrom(s => s.Id));
 
     CreateMap<DashboardDto, DashboardUpdated>()
       .ForCtorParam(nameof(DashboardUpdated.Id), opt => opt.MapFrom(s => s.Id))
-      .ForCtorParam(nameof(DashboardUpdated.Name), opt => opt.MapFrom(s => s.Name));
+      .ForCtorParam(nameof(DashboardUpdated.Item), opt => opt.MapFrom(s => s));
   }
 }
 

@@ -4,10 +4,10 @@ using AutoMapper;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using TheDashboard.DashboardService.Infrastructure;
-using TheDashboard.DashboardService.Infrastructure.Integration.Events;
 using TheDashboard.DatabaseLayer;
 using TheDashboard.Services.TransferObjects;
 using TheDashboard.DashboardService.Domain;
+using TheDashboard.BuildingBlocks.Core.EventStore;
 
 namespace TheDashboard.Services;
 
@@ -59,7 +59,7 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     var defaultLayout = await Context.Layouts.SingleAsync(l => l.Id == dto.LayoutId);
     dashboard.Layout = defaultLayout;
     dashboard.Theme = "Light";
-    var createdEvent = new DashboardCreatedEvent(dashboard.Id, dashboard.Name);
+    var createdEvent = new DashboardAdded(dashboard.Id, dashboard.Name);
     await (_publishEndpoint?.Publish(createdEvent) ?? Task.CompletedTask);
     Context.Dashboards.Add(dashboard);
     Context.Entry(defaultLayout).State = EntityState.Unchanged;

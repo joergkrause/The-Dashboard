@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\TheDashboard.SharedEntities\TheDashboard.SharedEntities.csproj" />
     <ProjectReference Include="..\TheDashboard.BuildingBlocks\TheDashboard.BuildingBlocks.csproj" />
     <ProjectReference Include="..\TheDashboard.DatabaseLayer\TheDashboard.DatabaseLayer.csproj" />
   </ItemGroup>

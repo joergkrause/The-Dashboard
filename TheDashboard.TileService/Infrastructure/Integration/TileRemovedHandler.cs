@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 using MassTransit;
+using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.TileService.BusinessLogic;
 
 namespace TheDashboard.TileService.Infrastructure.Integration;
 
-public class TileRemovedHandler : IConsumer<TileRemovedEvent>
+public class TileRemovedHandler : IConsumer<TileRemoved>
 {
 
   private readonly IMapper _mapper;
@@ -17,9 +18,9 @@ public class TileRemovedHandler : IConsumer<TileRemovedEvent>
   }
 
 
-  public async Task Consume(ConsumeContext<TileRemovedEvent> context)
+  public async Task Consume(ConsumeContext<TileRemoved> context)
   {
-    var id = context.Message.Id;
+    var id = context.Message.TileId;
     await _tileService.DeleteTile(id);
   }
 }

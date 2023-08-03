@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using MassTransit;
+using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.TileService.BusinessLogic;
 using TheDashboard.TileService.Controllers.Models;
 
 namespace TheDashboard.TileService.Infrastructure.Integration;
 
-public class TileUpdatedHandler : IConsumer<TileUpdatedEvent>
+public class TileUpdatedHandler : IConsumer<TileUpdated>
 {
 
   private readonly IMapper _mapper;
@@ -18,7 +19,7 @@ public class TileUpdatedHandler : IConsumer<TileUpdatedEvent>
   }
 
 
-  public async Task Consume(ConsumeContext<TileUpdatedEvent> context)
+  public async Task Consume(ConsumeContext<TileUpdated> context)
   {
     var tileDto = _mapper.Map<TileDto>(context.Message.TileDto);
     await _tileService.UpdateTile(tileDto);
