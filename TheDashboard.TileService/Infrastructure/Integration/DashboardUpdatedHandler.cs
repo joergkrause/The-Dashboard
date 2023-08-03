@@ -24,7 +24,7 @@ public class DashboardUpdatedHandler : IConsumer<DashboardUpdated>
     var dashboard = await _dashboardService.GetDashboard(id);
     if (dashboard != null)
     {
-      dashboard.Name = context.Message.Name;
+      dashboard = context.Message.Item;
       await _dashboardService.UpdateDashboard(dashboard);
     }
   }

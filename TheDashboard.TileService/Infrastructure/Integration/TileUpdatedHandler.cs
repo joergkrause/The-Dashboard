@@ -21,7 +21,7 @@ public class TileUpdatedHandler : IConsumer<TileUpdated>
 
   public async Task Consume(ConsumeContext<TileUpdated> context)
   {
-    var tileDto = _mapper.Map<TileDto>(context.Message.TileDto);
+    var tileDto = _mapper.Map<TileDto>(context.Message.Item);
     await _tileService.UpdateTile(tileDto);
   }
 }

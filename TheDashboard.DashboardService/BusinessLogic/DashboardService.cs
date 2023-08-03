@@ -59,7 +59,7 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     var defaultLayout = await Context.Layouts.SingleAsync(l => l.Id == dto.LayoutId);
     dashboard.Layout = defaultLayout;
     dashboard.Theme = "Light";
-    var createdEvent = new DashboardAdded(dashboard.Id, dashboard.Name);
+    var createdEvent = new DashboardAdded(dashboard.Id, dto);
     await (_publishEndpoint?.Publish(createdEvent) ?? Task.CompletedTask);
     Context.Dashboards.Add(dashboard);
     Context.Entry(defaultLayout).State = EntityState.Unchanged;

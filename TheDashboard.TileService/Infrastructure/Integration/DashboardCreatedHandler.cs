@@ -24,7 +24,7 @@ public class DashboardCreatedHandler : IConsumer<DashboardAdded>
     var dashboard = await _dashboardService.GetDashboard(id);
     if (dashboard == null)
     {
-      dashboard = new() { Id = id, Name = context.Message.Name };
+      dashboard = new() { Id = id, Name = context.Message.Item.Name };
       await _dashboardService.AddDashboard(dashboard);
     }
   }
