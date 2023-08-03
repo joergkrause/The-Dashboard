@@ -2,19 +2,22 @@
 
 @inject AuthenticationStateProvider AuthStateProvider
 
-<AuthorizeView>
-  <Authorized>
-    <span>      
-      @DisplayName <a href="MicrosoftIdentity/Account/SignOut">Sign Out</a>
-
-      <a href="MicrosoftIdentity/Account/Manage">Edit Profile</a>
-    </span>
-  </Authorized>
-  <NotAuthorized>
-    <a href="MicrosoftIdentity/Account/SignIn">SignIn</a>
-    <a href="MicrosoftIdentity/Account/Register">Register</a>
-  </NotAuthorized>
-</AuthorizeView>
+<CascadingAuthenticationState>
+  <AuthorizeView>
+    <Authorized>
+      <span>
+        @DisplayName <a href="MicrosoftIdentity/Account/SignOut">Sign Out</a>
+        <a href="/MicrosoftIdentity/Account/EditProfile">Edit Profile</a>
+        <a href="IdentityExtensions/Account/SignOut">Own Sign Out</a>
+      </span>
+    </Authorized>
+    <NotAuthorized>
+      <a href="MicrosoftIdentity/Account/SignIn">Sign In</a>
+      <a href="MicrosoftIdentity/Account/SignUp">Sign Up</a>
+      <a href="MicrosoftIdentity/Account/ResetPassword">Reset Password</a>
+    </NotAuthorized>
+  </AuthorizeView>
+</CascadingAuthenticationState>
 
 @code {
 

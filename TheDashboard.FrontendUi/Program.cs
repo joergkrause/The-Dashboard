@@ -73,6 +73,7 @@ namespace TheDashboard.FrontendUi
 
       /* Blazor */
       builder.Services.AddResponseCaching();
+      //builder.Services.AddControllers();
       builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
       builder.Services.AddRazorPages();
       builder.Services.AddServerSideBlazor()
@@ -100,11 +101,13 @@ namespace TheDashboard.FrontendUi
 
       #region Auth
 
-      builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+      builder.Services
+        .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)        
         .AddMicrosoftIdentityWebApp(options =>
       {
         builder.Configuration.Bind("AzureAdB2C", options);
-      });
+      })        
+        ;
 
       builder.Services.AddAuthorization();
 
@@ -178,9 +181,9 @@ namespace TheDashboard.FrontendUi
 
       app.UseEndpoints(endpoints =>
       {
-        endpoints.MapControllers();
-        endpoints.MapBlazorHub().AllowAnonymous().RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = $"{OpenIdConnectDefaults.AuthenticationScheme},{IdentityConstants.ApplicationScheme}" });        
         endpoints.MapRazorPages();
+        endpoints.MapControllers();
+        endpoints.MapBlazorHub().AllowAnonymous().RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = $"{OpenIdConnectDefaults.AuthenticationScheme},{IdentityConstants.ApplicationScheme}" });                
         endpoints.MapFallbackToPage("/_Host");
       });
 
