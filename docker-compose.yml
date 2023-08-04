@@ -1,6 +1,9 @@
 version: '3.9'
 
 # Note: Volume bindings are for Windows. For Linux, use the following:
+# Prepare a certificate: 
+# dotnet dev-certs https -ep ${APPDATA}\ASP.NET\Https\localhost.pfx -p crypticpassword
+# dotnet dev-certs https --trust
 
 services:
   # Consider secure mode in prod as described here: https://developers.eventstore.com/server/v20.10/installation.html#use-docker-compose
@@ -79,7 +82,15 @@ services:
      - thedashboard.dataconsumerservice
      - thedashboard.uiinfoservice
     ports:
-      - "80:80/tcp"
+      - "7500:443/tcp"
+      - "5500:80/tcp"
+    volumes:
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/localhost.pfx
+      - ASPNETCORE_URLS=https://localhost;http://localhost
+      - ASPNETCORE_ENVIRONMENT=Development
 
   proxy:
     image: ${DOCKER_REGISTRY-}proxy:latest

@@ -82,6 +82,7 @@
         "tags": [
           "Tile"
         ],
+        "operationId": "UpdateTile",
         "parameters": [
           {
             "name": "id",
@@ -132,6 +133,7 @@
         "tags": [
           "Tile"
         ],
+        "operationId": "DeleteTile",
         "parameters": [
           {
             "name": "id",
@@ -165,6 +167,7 @@
         "tags": [
           "Tile"
         ],
+        "operationId": "AddTile",
         "requestBody": {
           "content": {
             "application/json": {
@@ -212,19 +215,22 @@
             "application/json": {
               "schema": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "nullable": false
               }
             },
             "text/json": {
               "schema": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "nullable":  false
               }
             },
             "application/*+json": {
               "schema": {
                 "type": "string",
-                "format": "uuid"
+                "format": "uuid",
+                "nullable": false
               }
             }
           }

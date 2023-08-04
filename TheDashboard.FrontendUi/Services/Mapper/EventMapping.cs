@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using TheDashboard.BuildingBlocks.Core.EventStore;
-using TheDashboard.Clients;
+using TheDashboard.SharedEntities;
 
-namespace TheDashboard.FrontendUi.Services.Mapper;
+namespace TheDashboard.Frontend.Services.Mapper;
 
 public class EventMapping : Profile
 {

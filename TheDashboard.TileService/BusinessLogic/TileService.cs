@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using TheDashboard.TileService.Controllers.Models;
+using TheDashboard.SharedEntities;
 using TheDashboard.TileService.Domain;
 using TheDashboard.TileService.Infrastructure;
 

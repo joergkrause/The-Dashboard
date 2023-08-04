@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DatabaseLayer"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.BuildingBlocks", "TheDashboard.BuildingBlocks\TheDashboard.BuildingBlocks.csproj", "{8F4BAD91-6703-44FD-964A-F72F8305DC9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.FrontendUi", "TheDashboard.FrontendUi\TheDashboard.FrontendUi.csproj", "{4F6518BC-37DC-4AA1-A3CF-BF364BBA8E5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.Frontend", "TheDashboard.FrontendUi\TheDashboard.Frontend.csproj", "{4F6518BC-37DC-4AA1-A3CF-BF364BBA8E5B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.UiInfoService", "TheDashboard.UiInfoService\TheDashboard.UiInfoService.csproj", "{A67B46F0-DB85-49C8-BA78-5DD85517E4D8}"
 EndProject
@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Proxy", "Proxy", "{2FEB1A40
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.Proxy", "TheDashboard.Proxy\TheDashboard.Proxy.csproj", "{23CDE96E-2BE8-419D-895D-4C11CB61C025}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDashboard.SharedEntities", "TheDashboard.SharedEntities\TheDashboard.SharedEntities.csproj", "{C705D5B9-1B6A-4DE3-A3D9-38552AA16952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.SharedEntities", "TheDashboard.SharedEntities\TheDashboard.SharedEntities.csproj", "{C705D5B9-1B6A-4DE3-A3D9-38552AA16952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

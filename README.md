@@ -72,9 +72,27 @@ The project of the project is divided into frontend and backend. The frontend is
 * TileService: Manage Tiles independently from Dashboards. Define data sources and views.
 * DataConsumerService: Pull data from datasource and establish Websocket connection to tiles.
 * UiInfoService: Manage UI information, such as available Tiles, available views, etc.
-* AuthService: Manage user authentication and authorization. This is using Azure AD B2C.
+
+Authentication is handled by Azure AD B2C with default policies. The frontend is protected by a proxy (YARP) that handles authentication and forwards requests to the backend. The backend is protected by Azure AD B2C as well, but the proxy forwards the authentication token to the backend. The backend then validates the token and extracts the user information from it. The backend is not accessible from the outside, only the proxy can access it.
 
 The project also creates and needs several databases.
+
+### Shared Libraries
+
+In a modern microservice architecture we try to decouple everything. To achieve this, an Event Sourcing pattern is used. 
+This means that every microservice has its own database and its own data model. This is great, but it also means that we have to duplicate data. 
+For example, if we have a `User` entity, we have to duplicate it in every microservice that needs it. 
+If we have to change something in the `User` entity, we have to change it in every microservice. 
+This is not only a lot of work, but it also means that we have to deploy every microservice. 
+This is not a problem if we only have a few microservices, but if we have a lot of them, it can become a problem. 
+
+The task is to address this issue without loosing the decoupling. The solution created here uses OpenAPI definition files to generate the code for the entities.
+These generated entities are used for both, sending commands through the event pipeline and to query data from the services.
+
+> OpenAPI is used out of the box, but it is also possible to use other definition files like gGRPC or GraphQL. The used generator is NSwag.
+
+To address changes or additions, just edit the xxx_openapi.json files with the appropriate OpenAPI definitions, DTOs, and security settings. Then the code can be generated with the NSwag tool. The generated code is then referenced to the appropriate projects.
+In the service projects and implementation must exist, that handles the actual requests. The generated code is only used to send the requests and to receive the responses.
 
 ### Frontend
 
@@ -90,8 +108,10 @@ The project makes use of these specific packages or libraries:
 
 * MassTransit (to handle RabbitMQ)
 * Automapper (to map between DTOs and Entities)
-* Swashbuckle (to generate Swagger documentation)
 * NSwag (to generate C# client code from Swagger documentation)
+* Quartz (to handle scheduled jobs) in the data consumer service
+
+> Swashbuckle (to generate Swagger documentation) is not being used, as the OpenAPI documentation is created and maintained manually. It's now a first class citizen - contract first principle.
  
 #### Frontend Only 
 

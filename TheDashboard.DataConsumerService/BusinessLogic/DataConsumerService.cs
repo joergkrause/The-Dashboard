@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TheDashboard.DataConsumerService.Domain;
 using TheDashboard.DataConsumerService.Infrastructure;
-using TheDashboard.DataConsumerService.TransferObjects;
+using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DataConsumerService.BusinessLogic;
 

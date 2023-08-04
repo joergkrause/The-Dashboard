@@ -2,7 +2,7 @@
 using Microsoft.JSInterop;
 using System.Runtime.InteropServices;
 
-namespace TheDashboard.FrontendUi.Extensions;
+namespace TheDashboard.Frontend.Extensions;
 
 public static class UiExtensions
 {

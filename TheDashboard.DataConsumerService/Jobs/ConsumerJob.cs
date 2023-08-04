@@ -4,6 +4,7 @@ using TheDashboard.DatabaseLayer.Domain.Contracts;
 using TheDashboard.DataConsumerService.BusinessLogic;
 using TheDashboard.DataConsumerService.Infrastructure;
 using TheDashboard.DataConsumerService.Infrastructure.Integration;
+using TheDashboard.SharedEntities;
 using static MassTransit.Logging.DiagnosticHeaders.Messaging;
 
 namespace TheDashboard.DataConsumerService.Jobs;
@@ -58,7 +59,7 @@ public class ConsumerJob : IJob
       if (consumerId == 0)
       {
         // if no id is sent we assume this is the heartbeat job
-        await _publishEndpoint.Publish(new DataEvent(DateTime.Now.ToLongTimeString()));
+        await _publishEndpoint.Publish<DataEvent>(new DataEvent(DateTime.Now.ToLongTimeString()));
         await _dbConsumerContext.SaveChangesAsync();
         return;
       }

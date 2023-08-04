@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "TheDashboard.SharedEntities": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57853;http://localhost:57854"
+    }
+  }
+}

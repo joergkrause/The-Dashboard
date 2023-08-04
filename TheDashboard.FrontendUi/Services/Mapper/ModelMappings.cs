@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using TheDashboard.Clients;
+using TheDashboard.SharedEntities;
 using TheDashboard.ViewModels.Data;
 
-namespace TheDashboard.FrontendUi.Services.Mapper;
+namespace TheDashboard.Frontend.Services.Mapper;
 
 public class ModelMappings : Profile
 {

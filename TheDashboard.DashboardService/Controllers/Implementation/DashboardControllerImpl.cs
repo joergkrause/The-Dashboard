@@ -9,15 +9,13 @@ namespace TheDashboard.DashboardService.Controllers.Implementation;
 
 [Route("api/[controller]")]
 [ApiController]
-[Produces("application/json")]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class DashboardControllerImplementation : IDashboardBaseController
+public class DashboardControllerImpl : IDashboardBaseController
 {
 
   private readonly ILogger<DashboardController>? _logger;
   private readonly IDashboardService _dashboardService;
 
-  public DashboardControllerImplementation(IServiceProvider serviceProvider)
+  public DashboardControllerImpl(IServiceProvider serviceProvider)
   {
     _logger = serviceProvider.GetService<ILogger<DashboardController>>();
     _dashboardService = serviceProvider.GetRequiredService<IDashboardService>();

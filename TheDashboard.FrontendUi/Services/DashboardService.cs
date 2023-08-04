@@ -4,7 +4,7 @@ using System.Text.Json;
 using TheDashboard.SharedEntities;
 using TheDashboard.ViewModels.Data;
 
-namespace TheDashboard.FrontendUi.Services;
+namespace TheDashboard.Frontend.Services;
 
 public class DashboardService : IDashboardService
 {
@@ -12,15 +12,13 @@ public class DashboardService : IDashboardService
     private readonly HttpClient _httpClient;
     private readonly IDashboardClient _dashboardClient;
     private readonly ITilesClient _tilesClient;
-    private readonly IDataConsumerClient _dataConsumerClient;
 
-    public DashboardService(IMapper mapper, IHttpClientFactory httpClientFactory, IDashboardClient dashboardClient, ITilesClient tilesClient, IDataConsumerClient dataConsumerClient)
+    public DashboardService(IMapper mapper, IHttpClientFactory httpClientFactory, IDashboardClient dashboardClient, ITilesClient tilesClient)
     {
         _mapper = mapper;
         _httpClient = httpClientFactory.CreateClient("HttpCommandProxy");
         _dashboardClient = dashboardClient;
         _tilesClient = tilesClient;
-        _dataConsumerClient = dataConsumerClient;
     }
 
     public async Task<IList<TileViewModel>> GetTiles(Guid dashboardId)

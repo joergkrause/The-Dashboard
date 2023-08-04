@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TheDashboard.TileService.Controllers.Models;
+using TheDashboard.SharedEntities;
 using TheDashboard.TileService.Domain;
 
 namespace TheDashboard.TileService.BusinessLogic.MappingProfiles;

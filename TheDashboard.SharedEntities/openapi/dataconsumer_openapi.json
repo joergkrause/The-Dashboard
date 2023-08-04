@@ -34,6 +34,7 @@
         "tags": [
           "Consumer"
         ],
+        "operationId": "Add",
         "requestBody": {
           "content": {
             "application/json": {
@@ -83,6 +84,7 @@
         "tags": [
           "Consumer"
         ],
+        "operationId": "Update",
         "requestBody": {
           "content": {
             "application/json": {
@@ -176,6 +178,7 @@
         "tags": [
           "Consumer"
         ],
+        "operationId": "Delete",
         "parameters": [
           {
             "name": "id",
@@ -239,6 +242,9 @@
           "dashboardId": {
             "type": "string",
             "format": "uuid"
+          },
+          "sourceType": {
+            "type": "string"
           }
         },
         "additionalProperties": false

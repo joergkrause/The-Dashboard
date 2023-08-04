@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TheDashboard.DataConsumerService.Domain;
-using TheDashboard.DataConsumerService.TransferObjects;
+using TheDashboard.SharedEntities;
 
 namespace TheDatabase.DataConsumerService.BusinessLogic.MappingProfiles;
 

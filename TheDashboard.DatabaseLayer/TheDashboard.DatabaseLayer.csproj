@@ -10,18 +10,11 @@
         <PackageReference Include="MassTransit" Version="8.0.16" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.16" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.13" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
-
-    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-        <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=TilesClient,Namespace=TheDashboard.Clients,InputSwagger=openapi/tiles_openapi.json,ConfigHelper=IConfiguration" />
-        <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=DashboardClient,Namespace=TheDashboard.Clients,InputSwagger=openapi/dashboard_openapi.json,ConfigHelper=IConfiguration" />
-        <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=DataConsumerClient,Namespace=TheDashboard.Clients,InputSwagger=openapi/dataconsumer_openapi.json,ConfigHelper=IConfiguration" />
-        <!-- <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=UiInfoClient,Namespace=TheDashboard.Clients,InputSwagger=openapi/uiinfo_openapi.json,ConfigHelper=IConfiguration" />-->
-    </Target>
 
 </Project>

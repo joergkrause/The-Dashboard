@@ -17,10 +17,14 @@
     <ItemGroup>
         <PackageReference Include="MassTransit" Version="8.0.16" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="NSwag.MSBuild" Version="13.18.4">
+        <PackageReference Include="NSwag.MSBuild" Version="13.19.0">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models\" />
     </ItemGroup>
 
     <!-- These generator instruction must always run symmetric and in the same namespaces, as the generated DTOs are being shared between client and service -->

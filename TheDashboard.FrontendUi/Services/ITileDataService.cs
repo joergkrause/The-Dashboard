@@ -1,7 +1,6 @@
-﻿using TheDashboard.BuildingBlocks.Core.EventStore;
-using TheDashboard.Clients;
+﻿using TheDashboard.SharedEntities;
 
-namespace TheDashboard.FrontendUi.Services;
+namespace TheDashboard.Frontend.Services;
 
 public interface ITileDataService
 {

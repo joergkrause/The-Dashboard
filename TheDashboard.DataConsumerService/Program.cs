@@ -62,20 +62,11 @@ builder.Services.AddQuartzHostedService(config =>
   config.WaitForJobsToComplete = true;
 });
 
-builder.Services.AddSwaggerGen(config =>
-{
-  config.SwaggerDoc("v1", new() { Title = "DataConsumer API", Version = "v1" });
-});
 builder.Services.AddHealthChecks();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(config =>
-{
-  config.SwaggerEndpoint("/swagger/v1/swagger.json", "DataConsumer API v1");  
-});
 app.MapControllers();
 app.UseHttpsRedirection();
 

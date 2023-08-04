@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using System.Runtime.CompilerServices;
-using TheDashboard.BuildingBlocks.Core.EventStore;
-using TheDashboard.Clients;
+using TheDashboard.SharedEntities;
 
-namespace TheDashboard.FrontendUi.Services;
+namespace TheDashboard.Frontend.Services;
 
 public delegate void OnMessageEvent(Guid tileId, string message);
 

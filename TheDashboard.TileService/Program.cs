@@ -9,6 +9,8 @@ using TheDashboard.TileService.Domain;
 using TheDashboard.TileService.Infrastructure;
 using TheDashboard.TileService.Infrastructure.Integration;
 using MassTransit;
+using TheDashboard.SharedEntities;
+using TheDashboard.TileService.Controllers.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,22 +27,13 @@ builder.Services.AddScoped<DashboardCreatedHandler>();
 builder.Services.AddScoped<DashboardUpdatedHandler>();
 builder.Services.AddScoped<DashboardRemovedHandler>();
 
-builder.Services.AddEventbus<TileDbContext>(builder.Configuration, nameof(TileService));
+builder.Services.AddScoped<ITileBaseController, TileControllerImpl>();
 
-builder.Services.AddSwaggerGen(config =>
-{
-  config.SwaggerDoc("v1", new() { Title = "Tiles API", Version = "v1" });
-});
+builder.Services.AddEventbus<TileDbContext>(builder.Configuration, nameof(TileService));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
-
-app.UseSwagger();
-app.UseSwaggerUI(config =>
-{
-  config.SwaggerEndpoint("/swagger/v1/swagger.json", "Tiles API v1");  
-});
 
 app.UseHttpsRedirection();
 app.MapControllers();

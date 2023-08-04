@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
 
-namespace TheDashboard.FrontendUi.Extensions;
+namespace TheDashboard.Frontend.Extensions;
 
 public class FragmentNavigationBase : ComponentBase, IDisposable
 {

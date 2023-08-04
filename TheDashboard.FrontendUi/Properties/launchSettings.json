@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "TheDashboard.FrontendUi": {
+    "TheDashboard.Frontend": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

@@ -1,7 +1,7 @@
 ﻿using TheDashboard.SharedEntities;
 using TheDashboard.ViewModels.Data;
 
-namespace TheDashboard.FrontendUi.Services
+namespace TheDashboard.Frontend.Services
 {
   public interface IDashboardService
   {

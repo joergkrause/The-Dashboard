@@ -42,7 +42,7 @@ builder.Services.AddScoped<IUser, CurrentUser>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 // the generated controllers request this implementation to execute actual requests
-builder.Services.AddScoped<IDashboardBaseController, DashboardControllerImplementation>();
+builder.Services.AddScoped<IDashboardBaseController, DashboardControllerImpl>();
 
 builder.Services.AddEventbus<DashboardContext>(builder.Configuration, nameof(DashboardService));
 
