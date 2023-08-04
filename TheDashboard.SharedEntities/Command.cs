@@ -1,6 +1,6 @@
 ﻿using MassTransit;
 
-namespace TheDashboard.BuildingBlocks.Core.EventStore;
+namespace TheDashboard.SharedEntities;
 
 /// <summary>
 /// Use this as a contraint for any generic command functions.

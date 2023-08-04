@@ -4,11 +4,11 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text.Json;
-using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.BuildingBlocks.Extensions;
 using TheDashboard.Proxy.Middleware;
 using TheDashboard.Proxy.Services;
 using TheDashboard.Proxy.Transformers;
+using TheDashboard.SharedEntities;
 using Yarp.ReverseProxy.Forwarder;
 using Yarp.ReverseProxy.Transforms;
 

@@ -3,6 +3,7 @@ using MassTransit;
 using Quartz;
 using TheDashboard.DataConsumerService.BusinessLogic;
 using TheDashboard.DataConsumerService.Jobs;
+using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DataConsumerService.Infrastructure.Integration;
 

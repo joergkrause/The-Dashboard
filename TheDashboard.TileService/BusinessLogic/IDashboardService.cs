@@ -1,4 +1,4 @@
-﻿using TheDashboard.TileService.Controllers.Models;
+﻿using TheDashboard.SharedEntities;
 
 namespace TheDashboard.TileService.BusinessLogic
 {

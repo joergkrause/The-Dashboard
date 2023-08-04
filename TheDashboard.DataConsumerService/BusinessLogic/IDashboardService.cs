@@ -1,4 +1,5 @@
 ﻿using TheDashboard.DataConsumerService.TransferObjects;
+using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DataConsumerService.BusinessLogic;
 

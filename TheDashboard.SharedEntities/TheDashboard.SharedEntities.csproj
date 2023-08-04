@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputType>library</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="nswag.json" />
+        <None Remove="openapi\dashboard_openapi.json" />
+        <None Remove="openapi\dataconsumer_openapi.json" />
+        <None Remove="openapi\tiles_openapi.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MassTransit" Version="8.0.16" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="NSwag.MSBuild" Version="13.18.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <!-- These generator instruction must always run symmetric and in the same namespaces, as the generated DTOs are being shared between client and service -->
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <!-- Create Proxy and NO types, the types are being used from generated controllers (see "generateDtoTypes": false in nswag.json) -->
+        <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=TilesClient,Namespace=TheDashboard.SharedEntities,InputSwagger=openapi/tiles_openapi.json,ConfigHelper=IConfiguration" />
+        <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=DashboardClient,Namespace=TheDashboard.SharedEntities,InputSwagger=openapi/dashboard_openapi.json,ConfigHelper=IConfiguration" />
+        <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=DataConsumerClient,Namespace=TheDashboard.SharedEntities,InputSwagger=openapi/dataconsumer_openapi.json,ConfigHelper=IConfiguration" />
+        <!-- Create Controller Base Classes -->
+        <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/tiles_openapi.json /classname:TileBase /namespace:TheDashboard.SharedEntities /output:Controllers/TileBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
+        <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/dashboard_openapi.json /classname:DashboardBase /namespace:TheDashboard.SharedEntities /output:Controllers/DashboardBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
+        <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/dataconsumer_openapi.json /classname:DataConsumerBase /namespace:TheDashboard.SharedEntities /output:Controllers/DataConsumerBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
+    </Target>
+
+</Project>

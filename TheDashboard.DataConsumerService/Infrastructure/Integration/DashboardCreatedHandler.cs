@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MassTransit;
-using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.DataConsumerService.BusinessLogic;
+using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DataConsumerService.Infrastructure.Integration;
 

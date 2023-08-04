@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheDashboard.DatabaseLayer.Domain.Contracts;
-using TheDashboard.DataConsumerService.Infrastructure.Integration;
+using TheDashboard.SharedEntities;
 using TheDashboard.UiInfoService.Infrastructure.Integration;
 
 namespace TheDashboard.UiInfoService.Controllers;

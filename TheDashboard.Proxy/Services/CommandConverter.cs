@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
-using TheDashboard.BuildingBlocks.Core.EventStore;
+using TheDashboard.SharedEntities;
 using System.Runtime.Serialization;
 
 namespace TheDashboard.Proxy.Services;

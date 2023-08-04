@@ -5,9 +5,8 @@ using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using TheDashboard.DashboardService.Infrastructure;
 using TheDashboard.DatabaseLayer;
-using TheDashboard.Services.TransferObjects;
 using TheDashboard.DashboardService.Domain;
-using TheDashboard.BuildingBlocks.Core.EventStore;
+using TheDashboard.SharedEntities;
 
 namespace TheDashboard.Services;
 
@@ -52,7 +51,7 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     return _mapper.Map<DashboardDto>(model);
   }
 
-  public async Task AddDashboard(DashboardDto dto)
+  public async Task<DashboardDto> AddDashboard(DashboardDto dto)
   {
     var dashboard = _mapper.Map<Dashboard>(dto);
     // add some defaults
@@ -63,6 +62,8 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     await (_publishEndpoint?.Publish(createdEvent) ?? Task.CompletedTask);
     Context.Dashboards.Add(dashboard);
     Context.Entry(defaultLayout).State = EntityState.Unchanged;
+    var dashboardDto = _mapper.Map<DashboardDto>(dashboard);
+    return dashboardDto;
     try
     {
       await Context.SaveChangesAsync();

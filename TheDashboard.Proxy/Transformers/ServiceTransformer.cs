@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using TheDashboard.BuildingBlocks.Core.EventStore;
 using TheDashboard.Proxy.Services;
+using TheDashboard.SharedEntities;
 using Yarp.ReverseProxy.Forwarder;
 using Yarp.ReverseProxy.Transforms;
 

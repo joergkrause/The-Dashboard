@@ -1,4 +1,4 @@
-﻿using TheDashboard.BuildingBlocks.Core.EventStore;
+﻿using TheDashboard.SharedEntities;
 
 namespace TheDashboard.Proxy.Services
 {

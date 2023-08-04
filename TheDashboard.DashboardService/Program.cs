@@ -10,7 +10,8 @@ using TheDashboard.DashboardService.Domain;
 using TheDashboard.DatabaseLayer.Interfaces;
 using TheDashboard.DatabaseLayer.Interceptors;
 using TheDashboard.DatabaseLayer.Configurations;
-
+using TheDashboard.SharedEntities;
+using TheDashboard.DashboardService.Controllers.Implementation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,24 +40,16 @@ builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddScoped<IDateTime, CurrentDateTime>();
 builder.Services.AddScoped<IUser, CurrentUser>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
-builder.Services.AddScoped<ILayoutService, LayoutService>();
+
+// the generated controllers request this implementation to execute actual requests
+builder.Services.AddScoped<IDashboardBaseController, DashboardControllerImplementation>();
 
 builder.Services.AddEventbus<DashboardContext>(builder.Configuration, nameof(DashboardService));
-
-builder.Services.AddSwaggerGen(config =>
-{
-  config.SwaggerDoc("v1", new() { Title = "Dashboard API", Version = "v1" });
-});
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI(config =>
-{
-  config.SwaggerEndpoint("/swagger/v1/swagger.json", "Dashboard API v1");  
-});
 app.MapControllers();
 app.UseDefaultConfiguration();
 

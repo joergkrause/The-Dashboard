@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MassTransit;
-using TheDashboard.BuildingBlocks.Core.EventStore;
+using TheDashboard.SharedEntities;
 using TheDashboard.TileService.BusinessLogic;
 
 namespace TheDashboard.TileService.Infrastructure.Integration;

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using TheDashboard.DashboardService.Domain;
-using TheDashboard.Services.TransferObjects;
+using TheDashboard.SharedEntities;
 
 namespace TheDashboard.Services.Mappings;
 
@@ -14,7 +14,7 @@ public class MappingProfile : Profile
     CreateMap<DashboardDto, Dashboard>()
       .ForMember(e => e.Layout, opt => opt.Ignore());
 
-    CreateMap<Layout, LayoutDto>().ReverseMap();
+    // CreateMap<Layout, LayoutDto>().ReverseMap();
 
   }
 }

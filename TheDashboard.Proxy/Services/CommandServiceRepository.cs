@@ -2,7 +2,7 @@
 using MassTransit;
 using System.Text.Json;
 using System.Threading;
-using TheDashboard.BuildingBlocks.Core.EventStore;
+using TheDashboard.SharedEntities;
 
 namespace TheDashboard.Proxy.Services;
 

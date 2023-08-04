@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 using TheDashboard.DatabaseLayer.Domain.Contracts;
-using TheDashboard.DataConsumerService.Infrastructure.Integration;
+using TheDashboard.SharedEntities;
 using TheDashboard.UiInfoService.Hubs;
 
 namespace TheDashboard.UiInfoService.Infrastructure.Integration;

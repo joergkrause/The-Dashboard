@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using System.Text;
 using System.Text.Json;
-using TheDashboard.BuildingBlocks.Core.EventStore;
-using TheDashboard.Clients;
+using TheDashboard.SharedEntities;
 using TheDashboard.ViewModels.Data;
 
 namespace TheDashboard.FrontendUi.Services;
