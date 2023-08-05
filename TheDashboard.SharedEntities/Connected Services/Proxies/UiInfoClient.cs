@@ -23,12 +23,12 @@ namespace TheDashboard.SharedEntities
     {
         /// <returns>No Content</returns>
         /// <exception cref="UiInfoClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ValueAsync(int id);
+        System.Threading.Tasks.Task ValueAsync(int id, string value);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>No Content</returns>
         /// <exception cref="UiInfoClientApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task ValueAsync(int id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ValueAsync(int id, string value, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -69,18 +69,21 @@ namespace TheDashboard.SharedEntities
 
         /// <returns>No Content</returns>
         /// <exception cref="UiInfoClientApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task ValueAsync(int id)
+        public virtual System.Threading.Tasks.Task ValueAsync(int id, string value)
         {
-            return ValueAsync(id, System.Threading.CancellationToken.None);
+            return ValueAsync(id, value, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>No Content</returns>
         /// <exception cref="UiInfoClientApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task ValueAsync(int id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task ValueAsync(int id, string value, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
+
+            if (value == null)
+                throw new System.ArgumentNullException("value");
 
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Values/{id}");
@@ -92,7 +95,10 @@ namespace TheDashboard.SharedEntities
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(value, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
 
                     PrepareRequest(client_, request_, urlBuilder_);

@@ -1,6 +1,5 @@
 ﻿using MassTransit;
 using Quartz;
-using TheDashboard.DatabaseLayer.Domain.Contracts;
 using TheDashboard.DataConsumerService.BusinessLogic;
 using TheDashboard.DataConsumerService.Infrastructure;
 using TheDashboard.DataConsumerService.Infrastructure.Integration;

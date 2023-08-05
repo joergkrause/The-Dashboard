@@ -8,31 +8,9 @@ namespace TheDashboard.UiInfoService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ValuesController : ControllerBase
+public class ValuesController : UiInfoBaseController
 {
-
-  private readonly ILogger<ValuesController> _logger;
-  private readonly ConsumerHandler _consumerHandler;
-
-  public ValuesController(ILogger<ValuesController> logger, ConsumerHandler consumerHandler)
+  public ValuesController(IUiInfoBaseController implementation) : base(implementation)
   {
-    _logger = logger;
-    _consumerHandler = consumerHandler;
   }
-
-  // Add Value to Hub
-  [HttpPost("{tileId:int}")]
-  [ProducesResponseType(typeof(string), StatusCodes.Status201Created)]
-  [ProducesResponseType(typeof(string[]), StatusCodes.Status400BadRequest)]
-  public async Task<IActionResult> Post([FromRoute] int tileId, [FromBody] string value)
-  {
-    if (ModelState.IsValid)
-    {
-      var evt = new DataEvent(value);
-      await _consumerHandler.ConsumeTest(evt);
-      return Ok();
-    }
-    return BadRequest(ModelState);
-  }
-
 }

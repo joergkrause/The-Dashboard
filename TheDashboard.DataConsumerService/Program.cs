@@ -11,14 +11,16 @@ using TheDashboard.DataConsumerService.Domain;
 using TheDashboard.DataConsumerService.Infrastructure;
 using TheDashboard.DataConsumerService.Jobs;
 using TheDatabase.DataConsumerService.BusinessLogic.MappingProfiles;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultServices();
-
+builder.Logging.ClearProviders();
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DataConsumerDbContext>(opt =>
 {
+  opt.LogTo(s => Debug.WriteLine(s), LogLevel.Warning);
   opt.UseSqlServer(cs);
 });
 

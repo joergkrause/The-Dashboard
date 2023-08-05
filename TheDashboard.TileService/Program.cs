@@ -11,13 +11,15 @@ using TheDashboard.TileService.Infrastructure.Integration;
 using MassTransit;
 using TheDashboard.SharedEntities;
 using TheDashboard.TileService.Controllers.Implementation;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultServices();
-
+builder.Logging.ClearProviders();
 builder.Services.AddDbContext<TileDbContext>(opt =>
 {
+  opt.LogTo(s => Debug.WriteLine(s), LogLevel.Warning);
   opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
 });
 

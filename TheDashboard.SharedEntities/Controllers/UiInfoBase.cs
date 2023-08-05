@@ -26,7 +26,7 @@ namespace TheDashboard.SharedEntities
 
         /// <returns>No Content</returns>
 
-        System.Threading.Tasks.Task ValueAsync(int id);
+        System.Threading.Tasks.Task ValueAsync(int id, string value);
 
     }
 
@@ -43,16 +43,16 @@ namespace TheDashboard.SharedEntities
 
         /// <returns>No Content</returns>
         [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/Values/{id}")]
-        public System.Threading.Tasks.Task Value(int id)
+        public System.Threading.Tasks.Task Value(int id, [Microsoft.AspNetCore.Mvc.FromBody] string value)
         {
 
-            return _implementation.ValueAsync(id);
+            return _implementation.ValueAsync(id, value);
         }
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class ProblemDetails
+    public partial class ErrorResult
     {
 
         [System.Text.Json.Serialization.JsonPropertyName("type")]
@@ -60,25 +60,20 @@ namespace TheDashboard.SharedEntities
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string Type { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("title")]
+        [System.Text.Json.Serialization.JsonPropertyName("message")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string Title { get; set; }
-
-        [System.Text.Json.Serialization.JsonPropertyName("status")]
-
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public int? Status { get; set; }
+        public string Message { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("detail")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string Detail { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("instance")]
+        [System.Text.Json.Serialization.JsonPropertyName("tileId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public string Instance { get; set; }
+        public int? TileId { get; set; }
 
         private System.Collections.Generic.IDictionary<string, object> _additionalProperties;
 

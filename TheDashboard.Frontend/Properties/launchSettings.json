@@ -23,6 +23,9 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
+      "httpPort": 80,
+      "sslPort": 443,
+      "use64Bit": true,
       "publishAllPorts": true,
       "useSSL": true
     }

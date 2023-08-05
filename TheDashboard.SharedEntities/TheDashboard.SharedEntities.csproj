@@ -27,6 +27,12 @@
       <Folder Include="Models\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="nswag.json">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
     <!-- These generator instruction must always run symmetric and in the same namespaces, as the generated DTOs are being shared between client and service -->
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
         <!-- Create Proxy and NO types, the types are being used from generated controllers (see "generateDtoTypes": false in nswag.json) -->

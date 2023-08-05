@@ -14,8 +14,6 @@ namespace TheDashboard.DashboardService.Infrastructure;
 public class DashboardContext : DbContext
 {
 
-  public static readonly ILoggerFactory SqlLogger = LoggerFactory.Create(builder => { builder.AddConsole(); });
-
   private readonly IEnumerable<EntityTypeConfigurationDependency> _configurations;
   private readonly IConfiguration _configuration;
   private readonly ILogger<DashboardContext> _logger;
@@ -48,7 +46,6 @@ public class DashboardContext : DbContext
   protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
   {
 #if SQLDEBUG
-    optionsBuilder.UseLoggerFactory(SqlLogger);
     optionsBuilder.EnableDetailedErrors();
     optionsBuilder.EnableSensitiveDataLogging();
 #endif

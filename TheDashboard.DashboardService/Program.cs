@@ -12,16 +12,19 @@ using TheDashboard.DatabaseLayer.Interceptors;
 using TheDashboard.DatabaseLayer.Configurations;
 using TheDashboard.SharedEntities;
 using TheDashboard.DashboardService.Controllers.Implementation;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultServices();
-builder.Services.AddLogging(config => config.AddConsole());
+
+builder.Logging.ClearProviders();
 
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DashboardContext>(options =>
+builder.Services.AddDbContext<DashboardContext>(opt =>
 {
-  options.UseSqlServer(cs);
+  opt.LogTo(s => Debug.WriteLine(s), LogLevel.Warning);
+  opt.UseSqlServer(cs);
 });
 
 // get logger

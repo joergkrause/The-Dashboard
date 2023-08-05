@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.4'
 
 # Note: Volume bindings are for Windows. For Linux, use the following:
 # Prepare a certificate: 
@@ -71,6 +71,7 @@ services:
 
   frontend:
     image: ${DOCKER_REGISTRY-}frontend:latest
+    container_name: "thedashboard_frontend"
     profiles: [ all, frontend ]
     build:
       context: .
@@ -82,8 +83,8 @@ services:
      - thedashboard.dataconsumerservice
      - thedashboard.uiinfoservice
     ports:
-      - 80
-      - 443
+      - "5500:80"
+      - "7500:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
@@ -94,6 +95,7 @@ services:
 
   proxy:
     image: ${DOCKER_REGISTRY-}proxy:latest
+    container_name: proxy
     profiles: [ all, backend, proxy ]
     build:
       context: .
@@ -106,6 +108,7 @@ services:
 
   thedashboard.dashboardservice:
     image: ${DOCKER_REGISTRY-}dashboardservice:latest
+    container_name: "thedashboard_dashboard_service"
     profiles: [ all, backend, dashboard ]
     build:
       context: .
@@ -118,6 +121,7 @@ services:
   
   thedashboard.tileservice:
     image: ${DOCKER_REGISTRY-}tileservice
+    container_name: "thedashboard_tile_service"
     profiles: [ all, backend, tiles ]
     build:
       context: .
@@ -130,6 +134,7 @@ services:
 
   thedashboard.dataconsumerservice:
     image: ${DOCKER_REGISTRY-}dataconsumerservice
+    container_name: "thedashboard_dataconsumer_service"
     profiles: [ all, backend, dataconsumer ]
     build:
       context: .
@@ -142,6 +147,7 @@ services:
 
   thedashboard.uiinfoservice:
     image: ${DOCKER_REGISTRY-}uiinfoservice
+    container_name: "thedashboard_uiinfo_service"
     profiles: [ all, backend, uiinfo ]
     build:
       context: .

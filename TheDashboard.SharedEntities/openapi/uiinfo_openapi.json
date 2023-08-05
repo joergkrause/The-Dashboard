@@ -21,6 +21,14 @@
               "type": "integer",
               "format": "int32"
             }
+          },
+          {
+            "name": "value",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -31,12 +39,12 @@
             "description": "No Content"
           }
         },
-        "404": {
-          "description": "Not Found",
+        "400": {
+          "description": "Bad Request",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProblemDetails"
+                "$ref": "#/components/schemas/ErrorResult"
               }
             }
           }
@@ -46,28 +54,24 @@
   },
   "components": {
     "schemas": {
-      "ProblemDetails": {
+      "ErrorResult": {
         "type": "object",
         "properties": {
           "type": {
             "type": "string",
             "nullable": true
           },
-          "title": {
+          "message": {
             "type": "string",
-            "nullable": true
-          },
-          "status": {
-            "type": "integer",
-            "format": "int32",
             "nullable": true
           },
           "detail": {
             "type": "string",
             "nullable": true
           },
-          "instance": {
-            "type": "string",
+          "tileId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

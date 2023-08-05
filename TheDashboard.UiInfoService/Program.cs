@@ -1,6 +1,6 @@
 using MassTransit;
 using TheDashboard.BuildingBlocks.Extensions;
-using TheDashboard.DatabaseLayer.Domain.Contracts;
+using TheDashboard.SharedEntities;
 using TheDashboard.UiInfoService.Hubs;
 using TheDashboard.UiInfoService.Infrastructure.Integration;
 using TheDashboard.UiInfoService.Infrastructure.Integration.Models;
@@ -14,12 +14,12 @@ namespace TheDashboard.UiInfoService
       var builder = WebApplication.CreateBuilder(args);
 
       builder.Services.AddDefaultServices();
-      builder.Services.AddLogging(config => config.AddConsole());
+      // builder.Services.AddLogging(config => config.AddConsole());
 
       builder.Services.AddMassTransit(x =>
       {
         // listen for messages from dataconsumer service (and others that have something to tell)
-        x.AddConsumer<ConsumerHandler<DataConsumerMessage>>();
+        x.AddConsumer<ConsumerHandler>();
         x.UsingRabbitMq((context, cfg) =>
         {
           cfg.Host(builder.Configuration["RabbitMq:Host"], "/", h =>
@@ -30,16 +30,15 @@ namespace TheDashboard.UiInfoService
           cfg.ReceiveEndpoint("DataConsumerService", e =>
           {
             e.ConfigureConsumers(context);
-            // TODO: use typesafe form
-            e.Bind("TheDashboard.DatabaseLayer.Domain.Contracts:DataConsumerMessage");
+            e.Bind(typeof(DataEvent).Name);
           });
         });
       });
-      
+
       builder.Services.AddSignalR();
 
-      // we receive all data through the queue and push them to the clients
-      builder.Services.AddTransient<ConsumerHandler<DataConsumerMessage>>();
+      // we receive all data through the queue and push them to the clients through SignalR
+      builder.Services.AddTransient<ConsumerHandler>();
 
       builder.Services.AddAuthorization();
 
@@ -48,15 +47,15 @@ namespace TheDashboard.UiInfoService
       {
         options.AddPolicy("AllowBlazorApp",
             builder =>
-            { // .WithOrigins("https://localhost")
-              builder.WithOrigins("https://localhost", "http://localhost:5500", "http://frontend", "http://frontend:5500")
+            { 
+              builder.WithOrigins("http://localhost", "http://localhost:5500", "http://frontend", "http://frontend:5500", "https://localhost", "https://localhost:7500", "https://frontend", "https://frontend:7500")
                      .AllowAnyHeader()
                      .AllowAnyMethod()
                      .AllowCredentials(); // SignalR requires this
             });
       });
 
-      var app = builder.Build();      
+      var app = builder.Build();
 
       app.UseDefaultConfiguration("AllowBlazorApp");
 
