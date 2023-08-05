@@ -10,6 +10,7 @@ WORKDIR /src
 COPY ["TheDashboard.TileService/TheDashboard.TileService.csproj", "TheDashboard.TileService/"]
 COPY ["TheDashboard.BuildingBlocks/TheDashboard.BuildingBlocks.csproj", "TheDashboard.BuildingBlocks/"]
 COPY ["TheDashboard.DatabaseLayer/TheDashboard.DatabaseLayer.csproj", "TheDashboard.DatabaseLayer/"]
+COPY ["TheDashboard.SharedEntities/TheDashboard.SharedEntities.csproj", "TheDashboard.SharedEntities/"]
 RUN dotnet restore "TheDashboard.TileService/TheDashboard.TileService.csproj"
 COPY . .
 WORKDIR "/src/TheDashboard.TileService"

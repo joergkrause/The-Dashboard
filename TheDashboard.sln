@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DatabaseLayer"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.BuildingBlocks", "TheDashboard.BuildingBlocks\TheDashboard.BuildingBlocks.csproj", "{8F4BAD91-6703-44FD-964A-F72F8305DC9C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.Frontend", "TheDashboard.FrontendUi\TheDashboard.Frontend.csproj", "{4F6518BC-37DC-4AA1-A3CF-BF364BBA8E5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.Frontend", "TheDashboard.Frontend\TheDashboard.Frontend.csproj", "{4F6518BC-37DC-4AA1-A3CF-BF364BBA8E5B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.UiInfoService", "TheDashboard.UiInfoService\TheDashboard.UiInfoService.csproj", "{A67B46F0-DB85-49C8-BA78-5DD85517E4D8}"
 EndProject

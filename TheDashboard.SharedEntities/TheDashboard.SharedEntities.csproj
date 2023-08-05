@@ -33,10 +33,11 @@
         <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=TilesClient,Namespace=TheDashboard.SharedEntities,InputSwagger=openapi/tiles_openapi.json,ConfigHelper=IConfiguration" />
         <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=DashboardClient,Namespace=TheDashboard.SharedEntities,InputSwagger=openapi/dashboard_openapi.json,ConfigHelper=IConfiguration" />
         <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=DataConsumerClient,Namespace=TheDashboard.SharedEntities,InputSwagger=openapi/dataconsumer_openapi.json,ConfigHelper=IConfiguration" />
+        <Exec Command="$(NSwagExe_Net60) run nswag.json /runTime:net60 /variables:Client=UiInfoClient,Namespace=TheDashboard.SharedEntities,InputSwagger=openapi/uiinfo_openapi.json,ConfigHelper=IConfiguration" />
         <!-- Create Controller Base Classes -->
         <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/tiles_openapi.json /classname:TileBase /namespace:TheDashboard.SharedEntities /output:Controllers/TileBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
         <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/dashboard_openapi.json /classname:DashboardBase /namespace:TheDashboard.SharedEntities /output:Controllers/DashboardBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
         <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/dataconsumer_openapi.json /classname:DataConsumerBase /namespace:TheDashboard.SharedEntities /output:Controllers/DataConsumerBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
+        <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/uiinfo_openapi.json /classname:UiInfoBase /namespace:TheDashboard.SharedEntities /output:Controllers/UiInfoBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
     </Target>
-
 </Project>

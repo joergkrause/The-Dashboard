@@ -1,7 +1,6 @@
 ﻿using MassTransit.Transports;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TheDashboard.DatabaseLayer.Domain.Contracts;
 using TheDashboard.SharedEntities;
 using TheDashboard.UiInfoService.Infrastructure.Integration;
 
@@ -13,9 +12,9 @@ public class ValuesController : ControllerBase
 {
 
   private readonly ILogger<ValuesController> _logger;
-  private readonly ConsumerHandler<DataConsumerMessage> _consumerHandler;
+  private readonly ConsumerHandler _consumerHandler;
 
-  public ValuesController(ILogger<ValuesController> logger, ConsumerHandler<DataConsumerMessage> consumerHandler)
+  public ValuesController(ILogger<ValuesController> logger, ConsumerHandler consumerHandler)
   {
     _logger = logger;
     _consumerHandler = consumerHandler;

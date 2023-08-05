@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["TheDashboard.UiInfoService/TheDashboard.UiInfoService.csproj", "TheDashboard.UiInfoService/"]
 COPY ["TheDashboard.BuildingBlocks/TheDashboard.BuildingBlocks.csproj", "TheDashboard.BuildingBlocks/"]
-COPY ["TheDashboard.DatabaseLayer/TheDashboard.DatabaseLayer.csproj", "TheDashboard.DatabaseLayer/"]
+COPY ["TheDashboard.SharedEntities/TheDashboard.SharedEntities.csproj", "TheDashboard.SharedEntities/"]
 RUN dotnet restore "TheDashboard.UiInfoService/TheDashboard.UiInfoService.csproj"
 COPY . .
 WORKDIR "/src/TheDashboard.UiInfoService"

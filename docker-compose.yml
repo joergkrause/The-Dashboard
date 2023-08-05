@@ -6,34 +6,10 @@ version: '3.9'
 # dotnet dev-certs https --trust
 
 services:
-  # Consider secure mode in prod as described here: https://developers.eventstore.com/server/v20.10/installation.html#use-docker-compose
-  eventstore:
-    image: eventstore/eventstore:latest
-    container_name: eventstore
-    environment:
-      - EVENTSTORE_CLUSTER_SIZE=1
-      - EVENTSTORE_RUN_PROJECTIONS=All
-      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
-      - EVENTSTORE_EXT_TCP_PORT=1113
-      - EVENTSTORE_HTTP_PORT=2113
-      - EVENTSTORE_INSECURE=true
-      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
-      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
-    ports:
-      - "1113:1113"
-      - "2113:2113"
-    volumes:
-      - type: bind
-        source: D:\Volumes\eventstore\data
-        target: /var/lib/eventstore
-      - type: bind
-        source: D:\Volumes\eventstore\logs
-        target: /var/log/eventstore
-
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
-    profiles: [ all, backend, dashboard, tiles, dataconsumer, uiinfo ]
+    profiles: [ all, backend, dashboard, tiles, dataconsumer ]
     ports:
       - "1433:1433"
     environment:
@@ -48,13 +24,13 @@ services:
       start_period: 60s
     volumes:
      - type: bind
-       source: D:\Volumes\sqldata
+       source: "/D/Volumes/sqldata"
        target: /var/opt/mssql/data
   
   eventbus:
     image: rabbitmq:3-management
     container_name: eventbus
-    profiles: [ all, eventbus, backend, dashboard, tiles, dataconsumer ]
+    profiles: [ all, eventbus, backend, dashboard, tiles, dataconsumer, uiinfo ]
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -68,33 +44,57 @@ services:
       retries: 3
       start_period: 60s
 
+  # Consider secure mode in prod as described here: https://developers.eventstore.com/server/v20.10/installation.html#use-docker-compose
+  eventstore:
+    image: eventstore/eventstore:latest
+    container_name: eventstore
+    profiles: [ all, backend, proxy ]
+    environment:
+      - EVENTSTORE_CLUSTER_SIZE=1
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+      - EVENTSTORE_EXT_TCP_PORT=1113
+      - EVENTSTORE_HTTP_PORT=2113
+      - EVENTSTORE_INSECURE=true
+      - EVENTSTORE_ENABLE_EXTERNAL_TCP=true
+      - EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - "1113:1113"
+      - "2113:2113"
+    volumes:
+      - type: bind
+        source: "/D/Volumes/eventstore/data"
+        target: /var/lib/eventstore
+      - type: bind
+        source: "/D/Volumes/eventstore/logs"
+        target: /var/log/eventstore
+
   frontend:
     image: ${DOCKER_REGISTRY-}frontend:latest
     profiles: [ all, frontend ]
     build:
       context: .
-      dockerfile: TheDashboard.FrontendUi/Dockerfile
+      dockerfile: TheDashboard.Frontend/Dockerfile
     depends_on:
-     - eventstore
      - proxy
      - thedashboard.dashboardservice
      - thedashboard.tileservice
      - thedashboard.dataconsumerservice
      - thedashboard.uiinfoservice
     ports:
-      - "7500:443/tcp"
-      - "5500:80/tcp"
-    volumes:
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - 80
+      - 443
     environment:
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/localhost.pfx
-      - ASPNETCORE_URLS=https://localhost;http://localhost
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+    volumes:
+      - ~/.aspnet/https:/https:ro
 
   proxy:
     image: ${DOCKER_REGISTRY-}proxy:latest
-    profiles: [ all, backend, dashboard ]
+    profiles: [ all, backend, proxy ]
     build:
       context: .
       dockerfile: TheDashboard.Proxy/Dockerfile
@@ -113,7 +113,6 @@ services:
     ports:
       - "5100:80/tcp"
     depends_on:
-      - eventstore
       - sqlserver
       - eventbus
   
@@ -126,7 +125,6 @@ services:
     ports:
       - "5200:80/tcp"
     depends_on:
-      - eventstore
       - sqlserver
       - eventbus
 
@@ -139,7 +137,6 @@ services:
     ports:
       - "5300:80/tcp"
     depends_on:
-      - eventstore
       - sqlserver
       - eventbus
 
@@ -152,7 +149,6 @@ services:
     ports:
       - "5400:80/tcp"
     depends_on:
-      - eventstore
       - sqlserver
       - eventbus
 

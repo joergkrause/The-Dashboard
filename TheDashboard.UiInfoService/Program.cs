@@ -41,11 +41,6 @@ namespace TheDashboard.UiInfoService
       // we receive all data through the queue and push them to the clients
       builder.Services.AddTransient<ConsumerHandler<DataConsumerMessage>>();
 
-      builder.Services.AddSwaggerGen(config =>
-      {
-        config.SwaggerDoc("v1", new() { Title = "UiInfo API", Version = "v1" });
-      });      
-
       builder.Services.AddAuthorization();
 
       // CORS probably not required if data pulling comes from server side blazor code
@@ -63,12 +58,6 @@ namespace TheDashboard.UiInfoService
 
       var app = builder.Build();      
 
-      app.UseSwagger();
-      app.UseSwaggerUI(config =>
-      {
-        config.SwaggerEndpoint("/swagger/v1/swagger.json", "UiInfo API v1");
-      });
-      
       app.UseDefaultConfiguration("AllowBlazorApp");
 
       app.MapControllers();

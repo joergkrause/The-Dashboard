@@ -1,13 +1,12 @@
 ﻿using MassTransit;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
-using TheDashboard.DatabaseLayer.Domain.Contracts;
 using TheDashboard.SharedEntities;
 using TheDashboard.UiInfoService.Hubs;
 
 namespace TheDashboard.UiInfoService.Infrastructure.Integration;
 
-public class ConsumerHandler<T> : IConsumer<DataEvent> where T : DataConsumerMessage
+public class ConsumerHandler : IConsumer<DataEvent>
 {
 
   private readonly IHubContext<InfoHub> _infoHub;

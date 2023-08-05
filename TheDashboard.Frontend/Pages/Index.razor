@@ -1,9 +1,46 @@
 ﻿@page "/"
+@using TheDashboard.Frontend.Services
 
-<PageTitle>Index</PageTitle>
+@attribute [AllowAnonymous]
 
-<h1>Hello, world!</h1>
+@implements IDisposable
+@inject ITileDataService TileData
 
-Welcome to your new app.
+<PageTitle>Dashboard Manager</PageTitle>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+<h1>Manage your Dashboards</h1>
+
+<p>
+  <NavLink class="btn btn-primary" href="/tenants/dashboardmanager">Manage your Dashboards</NavLink>
+</p>
+
+<p>
+  Start creating a dashboard. Add a standard layout or create a new one. Add tiles with visalization and transformation instructions of your data.
+  Any data source can be used. The dashboard will be rendered as a web page. You can share the URL with others.
+  Add an manage users to protect your dashboard. Set refresh rates and design rules.
+</p>
+
+<b>@Data</b>
+
+@code {
+
+  public string Data { get; set; }
+
+  protected override void OnInitialized()
+  {
+    TileData.Message += async (tileId, message) => await OnDataReceived(tileId, message);
+  }
+
+
+  private async Task OnDataReceived(Guid tileId, string message)
+  {
+    Data = message;
+    await InvokeAsync(() => StateHasChanged());
+  }
+
+  public void Dispose()
+  {
+    TileData.Message -= async(tileId, message) => await OnDataReceived(tileId, message);
+  }
+  
+}
