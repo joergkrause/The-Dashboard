@@ -9,13 +9,15 @@ public static class SeedDatabase
   public static async Task Seed(TileDbContext context)
   {
 
-    var hasSeed = context.Set<Dashboard>().Any();
+    var hasSeed = context.Set<Dashboard>().Any(e => e.Id == Guid.Parse("8BFE41C6-45BC-420A-8AF9-356D96B200AB"));
     if (hasSeed) return;
+
+    var seedId = new Guid("8BFE41C6-45BC-420A-8AF9-356D96B200AB");
 
     var d1 = new Dashboard
     {
-      Id = Guid.NewGuid(),
-      Name = "Dashboard 1",
+      Id = seedId,
+      Name = "Demo Dashboard 1",
     };
     var t1 = new Tile
     {
@@ -36,15 +38,14 @@ public static class SeedDatabase
           Name = "Transformer 1",
           Description = "The Transformer"
         }
-      }
+      },
+      Dashboard = d1
     };
-
-    t1.Dashboard = d1;
 
     context.Set<Tile>().Add(t1);
     context.Set<Dashboard>().Add(d1);
 
-    await context.SaveChangesAsync();   
+    await context.SaveChangesAsync();
   }
 
 }

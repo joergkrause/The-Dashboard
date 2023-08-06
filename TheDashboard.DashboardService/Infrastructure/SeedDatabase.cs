@@ -21,7 +21,7 @@ public static class SeedDatabase
     var d1 = new Dashboard
     {
       Id = seedId,
-      Name = "Dashboard 1",
+      Name = "Demo Dashboard 1",
       Theme = "Dark",
       Version = 1,
       IsDefault = true,

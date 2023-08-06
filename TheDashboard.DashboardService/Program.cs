@@ -18,8 +18,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultServices();
 
-builder.Logging.ClearProviders();
-
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DashboardContext>(opt =>
 {

@@ -28,7 +28,7 @@ public class DashboardConfiguration : EntityTypeConfigurationDependency<Dashboar
     builder.Property(e => e.Name).HasConversion(str => str, b => _encryptService.DecryptString(_configuration.GetValue<string>("Encryption:Cipher"), b));
     builder.HasIndex(e => e.Name).IsUnique();
 
-    builder.Property(e => e.Version).HasColumnName("VER");
+    builder.Property(e => e.Version).HasColumnName("Ver");
     builder.Property(e => e.Theme).HasMaxLength(50).IsRequired(false);
     // Shadow Properties
     builder.Property<DateTime>(nameof(IAuditableEntityBaseProperties.CreatedAt));

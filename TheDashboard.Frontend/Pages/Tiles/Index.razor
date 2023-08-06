@@ -1,0 +1,29 @@
+﻿@page "/tiles"
+
+@using TheDashboard.Frontend.Services;
+@using TheDashboard.Frontend.Shared.Tiles
+@using TheDashboard.SharedEntities;
+
+@inject ITileDataService TileDataService
+
+<h3>Tiles Manager</h3>
+
+@code {
+
+  private string DashboardTitle { get; set; } = "Dashboard Title";
+
+  private string dataMessage = "";
+
+  [Parameter]
+  public Guid DashboardId { get; set; }
+
+
+  private List<TileDto> Tiles = new List<TileDto>();
+
+  protected async override Task OnInitializedAsync()
+  {
+    await TileDataService.Init();
+    TileDataService.Message += (Guid tileId, string message) => dataMessage = message;
+  }
+
+}

@@ -47,6 +47,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Credentials.txt = Credentials.txt
 		README.md = README.md
+		start.ps1 = start.ps1
+		start.cmd = start.cmd
+		start.sh = start.sh
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackendForFrontend", "BackendForFrontend", "{33CE4906-3CC5-4099-902A-9B72A79D4FCE}"

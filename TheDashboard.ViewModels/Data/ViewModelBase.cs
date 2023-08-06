@@ -1,5 +1,6 @@
 ﻿namespace TheDashboard.ViewModels.Data;
 
-  public class ViewModelBase<T> where T : IEquatable<T>
-  {
-  }
+public abstract class ViewModelBase<T> where T : IEquatable<T>
+{
+  public T Id { get; set; } = default!;
+}

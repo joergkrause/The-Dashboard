@@ -1,37 +1,112 @@
-﻿@using TheDashboard.Frontend.Services;
-@using TheDashboard.Frontend.Shared.Tiles
-@using TheDashboard.SharedEntities;
+﻿@page "/dashboards"
+@using Blazorise
+@using TheDashboard.SharedEntities
+@using TheDashboard.Frontend.Services
+@using Blazorise.DataGrid
+@using TheDashboard.Ui.Components
+@using TheDashboard.ViewModels.Data;
 
-@inject ITileDataService TileDataService
+@inject IDashboardService DashboardService
 
-<div class="container">
-  <div class="row">
-    <h1>@DashboardTitle</h1>
-    @foreach(var tile in Tiles)
-    {
-      <DataTile X="@tile.XOffset" Y="@tile.YOffset" Width="@tile.Width" Title="@tile.Title" Subtitle="@tile.SubTitle">
-        @dataMessage
-      </DataTile>
-    }
-  </div>
-</div>
+<h3>Dashboard Manager</h3>
+
+<Blazorise.Alert Color="Blazorise.Color.Info">
+  Here you manage all your dashboards. Each dashboard has a distinct URL for data viewing. To make use of a dashboard you need to assign two tasks:
+  1) Add datasources to retrieve any kind of data. 2) Add tiles that consume data and provide a view, along with filter and transformation capabilities.
+</Blazorise.Alert>
+
+<DataGrid TItem="DashboardViewModel"
+@bind-SelectedRow="@selectedContent"
+          Data="@Dashboards"
+              Filterable
+              Sortable
+              Editable
+              ShowPager
+              Resizable
+          DetailRowTrigger="(args) => args.Single = true"
+          DetailRowStartsVisible="false"
+          NewItemDefaultSetter="@OnDashboardNewItemDefaultSetter"
+          EditMode="DataGridEditMode.Inline"
+          CommandMode="DataGridCommandMode.ButtonRow"
+          RowUpdated="OnRowUpdated"
+          RowInserted="OnRowInserted"
+          RowRemoved="OnRowRemoved">
+  <ChildContent>
+    <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false">
+      <SaveCommandTemplate>
+        <Button ElementId="btnSave" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+      </SaveCommandTemplate>
+      <CancelCommandTemplate>
+        <Button ElementId="btnCancel" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+      </CancelCommandTemplate>
+    </DataGridCommandColumn>
+    <DataGridColumn TItem="DashboardViewModel" Caption="Id" Field="@nameof(DashboardViewModel.Id)" Filterable=false Sortable=false Width="10">
+    </DataGridColumn>
+    <DataGridColumn TItem="DashboardViewModel" Caption="Id" Field="@nameof(DashboardViewModel.Name)" Filterable=false Sortable=false Width="10">
+    </DataGridColumn>
+  </ChildContent>
+  <DetailRowTemplate>
+    <div class="box">
+      <h3>Dashboard: @context.Name</h3>
+      <CanvasPanel>
+        <Title>
+          <h3>Details for @context.Name</h3>
+        </Title>
+        <ButtonText>
+          <Icon IconStyle="IconStyle.Light" Name="IconName.FolderOpen"></Icon>
+          See Layout and Tile details...</ButtonText>
+        <Content>
+          Here goes the detail view for the dashboard...
+        </Content>
+      </CanvasPanel>
+    </div>
+  </DetailRowTemplate>
+  <EmptyTemplate>
+    <div class="box">
+      No dashboards to show...
+    </div>
+  </EmptyTemplate>
+  <LoadingTemplate>
+    <div class="box">
+      <progress class="progress is-small is-primary" max="100" />
+    </div>
+  </LoadingTemplate>
+  <ButtonRowTemplate>
+    <Blazorise.Button Color="Blazorise.Color.Primary" Size="Blazorise.Size.Small" Class="float-end" Clicked="context.NewCommand.Clicked">New</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Success" Disabled="(selectedContent is null)" Size="Blazorise.Size.Small" Class="float-end" Clicked="context.EditCommand.Clicked">Edit</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Danger" Disabled="(selectedContent is null)" Size="Blazorise.Size.Small" Class="float-end" Clicked="context.DeleteCommand.Clicked">Delete</Blazorise.Button>
+  </ButtonRowTemplate>
+</DataGrid>
 
 @code {
 
-  private string DashboardTitle { get; set; } = "Dashboard Title";
+  DashboardViewModel selectedContent;
 
-  private string dataMessage = "";
+  IList<DashboardViewModel> Dashboards = new List<DashboardViewModel>();
 
-  [Parameter]
-  public Guid DashboardId { get; set; }
-
-
-  private List<TileDto> Tiles = new List<TileDto>();
-
-  protected async override Task OnInitializedAsync()
+  protected override async Task OnInitializedAsync()
   {
-    await TileDataService.Init();
-    TileDataService.Message += (Guid tileId, string message) => dataMessage = message;
+    Dashboards = await DashboardService.GetDashboards();
   }
 
+  void OnDashboardNewItemDefaultSetter(DashboardViewModel dashboard)
+  {
+    dashboard.Id = Guid.NewGuid();
+    dashboard.Name = "New Dashboard";
+  }
+
+  private async Task OnRowInserted(SavedRowItem<DashboardViewModel, Dictionary<string, object>> e)
+  {
+    await DashboardService.InvokeCommand<DashboardAdded>(e.Item);
+  }
+
+  private async Task OnRowUpdated(SavedRowItem<DashboardViewModel, Dictionary<string, object>> e)
+  {
+    await DashboardService.InvokeCommand<DashboardUpdated>(e.Item);
+  }
+
+  private async Task OnRowRemoved(DashboardViewModel item)
+  {
+    await DashboardService.InvokeCommand<DashboardRemoved>(item);
+  }
 }

@@ -6,8 +6,9 @@ namespace TheDashboard.Frontend.Services.Mapper;
 
 public class ModelMappings : Profile
 {
-    public ModelMappings()
-    {
-        CreateMap<TileDto, TileViewModel>();
-    }
+  public ModelMappings()
+  {
+    CreateMap<TileDto, TileViewModel>();
+    CreateMap<DashboardDto, DashboardViewModel>();
+  }
 }

@@ -1,4 +1,5 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using Blazorise
+<div class="top-row ps-3 navbar navbar-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="">The Dashboard</a>
     <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -11,22 +12,22 @@
   <nav class="flex-column">
     <div class="nav-item px-3">
       <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-        <span class="oi oi-home" aria-hidden="true"></span> Home
+        <Icon Name="IconName.Home" /> Home
       </NavLink>
     </div>
     <div class="nav-item px-3">
-      <NavLink class="nav-link" href="counter">
-        <span class="oi oi-plus" aria-hidden="true"></span> Manage Dashboards
+      <NavLink class="nav-link" href="dashboards">
+        <Icon Name="IconName.Dashboard" /> Manage Dashboards
       </NavLink>
     </div>
     <div class="nav-item px-3">
-      <NavLink class="nav-link" href="counter">
-        <span class="oi oi-plus" aria-hidden="true"></span> Manage Layouts
+      <NavLink class="nav-link" href="tiles">
+        <Icon Name="IconName.TicketAlt" /> Manage Tiles
       </NavLink>
     </div>
     <div class="nav-item px-3">
-      <NavLink class="nav-link" href="counter">
-        <span class="oi oi-plus" aria-hidden="true"></span> Manage Tiles
+      <NavLink class="nav-link" href="layouts">
+        <Icon Name="IconName.LayerGroup" /> Manage Layouts
       </NavLink>
     </div>
   </nav>

@@ -43,27 +43,27 @@ public class Program
       client.BaseAddress = new Uri("http://proxy:5000");
     });
 
-    builder.Services.AddAzureAppConfiguration();
-    builder.Services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>();
+    //// This is only for the cloud-native variant
+    //// this is an options, to run outside of Azure use local appsettings.json
+    //builder.Services.AddAzureAppConfiguration();
+    //builder.Services.AddFeatureManagement().AddFeatureFilter<TimeWindowFilter>();1
+    //var appConfConnectionString = builder.Configuration.GetConnectionString("AppConfig");
+    //if (!String.IsNullOrEmpty(appConfConnectionString))
+    //{
+    //  builder.Configuration.AddAzureAppConfiguration(options =>
+    //  {
 
-    var appConfConnectionString = builder.Configuration.GetConnectionString("AppConfig");
-    // this is an options, to run outside of Azure use local appsettings.json
-    if (!String.IsNullOrEmpty(appConfConnectionString))
-    {
-      builder.Configuration.AddAzureAppConfiguration(options =>
-      {
-
-        options.Connect(appConfConnectionString)
-          .UseFeatureFlags(options => options.Label = "Block")
-          .ConfigureRefresh(refresh =>
-          {
-            refresh.Register("FeatureManagement", refreshAll: true).SetCacheExpiration(new TimeSpan(0, 5, 0));
-          })
-          .ConfigureKeyVault(kv => kv.SetCredential(new DefaultAzureCredential(new DefaultAzureCredentialOptions())
-          ))
-          .Select(KeyFilter.Any, LabelFilter.Null);
-      });
-    }
+    //    options.Connect(appConfConnectionString)
+    //      .UseFeatureFlags(options => options.Label = "Block")
+    //      .ConfigureRefresh(refresh =>
+    //      {
+    //        refresh.Register("FeatureManagement", refreshAll: true).SetCacheExpiration(new TimeSpan(0, 5, 0));
+    //      })
+    //      .ConfigureKeyVault(kv => kv.SetCredential(new DefaultAzureCredential(new DefaultAzureCredentialOptions())
+    //      ))
+    //      .Select(KeyFilter.Any, LabelFilter.Null);
+    //  });
+    //}
 
     /* Blazor */
     builder.Services.AddResponseCaching();
@@ -103,17 +103,18 @@ public class Program
     })        
       ;
 
-    builder.Services.AddAuthorization();    
+    builder.Services.AddAuthorization();
 
     #endregion Auth
 
-    // Hub
+    #region Hub
     builder.Services.AddSingleton<ITileDataService, TileDataService>(sp =>
     {
       var logger = sp.GetRequiredService<ILogger<TileDataService>>();
       var ts = new TileDataService(logger, builder.Configuration);
       return ts;
     });
+    #endregion
 
     // Services that address the microservices, using httpclient to route through the proxy
     builder.Services.AddSingleton<IDashboardClient>(sp =>

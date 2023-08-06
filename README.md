@@ -6,19 +6,132 @@ The Dashboard is a boilerplate project for modern service architecture. It is de
 
 To set up the project, run the docker compose file. Make sure to check the SQL server volume path to assure persistence.
 
-## Features
+In the 'docker-compose.yml' file identify the section that defines the volume:
+
+~~~
+    volumes:
+     - type: bind
+       source: "/D/Volumes/sqldata"
+       target: /var/opt/mssql/data
+~~~
+
+Change the source path to a folder on your local machine. This folder will be used to store the SQL server data. Make sure the folder exists.
+
+The same procedure is required for the event store database:
+
+~~~
+    volumes:
+      - type: bind
+        source: "/D/Volumes/eventstore/data"
+        target: /var/lib/eventstore
+      - type: bind
+        source: "/D/Volumes/eventstore/logs"
+        target: /var/log/eventstore
+~~~
+
+Change both paths according to your system. Make sure the folders exist.
+
+> Keep an eye on the slashes. Even on a Windows system it's strongly recommended to use forward slashes only.
+
+### Prerequisites
+
+You need to have docker desktop including docker compose installed. Then just run the docker compose file. The compose file will create all the necessary containers and databases. It will also seed the databases with some data.
+
+All batches use "https://localhost:7500" as preferred URL. If you want to use a different URL, you need to change the batches and the port bindings in 'docker-compose.yml' accordingly.
+Identify the ports in the service named 'frontend' and see the port bindings:
+
+~~~
+    ports:
+      - "5500:80"
+      - "7500:443"
+~~~
+
+The easist way to run outside of Visual Studio is just using the start batches:
+
+### Authentication
+
+Currently the app authenticates users and app services against Azure AD B2C. The setup includes:
+
+* A free Azure subscription
+* A tenant with one Azure AD B2C instance
+* A user flow for sign up and sign in
+* A client application registration (for frontend)
+
+Not all these data and update the appropriate section in 'appsettings.json' of the project named 'TheDashboard.Frontend':
+
+~~~
+  "AzureAdB2C": {
+    "Instance": "https://<your-tenant-name>.b2clogin.com",
+    "Domain": "<your-tenant-name>.onmicrosoft.com",
+    "TenantId": "<your-tenant-id>",
+    "ClientId": "<your-client-id>",
+    "Domain": "<your-tenant-name>.onmicrosoft.com",
+    "SignUpSignInPolicyId": "<your-sign-up-sign-in-policy-id>",
+    "ResetPasswordPolicyId": "<your-reset-password-policy-id>",
+    "EditProfilePolicyId": "<your-edit-profile-policy-id>"
+  }
+~~~
+
+### Start the App Locally
+
+The app is supported on all OS.
+
+#### Linux and macOS
+
+~~~
+start.sh
+~~~
+
+> This also supports WSL (Windows Subsystem for Linux) on Windows box.
+
+#### Windows
+
+~~~
+start.cmd
+~~~
+
+#### Other and Universal (PowerShell)
+
+~~~
+start.ps1
+~~~
+
+### Visual Studio 2022
+
+Just hit F5. The docker compose setting is predefined. The project will start in debug mode.
+
+### Visual Studio Code
+
+There is currently no debugging setup included. You can run the project in VS Code by running the following command in the root folder:
+
+~~~
+docker compose --profile all up --build
+~~~
+
+## Features (MVP - minimum viable product)
 
 The Dashboard App offers the following features:
 
- - User can sign up
- - User can sign in
- - User can sign out
- - User can view their data
- - User can manage their data
- - User can view their data in a chart
- - User can view their data in a table
- - User can view their data in a map
+* Supported through Azure AD B2C:
+  * User can sign up
+  * User can sign in
+  * User can sign out
+  * User can view their profile data
+* Distinct features
+  * Add dashboards
+  * Add tiles
+  * Add data sources and schedules
+  * Assign tiles to dashboards
+  * Publish dashboard for public viewing
 
+### Planned Development Path
+
+Assign dashboards to a closed user audience.
+Publish device dependent versions (such as mobile/PWA/...).
+Edit dashboard configurations as JSON.
+Add more tile types.
+Add more data sources.
+Add more authentication providers (such as Google, Facebook, ...).
 
 ## Architecture
 

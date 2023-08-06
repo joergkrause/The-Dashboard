@@ -52,3 +52,43 @@
   //  }
   //}
 }
+
+
+@*@using TheDashboard.Frontend.Services;
+@using TheDashboard.Frontend.Shared.Tiles
+@using TheDashboard.SharedEntities;
+
+@inject ITileDataService TileDataService
+
+<div class="container">
+  <div class="row">
+    <h1>@DashboardTitle</h1>
+    @foreach (var tile in Tiles)
+    {
+      <DataTile X="@tile.XOffset" Y="@tile.YOffset" Width="@tile.Width" Title="@tile.Title" Subtitle="@tile.SubTitle">
+        @dataMessage
+      </DataTile>
+    }
+  </div>
+</div>
+
+@code {
+
+  private string DashboardTitle { get; set; } = "Dashboard Title";
+
+  private string dataMessage = "";
+
+  [Parameter]
+  public Guid DashboardId { get; set; }
+
+
+  private List<TileDto> Tiles = new List<TileDto>();
+
+  protected async override Task OnInitializedAsync()
+  {
+    await TileDataService.Init();
+    TileDataService.Message += (Guid tileId, string message) => dataMessage = message;
+  }
+
+}
+*@
