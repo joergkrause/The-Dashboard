@@ -16,15 +16,13 @@
 </Blazorise.Alert>
 
 <DataGrid TItem="DashboardViewModel"
-@bind-SelectedRow="@selectedContent"
+@bind-SelectedRow="@selectedDashboard"
           Data="@Dashboards"
               Filterable
               Sortable
               Editable
               ShowPager
-              Resizable
-          DetailRowTrigger="(args) => args.Single = true"
-          DetailRowStartsVisible="false"
+          SelectionMode="DataGridSelectionMode.Single"
           NewItemDefaultSetter="@OnDashboardNewItemDefaultSetter"
           EditMode="DataGridEditMode.Inline"
           CommandMode="DataGridCommandMode.ButtonRow"
@@ -42,7 +40,7 @@
     </DataGridCommandColumn>
     <DataGridColumn TItem="DashboardViewModel" Caption="Id" Field="@nameof(DashboardViewModel.Id)" Filterable=false Sortable=false Width="10">
     </DataGridColumn>
-    <DataGridColumn TItem="DashboardViewModel" Caption="Id" Field="@nameof(DashboardViewModel.Name)" Filterable=false Sortable=false Width="10">
+    <DataGridColumn TItem="DashboardViewModel" Caption="Name" Field="@nameof(DashboardViewModel.Name)" Filterable Sortable>
     </DataGridColumn>
   </ChildContent>
   <DetailRowTemplate>
@@ -72,21 +70,22 @@
     </div>
   </LoadingTemplate>
   <ButtonRowTemplate>
-    <Blazorise.Button Color="Blazorise.Color.Primary" Size="Blazorise.Size.Small" Class="float-end" Clicked="context.NewCommand.Clicked">New</Blazorise.Button>
-    <Blazorise.Button Color="Blazorise.Color.Success" Disabled="(selectedContent is null)" Size="Blazorise.Size.Small" Class="float-end" Clicked="context.EditCommand.Clicked">Edit</Blazorise.Button>
-    <Blazorise.Button Color="Blazorise.Color.Danger" Disabled="(selectedContent is null)" Size="Blazorise.Size.Small" Class="float-end" Clicked="context.DeleteCommand.Clicked">Delete</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Primary" Size="Blazorise.Size.Small" Clicked="context.NewCommand.Clicked">New</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Success" Disabled="(selectedDashboard is null)" Size="Blazorise.Size.Small" Clicked="context.EditCommand.Clicked">Edit</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Danger" Disabled="(selectedDashboard is null)" Size="Blazorise.Size.Small" Clicked="context.DeleteCommand.Clicked">Delete</Blazorise.Button>
   </ButtonRowTemplate>
 </DataGrid>
 
 @code {
 
-  DashboardViewModel selectedContent;
+  DashboardViewModel? selectedDashboard;
 
   IList<DashboardViewModel> Dashboards = new List<DashboardViewModel>();
 
   protected override async Task OnInitializedAsync()
   {
     Dashboards = await DashboardService.GetDashboards();
+    await base.OnInitializedAsync();
   }
 
   void OnDashboardNewItemDefaultSetter(DashboardViewModel dashboard)

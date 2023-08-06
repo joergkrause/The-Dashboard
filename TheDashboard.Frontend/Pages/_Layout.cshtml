@@ -7,16 +7,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Dashboard</title>
   <base href="~/" />
-  <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-  <link href="css/site.css" rel="stylesheet" />
+  <link href="/assets/img/favicon.png" rel="icon">
+  <link rel="stylesheet" href="~/bundle.css">
+  <link rel="stylesheet" href="_content/Blazorise/blazorise.css" />
+  <link rel="stylesheet" href="_content/Blazorise.Bootstrap5/blazorise.bootstrap5.css" />
+  <link rel="stylesheet" href="_content/BytexDigital.Blazor.Components.CookieConsent/styles.min.css" />
   <link href="TheDashboard.Frontend.styles.css" rel="stylesheet" />
-  <link href="_content/Blazorise.Icons.Material/blazorise.icons.material.css" rel="stylesheet" />
   <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
 </head>
 <body>
   @RenderBody()
-
+  <div id="components-reconnect-modal" class="my-reconnect-modal components-reconnect-hide"></div>
   <div id="blazor-error-ui">
     <environment include="Staging,Production">
       An error has occurred. This application may no longer respond until reloaded.
@@ -28,6 +31,12 @@
     <a class="dismiss">🗙</a>
   </div>
 
-  <script src="_framework/blazor.server.js"></script>
+  <script src="~/bundle.js"></script>
+  <script src="_framework/blazor.server.js" autostart="false"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      Blazor.start();
+    });
+  </script>
 </body>
 </html>

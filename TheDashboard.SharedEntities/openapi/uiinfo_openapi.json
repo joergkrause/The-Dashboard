@@ -6,7 +6,7 @@
     "version": "v1"
   },
   "paths": {
-    "/api/Values/{id}": {
+    "/api/ui/{id}": {
       "post": {
         "tags": [
           "Values"

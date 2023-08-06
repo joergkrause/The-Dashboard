@@ -2,10 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Tiles API",
+    "description": "Tiles respresent visible zones on a dashboard. This services manages tiles, design, and assigned data sources.",
     "version": "v1"
   },
   "paths": {
-    "/api/Tile/tile/{dashboardId}": {
+    "/api/ts/tile/{dashboardId}": {
       "get": {
         "tags": [
           "Tile"
@@ -42,7 +43,7 @@
         }
       }
     },
-    "/api/Tile/{id}": {
+    "/api/ts/{id}": {
       "get": {
         "tags": [
           "Tile"
@@ -162,7 +163,7 @@
         }
       }
     },
-    "/api/Tile": {
+    "/api/ts": {
       "post": {
         "tags": [
           "Tile"
@@ -204,7 +205,7 @@
         }
       }
     },
-    "/api/Tile/hastiles": {
+    "/api/ts/hastiles": {
       "post": {
         "tags": [
           "Tile"

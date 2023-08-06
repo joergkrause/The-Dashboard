@@ -64,7 +64,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/Dashboard")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/db")]
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DashboardDto>> GetAll()
         {
 
@@ -72,7 +72,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Created</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/Dashboard")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/db")]
         public System.Threading.Tasks.Task<DashboardDto> AddDashboard([Microsoft.AspNetCore.Mvc.FromBody] DashboardDto body)
         {
 
@@ -80,7 +80,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/Dashboard/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/db/{id}")]
         public System.Threading.Tasks.Task<DashboardDto> Get(System.Guid id)
         {
 
@@ -88,7 +88,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Accepted</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/Dashboard/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/db/{id}")]
         public System.Threading.Tasks.Task UpdateDashboard(int id, [Microsoft.AspNetCore.Mvc.FromBody] DashboardDto body)
         {
 
@@ -96,14 +96,14 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Accepted</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("api/Dashboard/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("api/db/{id}")]
         public System.Threading.Tasks.Task RemoveDashboard(System.Guid id)
         {
 
             return _implementation.RemoveDashboardAsync(id);
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/Dashboard/search")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/db/search")]
         public System.Threading.Tasks.Task Search([Microsoft.AspNetCore.Mvc.FromQuery] string name)
         {
 

@@ -42,7 +42,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>No Content</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/Values/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/ui/{id}")]
         public System.Threading.Tasks.Task Value(int id, [Microsoft.AspNetCore.Mvc.FromBody] string value)
         {
 

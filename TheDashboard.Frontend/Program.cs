@@ -70,6 +70,22 @@ public class Program
     //builder.Services.AddControllers();
     builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
     builder.Services.AddRazorPages();
+    builder.Services.AddWebOptimizer(options =>
+    {
+      options.AddCssBundle("/bundle.css",
+        "/vendor/bootstrap/css/bootstrap.css",
+        "/vendor/boxicons/css/boxicons.css",
+        "/vendor/boxicons/css/animations.css",
+        "/vendor/boxicons/css/transformations.css",
+        "/css/site.css"
+      ).MinifyCss();
+      options.AddJavaScriptBundle("/bundle.js",
+        "/vendor/bootstrap/js/bootstrap.bundle.js",
+        "/dashboard.js"
+      ).MinifyJavaScript();
+    });
+
+
     builder.Services.AddServerSideBlazor()
       .AddHubOptions(options =>
       {
@@ -91,16 +107,16 @@ public class Program
     })
     .AddBootstrap5Providers()
     .AddFontAwesomeIcons();
-    builder.Services.AddBlazoriseRichTextEdit(options => { });
+    // builder.Services.AddBlazoriseRichTextEdit(options => { });
 
     #region Auth
 
     builder.Services
-      .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)        
+      .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
       .AddMicrosoftIdentityWebApp(options =>
     {
       builder.Configuration.Bind("AzureAdB2C", options);
-    })        
+    })
       ;
 
     builder.Services.AddAuthorization();
@@ -117,21 +133,26 @@ public class Program
     #endregion
 
     // Services that address the microservices, using httpclient to route through the proxy
+    // TODO: Add auth
     builder.Services.AddSingleton<IDashboardClient>(sp =>
     {
-      var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
-      // TODO: Add auth
-      return new DashboardClient(builder.Configuration["QueryServices:Dashboard"], httpClient);
+      var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");      
+      return new DashboardClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
     builder.Services.AddSingleton<ITilesClient>(sp =>
     {
       var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
-      return new TilesClient(builder.Configuration["QueryServices:Tiles"], httpClient);
+      return new TilesClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
     builder.Services.AddSingleton<IDataConsumerClient>(sp =>
     {
       var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
-      return new DataConsumerClient(builder.Configuration["QueryServices:DataConsumer"], httpClient);
+      return new DataConsumerClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
+    });
+    builder.Services.AddSingleton<IUiInfoClient>(sp =>
+    {
+      var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
+      return new UiInfoClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
 
     // services that retrive data from the microservices and send appropriate commands
@@ -168,7 +189,7 @@ public class Program
       Secure = CookieSecurePolicy.Always,
       MinimumSameSitePolicy = SameSiteMode.None
     });
-
+    app.UseWebOptimizer();
     app.UseStaticFiles();
     app.UseRouting();
 
@@ -187,7 +208,7 @@ public class Program
     {
       endpoints.MapRazorPages();
       endpoints.MapControllers();
-      endpoints.MapBlazorHub().AllowAnonymous().RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = $"{OpenIdConnectDefaults.AuthenticationScheme},{IdentityConstants.ApplicationScheme}" });                
+      endpoints.MapBlazorHub().AllowAnonymous().RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = $"{OpenIdConnectDefaults.AuthenticationScheme}" });                
       endpoints.MapFallbackToPage("/_Host");
     });
 

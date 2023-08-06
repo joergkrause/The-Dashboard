@@ -68,7 +68,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/Tile/tile/{dashboardId}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/ts/tile/{dashboardId}")]
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<TileDto>> GetDashboardTiles(System.Guid dashboardId)
         {
 
@@ -76,7 +76,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/Tile/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/ts/{id}")]
         public System.Threading.Tasks.Task<TileDto> GetTile(int id)
         {
 
@@ -84,7 +84,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Accepted</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/Tile/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/ts/{id}")]
         public System.Threading.Tasks.Task<TileDto> UpdateTile(int id, [Microsoft.AspNetCore.Mvc.FromBody] TileDto body)
         {
 
@@ -92,7 +92,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>No Content</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("api/Tile/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("api/ts/{id}")]
         public System.Threading.Tasks.Task<TileDto> DeleteTile(int id)
         {
 
@@ -100,7 +100,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Created</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/Tile")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/ts")]
         public System.Threading.Tasks.Task<TileDto> AddTile([Microsoft.AspNetCore.Mvc.FromBody] TileDto body)
         {
 
@@ -108,7 +108,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/Tile/hastiles")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/ts/hastiles")]
         public System.Threading.Tasks.Task<bool> HasTiles([Microsoft.AspNetCore.Mvc.FromBody] System.Guid? body)
         {
 

@@ -60,7 +60,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/Consumer")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/dc")]
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DataSourceDto>> GetAll()
         {
 
@@ -68,7 +68,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Created</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/Consumer")]
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/dc")]
         public System.Threading.Tasks.Task<DataSourceDto> Add([Microsoft.AspNetCore.Mvc.FromBody] DataSourceDto body)
         {
 
@@ -76,7 +76,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/Consumer")]
+        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/dc")]
         public System.Threading.Tasks.Task<DataSourceDto> Update([Microsoft.AspNetCore.Mvc.FromBody] DataSourceDto body)
         {
 
@@ -84,7 +84,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/Consumer/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/dc/{id}")]
         public System.Threading.Tasks.Task<DataSourceDto> Get(int id)
         {
 
@@ -92,7 +92,7 @@ namespace TheDashboard.SharedEntities
         }
 
         /// <returns>Accepted</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("api/Consumer/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("api/dc/{id}")]
         public System.Threading.Tasks.Task<DataSourceDto> Delete(int id)
         {
 

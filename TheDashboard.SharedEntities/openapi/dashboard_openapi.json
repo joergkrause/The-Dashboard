@@ -2,10 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Dashboard API",
+    "descrption": "This service handles the primary dashboard and layout store.",
     "version": "v1"
   },
   "paths": {
-    "/api/Dashboard": {
+    "/api/db": {
       "get": {
         "tags": [
           "Dashboard"
@@ -84,7 +85,7 @@
         }
       }
     },
-    "/api/Dashboard/{id}": {
+    "/api/db/{id}": {
       "get": {
         "tags": [
           "Dashboard"
@@ -203,7 +204,7 @@
         }
       }
     },
-    "/api/Dashboard/search": {
+    "/api/db/search": {
       "get": {
         "tags": [
           "Dashboard"

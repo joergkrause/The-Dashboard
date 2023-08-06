@@ -2,10 +2,11 @@
   "openapi": "3.0.1",
   "info": {
     "title": "DataConsumer API",
+    "description": "DataConsumers are the sources of data. Manages sources and retrieval on a schedule.",
     "version": "v1"
   },
   "paths": {
-    "/api/Consumer": {
+    "/api/dc": {
       "get": {
         "tags": [
           "Consumer"
@@ -131,7 +132,7 @@
         }
       }
     },
-    "/api/Consumer/{id}": {
+    "/api/dc/{id}": {
       "get": {
         "tags": [
           "Consumer"
