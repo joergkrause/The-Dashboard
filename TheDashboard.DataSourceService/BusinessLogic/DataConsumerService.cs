@@ -6,14 +6,14 @@ using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DataConsumerService.BusinessLogic;
 
-public class DataConsumerService : IDataConsumerService
+public class DataSourceService : IDataSourceService
 {
 
   private readonly ILogger<DashboardService> _logger;
   private readonly DataConsumerDbContext _dataconsumerDbContext;
   private readonly IMapper _mapper;
 
-  public DataConsumerService(ILogger<DashboardService> logger, DataConsumerDbContext tileDbContext, IMapper mapper)
+  public DataSourceService(ILogger<DashboardService> logger, DataConsumerDbContext tileDbContext, IMapper mapper)
   {
     _logger = logger;
     _dataconsumerDbContext = tileDbContext;

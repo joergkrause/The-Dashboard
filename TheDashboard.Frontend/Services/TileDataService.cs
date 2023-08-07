@@ -1,21 +1,25 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR.Client;
 using TheDashboard.SharedEntities;
+using TheDashboard.ViewModels.Data;
 
 namespace TheDashboard.Frontend.Services;
 
 public delegate void OnMessageEvent(Guid tileId, string message);
 
-public class TileDataService : ITileDataService
+public sealed class TileDataService : ServiceInvokeCommand, ITileDataService
 {
 
   private readonly ILogger<TileDataService> _logger;
   private readonly IConfiguration _configuration;
   private HubConnection? hubConnection;
+  private readonly ITilesClient _tilesClient;
 
-  public TileDataService(ILogger<TileDataService> logger, IConfiguration configuration)
+  public TileDataService(IMapper mapper, IHttpClientFactory httpClientFactory, ILogger<TileDataService> logger, IConfiguration configuration, ITilesClient tilesClient) : base(mapper, httpClientFactory)
   {
     _logger = logger;
     _configuration = configuration;
+    _tilesClient = tilesClient;
 
     hubConnection = new HubConnectionBuilder().WithUrl(_configuration["HubUrl"]!).Build();
 
@@ -67,11 +71,27 @@ public class TileDataService : ITileDataService
     Message?.Invoke(tileId, message);
   }
 
-    public Task InvokeCommand<TEvent>(TileDto dto) where TEvent : Command
-    {
-        throw new NotImplementedException();
-    }
 
-    public bool IsConnected { get => hubConnection?.State == HubConnectionState.Connected; }
+  public bool IsConnected { get => hubConnection?.State == HubConnectionState.Connected; }
 
+
+  public async Task<IList<TileViewModel>> GetTiles(Guid dashboardId)
+  {
+    var tiles = await _tilesClient.GetDashboardTilesAsync(dashboardId);
+    var viewModels = Mapper.Map<IList<TileViewModel>>(tiles);
+    return viewModels;
+  }
+
+  public async Task<TileViewModel> GetTile(int id)
+  {
+    var tile = await _tilesClient.GetTileAsync(id);
+    var viewModel = Mapper.Map<TileViewModel>(tile);
+    return viewModel;
+  }
+
+
+  public async Task InvokeCommand<TEvent>(TileViewModel dto) where TEvent : Command
+  {
+    await base.InvokeCommand<TEvent, TileViewModel, int>(dto);
+  }
 }

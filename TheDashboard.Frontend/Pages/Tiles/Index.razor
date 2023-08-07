@@ -1,29 +1,155 @@
 ﻿@page "/tiles"
+@using Blazorise
+@using TheDashboard.SharedEntities
+@using TheDashboard.Frontend.Services
+@using Blazorise.DataGrid
+@using TheDashboard.Ui.Components
+@using TheDashboard.ViewModels.Data;
 
-@using TheDashboard.Frontend.Services;
-@using TheDashboard.Frontend.Shared.Tiles
-@using TheDashboard.SharedEntities;
-
+@inject IDashboardService DashboardService
 @inject ITileDataService TileDataService
+@inject IDataSourceService DataSourceService
 
 <h3>Tiles Manager</h3>
 
+<Blazorise.Alert Color="Blazorise.Color.Info">
+  Here you manage all your tiles. Tiles need to be assigned to a dashboard to be visible. Each tile has a distinct URL for data viewing. To make use of a tile you need to assign two tasks:
+  1) Create a tile and define the apperance and layout. 2) Define a datasource and assign it to the tile. The datasource will provide the data for the tile and a schedule to retrieve it.
+</Blazorise.Alert>
+
+<h4>Select a Dashboard</h4>
+
+<Select TValue="Guid?" @bind-SelectedValue="@selectedDashboard">
+  @foreach (var dashboard in Dashboards)
+  {
+    <SelectItem Value="@dashboard.Id">@dashboard.Name</SelectItem>
+  }
+</Select>
+
+<DataGrid TItem="TileViewModel"
+@bind-SelectedRow="@selectedTile"
+          Data="@Tiles"
+              Filterable
+              Sortable
+              Editable
+              ShowPager
+          SelectionMode="DataGridSelectionMode.Single"
+          NewItemDefaultSetter="@OnDashboardNewItemDefaultSetter"
+          EditMode="DataGridEditMode.Inline"
+          CommandMode="DataGridCommandMode.ButtonRow"
+          RowUpdated="OnRowUpdated"
+          RowInserted="OnRowInserted"
+          RowRemoved="OnRowRemoved">
+  <ChildContent>
+    <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false">
+      <SaveCommandTemplate>
+        <Button ElementId="btnSave" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+      </SaveCommandTemplate>
+      <CancelCommandTemplate>
+        <Button ElementId="btnCancel" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+      </CancelCommandTemplate>
+    </DataGridCommandColumn>
+    <DataGridColumn TItem="TileViewModel" Caption="Id" Field="@nameof(TileViewModel.Id)" Filterable=false Sortable=false Width="10">
+    </DataGridColumn>
+    <DataGridColumn TItem="TileViewModel" Caption="Name" Field="@nameof(TileViewModel.Title)" Filterable Sortable></DataGridColumn>
+  </ChildContent>
+  <DetailRowTemplate>
+    <div class="box">
+      <h3>Tile: @context.Title</h3>
+      <CanvasPanel>
+        <Title>
+          <h3>Details for @context.Title</h3>
+        </Title>
+        <ButtonText>
+          <Icon IconStyle="IconStyle.Light" Name="IconName.FolderOpen"></Icon>
+          See Tile details...
+        </ButtonText>
+        <Content>
+          Here goes the detail view for the tile...
+        </Content>
+      </CanvasPanel>
+      <CanvasPanel>
+        <Title>
+          <h3>Assign Sources to @context.Title</h3>
+        </Title>
+        <ButtonText>
+          <Icon IconStyle="IconStyle.Light" Name="IconName.FolderOpen"></Icon>
+          Assignment
+        </ButtonText>
+        <Content>
+          Here goes the detail view for the tile...
+          <RadioGroup TValue="int?" Name="DataSource" @bind-CheckedValue="sourceAssignment">
+            @foreach (var item in DataSources)
+            {
+              <Radio Value="@item.Id">@item.Name (@item.SourceType)</Radio>
+            }
+          </RadioGroup>
+          <Button Color="Color.Primary" Clicked="AssignDataSource">Assign</Button>
+        </Content>
+      </CanvasPanel>
+    </div>
+  </DetailRowTemplate>
+  <EmptyTemplate>
+    <div class="box">
+      No tiles to show...
+    </div>
+  </EmptyTemplate>
+  <LoadingTemplate>
+    <div class="box">
+      <progress class="progress is-small is-primary" max="100" />
+    </div>
+  </LoadingTemplate>
+  <ButtonRowTemplate>
+    <Blazorise.Button Color="Blazorise.Color.Primary" Size="Blazorise.Size.Small" Clicked="context.NewCommand.Clicked">New</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Success" Disabled="(selectedTile is null)" Size="Blazorise.Size.Small" Clicked="context.EditCommand.Clicked">Edit</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Danger" Disabled="(selectedTile is null)" Size="Blazorise.Size.Small" Clicked="context.DeleteCommand.Clicked">Delete</Blazorise.Button>
+  </ButtonRowTemplate>
+</DataGrid>
+
 @code {
 
-  private string DashboardTitle { get; set; } = "Dashboard Title";
+  TileViewModel? selectedTile;
+  Guid? selectedDashboard;
+  int? sourceAssignment;
 
-  private string dataMessage = "";
+  IList<DashboardViewModel> Dashboards = new List<DashboardViewModel>();
+  IList<TileViewModel> Tiles = new List<TileViewModel>();
+  IList<DataSourceViewModel> DataSources = new List<DataSourceViewModel>();
 
-  [Parameter]
-  public Guid DashboardId { get; set; }
-
-
-  private List<TileDto> Tiles = new List<TileDto>();
-
-  protected async override Task OnInitializedAsync()
+  protected override async Task OnInitializedAsync()
   {
-    await TileDataService.Init();
-    TileDataService.Message += (Guid tileId, string message) => dataMessage = message;
+    Dashboards = await DashboardService.GetDashboards();
+    DataSources = await DataSourceService.GetDatasources();
+    await base.OnInitializedAsync();
+  }
+
+  void OnDashboardNewItemDefaultSetter(TileViewModel tile)
+  {
+    tile.Title = "New Tile";
+  }
+
+  private async Task OnRowInserted(SavedRowItem<TileViewModel, Dictionary<string, object>> e)
+  {
+    await TileDataService.InvokeCommand<TileAdded>(e.Item);
+  }
+
+  private async Task OnRowUpdated(SavedRowItem<TileViewModel, Dictionary<string, object>> e)
+  {
+    await TileDataService.InvokeCommand<TileUpdated>(e.Item);
+  }
+
+  private async Task OnRowRemoved(TileViewModel item)
+  {
+    await TileDataService.InvokeCommand<TileRemoved>(item);
+  }
+
+  private async Task AssignDataSource()
+  {
+    if (selectedTile != null)
+    {
+      selectedTile.DataSource = sourceAssignment.GetValueOrDefault();
+      await TileDataService.InvokeCommand<DataSourceAssigned>(selectedTile);
+    }
   }
 
 }

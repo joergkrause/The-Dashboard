@@ -280,8 +280,8 @@
             "format": "uuid"
           },
           "dataSourceId": {
-            "type": "string",
-            "format": "uuid"
+            "type": "integer",
+            "format": "int32"
           },
           "visualizerId": {
             "type": "integer",

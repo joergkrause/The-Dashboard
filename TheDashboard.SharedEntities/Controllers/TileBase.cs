@@ -149,7 +149,7 @@ namespace TheDashboard.SharedEntities
         [System.Text.Json.Serialization.JsonPropertyName("dataSourceId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Guid DataSourceId { get; set; }
+        public int DataSourceId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("visualizerId")]
 

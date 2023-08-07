@@ -10,5 +10,6 @@ public class ModelMappings : Profile
   {
     CreateMap<TileDto, TileViewModel>();
     CreateMap<DashboardDto, DashboardViewModel>();
+    CreateMap<DataSourceDto, DataSourceViewModel>();
   }
 }

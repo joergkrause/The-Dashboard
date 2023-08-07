@@ -17,13 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.Frontend", "Th
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.UiInfoService", "TheDashboard.UiInfoService\TheDashboard.UiInfoService.csproj", "{A67B46F0-DB85-49C8-BA78-5DD85517E4D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DataConsumerService", "TheDashboard.DataConsumerService\TheDashboard.DataConsumerService.csproj", "{5DA5E315-D09B-4DC2-A2DF-201C5AE87034}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DataSourceService", "TheDashboard.DataSourceService\TheDashboard.DataSourceService.csproj", "{5DA5E315-D09B-4DC2-A2DF-201C5AE87034}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dashboard", "Dashboard", "{04117A4F-1373-46E1-BAAB-66810870A1E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tiles", "Tiles", "{E86D5915-DC0B-453E-B211-676244AE9955}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{96D3A800-7415-4B7D-9FAC-422FCE850368}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataSource", "DataSource", "{96D3A800-7415-4B7D-9FAC-422FCE850368}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F927FD31-747A-4515-ACA2-B5BAD85DC1BA}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DashboardServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.TileService.Test", "test\TheDashboard.TileService.Test\TheDashboard.TileService.Test.csproj", "{D01D6EE3-DD12-4C1D-9EDF-78FADC050981}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DataConsumerService.Test", "test\TheDashboard.DstaConsumerService.Test\TheDashboard.DataConsumerService.Test.csproj", "{3D81F982-03C1-41E8-87C3-BA99E411AE48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.DataSourceService.Test", "test\TheDashboard.DstaConsumerService.Test\TheDashboard.DataSourceService.Test.csproj", "{3D81F982-03C1-41E8-87C3-BA99E411AE48}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheDashboard.UiInfoService.Test", "test\TheDashboard.UiInfoService.Test\TheDashboard.UiInfoService.Test.csproj", "{5291F46D-D6EB-41D1-AF2A-380447AF1ED3}"
 EndProject
@@ -47,8 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Credentials.txt = Credentials.txt
 		README.md = README.md
-		start.ps1 = start.ps1
 		start.cmd = start.cmd
+		start.ps1 = start.ps1
 		start.sh = start.sh
 	EndProjectSection
 EndProject

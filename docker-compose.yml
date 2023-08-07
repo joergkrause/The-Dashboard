@@ -9,7 +9,7 @@ services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
-    profiles: [ all, backend, dashboard, tiles, dataconsumer ]
+    profiles: [ all, backend, dashboard, tiles, datasource ]
     ports:
       - "1433:1433"
     environment:
@@ -38,7 +38,7 @@ services:
   eventbus:
     image: rabbitmq:3-management
     container_name: eventbus
-    profiles: [ all, eventbus, backend, dashboard, tiles, dataconsumer, uiinfo ]
+    profiles: [ all, eventbus, backend, dashboard, tiles, datasource, uiinfo ]
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -88,7 +88,7 @@ services:
      - proxy
      - thedashboard.dashboardservice
      - thedashboard.tileservice
-     - thedashboard.dataconsumerservice
+     - thedashboard.datasourceservice
      - thedashboard.uiinfoservice
     ports:
       - "5500:80"
@@ -140,13 +140,13 @@ services:
       - sqlserver
       - eventbus
 
-  thedashboard.dataconsumerservice:
-    image: ${DOCKER_REGISTRY-}dataconsumerservice
-    container_name: "thedashboard_dataconsumer_service"
-    profiles: [ all, backend, dataconsumer ]
+  thedashboard.datasourceservice:
+    image: ${DOCKER_REGISTRY-}datasourceservice
+    container_name: "thedashboard_datasource_service"
+    profiles: [ all, backend, datasource ]
     build:
       context: .
-      dockerfile: TheDashboard.DataConsumerService/Dockerfile
+      dockerfile: TheDashboard.DataSourceService/Dockerfile
     ports:
       - "5300:80/tcp"
     depends_on:

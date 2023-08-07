@@ -11,10 +11,10 @@ public class JobStartHandler : IConsumer<JobStartEvent>
 {
 
   private readonly IMapper _mapper;
-  private readonly IDataConsumerService _dataService;
+  private readonly IDataSourceService _dataService;
   private readonly ISchedulerFactory _schedulerFactory;
 
-  public JobStartHandler(IMapper mapper, IDataConsumerService dataService, ISchedulerFactory schedulerFactory)
+  public JobStartHandler(IMapper mapper, IDataSourceService dataService, ISchedulerFactory schedulerFactory)
   {
     _mapper = mapper;
     _dataService = dataService;

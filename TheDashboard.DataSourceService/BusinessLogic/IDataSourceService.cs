@@ -4,7 +4,7 @@ using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DataConsumerService.BusinessLogic
 {
-  public interface IDataConsumerService
+  public interface IDataSourceService
   {
     Task<IEnumerable<DataSourceDto>> GetAllDataSource();
     Task<DataSourceDto?> GetDataSource(int id);

@@ -19,7 +19,7 @@ namespace TheDashboard.SharedEntities
     using System = global::System;
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public interface IDataConsumerBaseController
+    public interface IDataSourceBaseController
     {
 
         /// <returns>Success</returns>
@@ -27,76 +27,37 @@ namespace TheDashboard.SharedEntities
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DataSourceDto>> GetAllAsync();
 
 
-        /// <returns>Created</returns>
-
-        System.Threading.Tasks.Task<DataSourceDto> AddAsync(DataSourceDto body);
-
-
-        /// <returns>Success</returns>
-
-        System.Threading.Tasks.Task<DataSourceDto> UpdateAsync(DataSourceDto body);
-
-
         /// <returns>Success</returns>
 
         System.Threading.Tasks.Task<DataSourceDto> GetAsync(int id);
-
-
-        /// <returns>Accepted</returns>
-
-        System.Threading.Tasks.Task<DataSourceDto> DeleteAsync(int id);
 
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
 
-    public partial class DataConsumerBaseController : Microsoft.AspNetCore.Mvc.ControllerBase
+    public partial class DataSourceBaseController : Microsoft.AspNetCore.Mvc.ControllerBase
     {
-        private IDataConsumerBaseController _implementation;
+        private IDataSourceBaseController _implementation;
 
-        public DataConsumerBaseController(IDataConsumerBaseController implementation)
+        public DataSourceBaseController(IDataSourceBaseController implementation)
         {
             _implementation = implementation;
         }
 
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/dc")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/ds")]
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<DataSourceDto>> GetAll()
         {
 
             return _implementation.GetAllAsync();
         }
 
-        /// <returns>Created</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("api/dc")]
-        public System.Threading.Tasks.Task<DataSourceDto> Add([Microsoft.AspNetCore.Mvc.FromBody] DataSourceDto body)
-        {
-
-            return _implementation.AddAsync(body);
-        }
-
         /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpPut, Microsoft.AspNetCore.Mvc.Route("api/dc")]
-        public System.Threading.Tasks.Task<DataSourceDto> Update([Microsoft.AspNetCore.Mvc.FromBody] DataSourceDto body)
-        {
-
-            return _implementation.UpdateAsync(body);
-        }
-
-        /// <returns>Success</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/dc/{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("api/ds/{id}")]
         public System.Threading.Tasks.Task<DataSourceDto> Get(int id)
         {
 
             return _implementation.GetAsync(id);
-        }
-
-        /// <returns>Accepted</returns>
-        [Microsoft.AspNetCore.Mvc.HttpDelete, Microsoft.AspNetCore.Mvc.Route("api/dc/{id}")]
-        public System.Threading.Tasks.Task<DataSourceDto> Delete(int id)
-        {
-
-            return _implementation.DeleteAsync(id);
         }
 
     }
@@ -125,10 +86,10 @@ namespace TheDashboard.SharedEntities
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
         public string Url { get; set; }
 
-        [System.Text.Json.Serialization.JsonPropertyName("dashboardId")]
+        [System.Text.Json.Serialization.JsonPropertyName("tileId")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
-        public System.Guid DashboardId { get; set; }
+        public int TileId { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("sourceType")]
 

@@ -222,7 +222,7 @@ The project makes use of these specific packages or libraries:
 * MassTransit (to handle RabbitMQ)
 * Automapper (to map between DTOs and Entities)
 * NSwag (to generate C# client code from Swagger documentation)
-* Quartz (to handle scheduled jobs) in the data consumer service
+* Quartz (to handle scheduled jobs) in the data source service
 
 > Swashbuckle (to generate Swagger documentation) is not being used, as the OpenAPI documentation is created and maintained manually. It's now a first class citizen - contract first principle.
  

@@ -1,0 +1,111 @@
+﻿@page "/datasources"
+@using Blazorise
+@using TheDashboard.SharedEntities
+@using TheDashboard.Frontend.Services
+@using Blazorise.DataGrid
+@using TheDashboard.Ui.Components
+@using TheDashboard.ViewModels.Data;
+
+@inject IDataSourceService DataSourceService
+
+<h3>Datasources Manager</h3>
+
+<Blazorise.Alert Color="Blazorise.Color.Info">
+  Here you manage all your tiles. Tiles need to be assigned to a dashboard to be visible. Each tile has a distinct URL for data viewing. To make use of a tile you need to assign two tasks:
+  1) Create a tile and define the apperance and layout. 2) Define a datasource and assign it to the tile. The datasource will provide the data for the tile and a schedule to retrieve it.
+</Blazorise.Alert>
+
+<DataGrid TItem="DataSourceViewModel"
+@bind-SelectedRow="@selectedDataSource"
+          Data="@DataSources"
+              Filterable
+              Sortable
+              Editable
+              ShowPager
+          SelectionMode="DataGridSelectionMode.Single"
+          NewItemDefaultSetter="@OnDashboardNewItemDefaultSetter"
+          EditMode="DataGridEditMode.Inline"
+          CommandMode="DataGridCommandMode.ButtonRow"
+          RowUpdated="OnRowUpdated"
+          RowInserted="OnRowInserted"
+          RowRemoved="OnRowRemoved">
+  <ChildContent>
+    <DataGridCommandColumn NewCommandAllowed="false" EditCommandAllowed="false" DeleteCommandAllowed="false">
+      <SaveCommandTemplate>
+        <Button ElementId="btnSave" Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+      </SaveCommandTemplate>
+      <CancelCommandTemplate>
+        <Button ElementId="btnCancel" Color="Color.Secondary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+      </CancelCommandTemplate>
+    </DataGridCommandColumn>
+    <DataGridColumn TItem="DataSourceViewModel" Caption="Id" Field="@nameof(DashboardViewModel.Id)" Filterable=false Sortable=false Width="10">
+    </DataGridColumn>
+    <DataGridColumn TItem="DataSourceViewModel" Caption="Name" Field="@nameof(DashboardViewModel.Name)" Filterable Sortable>
+    </DataGridColumn>
+  </ChildContent>
+  <DetailRowTemplate>
+    <div class="box">
+      <h3>DataSource: @context.Name</h3>
+      <CanvasPanel>
+        <Title>
+          <h3>Details for @context.Name</h3>
+        </Title>
+        <ButtonText>
+          <Icon IconStyle="IconStyle.Light" Name="IconName.FolderOpen"></Icon>
+          See details...
+        </ButtonText>
+        <Content>
+          Here goes the detail view for the source...
+        </Content>
+      </CanvasPanel>
+    </div>
+  </DetailRowTemplate>
+  <EmptyTemplate>
+    <div class="box">
+      No data sources to show...
+    </div>
+  </EmptyTemplate>
+  <LoadingTemplate>
+    <div class="box">
+      <progress class="progress is-small is-primary" max="100" />
+    </div>
+  </LoadingTemplate>
+  <ButtonRowTemplate>
+    <Blazorise.Button Color="Blazorise.Color.Primary" Size="Blazorise.Size.Small" Clicked="context.NewCommand.Clicked">New</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Success" Disabled="(selectedDataSource is null)" Size="Blazorise.Size.Small" Clicked="context.EditCommand.Clicked">Edit</Blazorise.Button>
+    <Blazorise.Button Color="Blazorise.Color.Danger" Disabled="(selectedDataSource is null)" Size="Blazorise.Size.Small" Clicked="context.DeleteCommand.Clicked">Delete</Blazorise.Button>
+  </ButtonRowTemplate>
+</DataGrid>
+
+@code {
+
+  DataSourceViewModel? selectedDataSource;
+
+  IList<DataSourceViewModel> DataSources = new List<DataSourceViewModel>();
+
+  protected override async Task OnInitializedAsync()
+  {
+    DataSources = await DataSourceService.GetDatasources();
+    await base.OnInitializedAsync();
+  }
+
+  void OnDashboardNewItemDefaultSetter(DataSourceViewModel dashboard)
+  {
+    dashboard.Name = "New Source";
+  }
+
+  private async Task OnRowInserted(SavedRowItem<DataSourceViewModel, Dictionary<string, object>> e)
+  {
+    await DataSourceService.InvokeCommand<DataSourceAdded>(e.Item);
+  }
+
+  private async Task OnRowUpdated(SavedRowItem<DataSourceViewModel, Dictionary<string, object>> e)
+  {
+    await DataSourceService.InvokeCommand<DataSourceUpdated>(e.Item);
+  }
+
+  private async Task OnRowRemoved(DataSourceViewModel item)
+  {
+    await DataSourceService.InvokeCommand<DataSourceRemoved>(item);
+  }
+}

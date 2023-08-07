@@ -124,12 +124,9 @@ public class Program
     #endregion Auth
 
     #region Hub
-    builder.Services.AddSingleton<ITileDataService, TileDataService>(sp =>
-    {
-      var logger = sp.GetRequiredService<ILogger<TileDataService>>();
-      var ts = new TileDataService(logger, builder.Configuration);
-      return ts;
-    });
+    builder.Services.AddSingleton<ITileDataService, TileDataService>();
+    builder.Services.AddSingleton<IDashboardService, DashboardService>();
+    builder.Services.AddSingleton<IDataSourceService, DataSourceService>();
     #endregion
 
     // Services that address the microservices, using httpclient to route through the proxy
@@ -144,19 +141,16 @@ public class Program
       var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
       return new TilesClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
-    builder.Services.AddSingleton<IDataConsumerClient>(sp =>
+    builder.Services.AddSingleton<IDataSourceClient>(sp =>
     {
       var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
-      return new DataConsumerClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
+      return new DataSourceClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
     builder.Services.AddSingleton<IUiInfoClient>(sp =>
     {
       var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
       return new UiInfoClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
-
-    // services that retrive data from the microservices and send appropriate commands
-    builder.Services.AddSingleton<IDashboardService, DashboardService>();
 
     builder.Services.AddAutoMapper(typeof(ModelMappings).Assembly);
 

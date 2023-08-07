@@ -16,7 +16,7 @@ public class TileViewModel : ViewModelBase<int>
 
   public string Icon { get; set; } = default!;
 
-  public Guid DataSource { get; set; }
+  public int DataSource { get; set; }
 
   public bool IsActive { get; set; }
 

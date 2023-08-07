@@ -1,4 +1,4 @@
-namespace TheDashboard.DstaConsumerService.Test
+namespace TheDashboard.DataSourceService.Test
 {
   [TestClass]
   public class UnitTest1

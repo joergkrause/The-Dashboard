@@ -1,18 +1,17 @@
 ﻿using TheDashboard.SharedEntities;
+using TheDashboard.ViewModels.Data;
 
-namespace TheDashboard.Frontend.Services;
-
-public interface ITileDataService
+namespace TheDashboard.Frontend.Services
 {
-
-    Task InvokeCommand<TEvent>(TileDto dto) where TEvent : Command;
+  public interface ITileDataService
+  {
+    bool IsConnected { get; }
 
     event OnMessageEvent Message;
 
+    Task<TileViewModel> GetTile(int id);
+    Task<IList<TileViewModel>> GetTiles(Guid dashboardId);
     Task Init();
-
-    bool IsConnected
-    {
-        get;
-    }
+    Task InvokeCommand<TEvent>(TileViewModel dto) where TEvent : Command;
+  }
 }

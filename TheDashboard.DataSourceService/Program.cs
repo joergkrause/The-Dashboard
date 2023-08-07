@@ -25,9 +25,9 @@ builder.Services.AddDbContext<DataConsumerDbContext>(opt =>
 });
 
 builder.Services.AddScoped<IDashboardService, DashboardService>();
-builder.Services.AddScoped<IDataConsumerService, DataConsumerService>();
+builder.Services.AddScoped<IDataSourceService, DataSourceService>();
 
-builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameof(DataConsumerService));
+builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameof(DataSourceService));
 // add eventbus channel for direct publish
 
 builder.Services.AddQuartz(config =>

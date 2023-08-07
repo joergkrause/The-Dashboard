@@ -8,10 +8,10 @@ namespace TheDatabase.DataConsumerService.Controllers;
 [ApiController]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 [Produces("application/json")]
-public class ConsumerController : DataConsumerBaseController
+public class DataSourceController : DataSourceBaseController
 {
 
-    public ConsumerController(IDataConsumerBaseController implementation) : base(implementation)
+    public DataSourceController(IDataSourceBaseController implementation) : base(implementation)
     {
         
     }

@@ -17,12 +17,12 @@ namespace TheDashboard.DataConsumerService.Jobs;
 public class ConsumerJob : IJob
 {
   private readonly ILogger? _logger;
-  private readonly IDataConsumerService _dataConsumerService;
+  private readonly IDataSourceService _dataConsumerService;
   private readonly IPublishEndpoint _publishEndpoint;
   private readonly DataConsumerDbContext _dbConsumerContext;
   private readonly IBusControl _bus;
 
-  public ConsumerJob(ILogger<ConsumerJob> logger, IConfiguration configuration, IDataConsumerService dataConsumerService, IPublishEndpoint publishEndpoint, DataConsumerDbContext dbConsumerContext)
+  public ConsumerJob(ILogger<ConsumerJob> logger, IConfiguration configuration, IDataSourceService dataConsumerService, IPublishEndpoint publishEndpoint, DataConsumerDbContext dbConsumerContext)
   {
     _logger = logger;
     _dataConsumerService = dataConsumerService;
