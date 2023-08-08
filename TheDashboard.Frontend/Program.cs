@@ -3,8 +3,10 @@ using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using Blazorise.RichTextEdit;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Rewrite;
@@ -13,6 +15,7 @@ using Microsoft.FeatureManagement;
 using Microsoft.FeatureManagement.FeatureFilters;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Prometheus;
 using TheDashboard.Frontend.Services;
 using TheDashboard.Frontend.Services.Mapper;
 using TheDashboard.SharedEntities;
@@ -111,13 +114,35 @@ public class Program
 
     #region Auth
 
-    builder.Services
-      .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-      .AddMicrosoftIdentityWebApp(options =>
+    // AD B2C
+    //builder.Services
+    //  .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    //  .AddMicrosoftIdentityWebApp(options =>
+    //{
+    //  builder.Configuration.Bind("AzureAdB2C", options);
+    //});
+    builder.Services.AddAuthentication(options =>
     {
-      builder.Configuration.Bind("AzureAdB2C", options);
+      options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+      options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+      options.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+      options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
     })
-      ;
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+    {
+      options.Authority = "http://host.docker.internal:8080/auth/realms/master";
+      options.RequireHttpsMetadata = builder.Environment.IsDevelopment() ? false : true;
+      options.ClientId = "thedashboard-frontend";
+      options.ClientSecret = "viDCW0m9PeFcidApMyd9qb5y5mBf913i";
+      options.ResponseType = "code";
+      options.SaveTokens = true;
+      options.GetClaimsFromUserInfoEndpoint = true;     
+    });
+
+    // Enable Pii
+
+
 
     builder.Services.AddAuthorization();
 
@@ -133,7 +158,7 @@ public class Program
     // TODO: Add auth
     builder.Services.AddSingleton<IDashboardClient>(sp =>
     {
-      var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");      
+      var httpClient = sp.GetRequiredService<IHttpClientFactory>().CreateClient("HttpQueryProxy");
       return new DashboardClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
     builder.Services.AddSingleton<ITilesClient>(sp =>
@@ -162,13 +187,10 @@ public class Program
 
     var app = builder.Build();
 
-    if (!app.Environment.IsDevelopment())
-    {        
-      app.UseExceptionHandler("/Error");
-      app.UseHsts();
-    }
+    // TODO: Add and configure Prometheus
+    //app.UseMetricServer();
+    //app.UseHttpMetrics();
 
-    // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
       app.UseExceptionHandler("/Error");
@@ -202,7 +224,7 @@ public class Program
     {
       endpoints.MapRazorPages();
       endpoints.MapControllers();
-      endpoints.MapBlazorHub().AllowAnonymous().RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = $"{OpenIdConnectDefaults.AuthenticationScheme}" });                
+      endpoints.MapBlazorHub().AllowAnonymous().RequireAuthorization(new AuthorizeAttribute { AuthenticationSchemes = $"{OpenIdConnectDefaults.AuthenticationScheme}" });
       endpoints.MapFallbackToPage("/_Host");
     });
 

@@ -1,11 +1,20 @@
 version: '3.4'
 
-# Note: Volume bindings are for Windows. For Linux, use the following:
+# Note: Volume bindings are for Windows. For Linux, adjust the paths:
 # Prepare a certificate: 
 # dotnet dev-certs https -ep ${APPDATA}\ASP.NET\Https\localhost.pfx -p crypticpassword
 # dotnet dev-certs https --trust
 
 services:
+  keycloak:
+    image: jboss/keycloak:latest
+    container_name: iam
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+    ports:
+      - 8080:8080
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver
@@ -25,11 +34,11 @@ services:
     deploy:
       resources:
         limits:
+          cpus: '2.0'
+          memory: 8G
+        reservations:
           cpus: '1.0'
           memory: 4G
-        reservations:
-          cpus: '0.5'
-          memory: 2G
     volumes:
      - type: bind
        source: "/D/Volumes/sqldata"
@@ -85,6 +94,7 @@ services:
       context: .
       dockerfile: TheDashboard.Frontend/Dockerfile
     depends_on:
+     - keycloak
      - proxy
      - thedashboard.dashboardservice
      - thedashboard.tileservice
@@ -165,6 +175,29 @@ services:
     depends_on:
       - sqlserver
       - eventbus
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command: 
+      - '--config.file=/etc/prometheus/prometheus.yml'
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: mypassword
+
+volumes:
+  grafana_data:
 
 networks:
   proxynet:
