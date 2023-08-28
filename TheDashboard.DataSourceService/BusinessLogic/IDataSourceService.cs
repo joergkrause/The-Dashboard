@@ -1,8 +1,6 @@
-﻿using TheDashboard.DataConsumerService.Domain;
-using TheDashboard.DataConsumerService.Infrastructure;
-using TheDashboard.SharedEntities;
+﻿using TheDashboard.SharedEntities;
 
-namespace TheDashboard.DataConsumerService.BusinessLogic
+namespace TheDashboard.DataSourceService.BusinessLogic
 {
   public interface IDataSourceService
   {

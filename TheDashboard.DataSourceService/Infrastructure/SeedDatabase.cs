@@ -1,8 +1,6 @@
-﻿
-using TheDashboard.DataConsumerService.Domain;
-using TheDashboard.DataConsumerService.Infrastructure;
+﻿using TheDashboard.DataSourceService.Domain;
 
-namespace TheDashboard.DataConsumerService.Infrastructure;
+namespace TheDashboard.DataSourceService.Infrastructure;
 
 public static class SeedDatabase
 {
@@ -30,7 +28,7 @@ public static class SeedDatabase
     context.Set<DataSource>().Add(t1);
     context.Set<Dashboard>().Add(d1);
 
-    await context.SaveChangesAsync();   
+    await context.SaveChangesAsync();
   }
 
 }

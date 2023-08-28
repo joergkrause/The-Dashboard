@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
+namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
     public partial class OutboxPattern : Migration
     {

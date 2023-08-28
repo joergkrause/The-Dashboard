@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheDashboard.SharedEntities;
 
-namespace TheDatabase.DataConsumerService.Controllers;
+namespace TheDashboard.DataSourceService.Controllers;
 
 
 [Route("api/[controller]")]
@@ -11,9 +11,9 @@ namespace TheDatabase.DataConsumerService.Controllers;
 public class DataSourceController : DataSourceBaseController
 {
 
-    public DataSourceController(IDataSourceBaseController implementation) : base(implementation)
-    {
-        
-    }
+  public DataSourceController(IDataSourceBaseController implementation) : base(implementation)
+  {
 
- }
+  }
+
+}

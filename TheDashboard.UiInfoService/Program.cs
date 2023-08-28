@@ -27,7 +27,7 @@ namespace TheDashboard.UiInfoService
             h.Username(builder.Configuration["RabbitMq:User"]);
             h.Password(builder.Configuration["RabbitMq:Password"]);
           });
-          cfg.ReceiveEndpoint("DataConsumerService", e =>
+          cfg.ReceiveEndpoint("DataSourceService", e =>
           {
             e.ConfigureConsumers(context);
             e.Bind(typeof(DataEvent).Name);

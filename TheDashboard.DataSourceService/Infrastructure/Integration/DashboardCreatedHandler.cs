@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MassTransit;
-using TheDashboard.DataConsumerService.BusinessLogic;
+using TheDashboard.DataSourceService.BusinessLogic;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.DataConsumerService.Infrastructure.Integration;
+namespace TheDashboard.DataSourceService.Infrastructure.Integration;
 
 public class DashboardCreatedHandler : IConsumer<DashboardAdded>
 {
@@ -20,7 +20,7 @@ public class DashboardCreatedHandler : IConsumer<DashboardAdded>
 
   public async Task Consume(ConsumeContext<DashboardAdded> context)
   {
-    var id = context.Message.Id;    
+    var id = context.Message.Id;
     var dashboard = await _dashboardService.GetDashboard(id);
     if (dashboard == null)
     {

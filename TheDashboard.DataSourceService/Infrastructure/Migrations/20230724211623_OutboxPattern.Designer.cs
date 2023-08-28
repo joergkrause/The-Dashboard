@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TheDashboard.DataConsumerService.Infrastructure;
+using TheDashboard.DataSourceService.Infrastructure;
 
 #nullable disable
 
-namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
+namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-    [DbContext(typeof(DataConsumerDbContext))]
+  [DbContext(typeof(DataConsumerDbContext))]
     [Migration("20230724211623_OutboxPattern")]
     partial class OutboxPattern
     {
@@ -192,7 +192,7 @@ namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
                     b.ToTable("OutboxState");
                 });
 
-            modelBuilder.Entity("TheDashboard.DataConsumerService.Domain.Dashboard", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.Dashboard", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -209,7 +209,7 @@ namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
                     b.ToTable("Dashboards", (string)null);
                 });
 
-            modelBuilder.Entity("TheDashboard.DataConsumerService.Domain.DataSource", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.DataSource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -249,9 +249,9 @@ namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
                     b.HasDiscriminator<int>("Kind");
                 });
 
-            modelBuilder.Entity("TheDashboard.DataConsumerService.Domain.HttpDataSource", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.HttpDataSource", b =>
                 {
-                    b.HasBaseType("TheDashboard.DataConsumerService.Domain.DataSource");
+                    b.HasBaseType("TheDashboard.DataSourceService.Domain.DataSource");
 
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
@@ -270,9 +270,9 @@ namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
                     b.HasDiscriminator().HasValue(1);
                 });
 
-            modelBuilder.Entity("TheDashboard.DataConsumerService.Domain.DataSource", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.DataSource", b =>
                 {
-                    b.HasOne("TheDashboard.DataConsumerService.Domain.Dashboard", "Dashboard")
+                    b.HasOne("TheDashboard.DataSourceService.Domain.Dashboard", "Dashboard")
                         .WithMany("DataSources")
                         .HasForeignKey("DashboardId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -281,7 +281,7 @@ namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
                     b.Navigation("Dashboard");
                 });
 
-            modelBuilder.Entity("TheDashboard.DataConsumerService.Domain.Dashboard", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.Dashboard", b =>
                 {
                     b.Navigation("DataSources");
                 });

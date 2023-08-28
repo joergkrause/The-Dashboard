@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
+namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
   public partial class AddQuartzTables : Migration
   {

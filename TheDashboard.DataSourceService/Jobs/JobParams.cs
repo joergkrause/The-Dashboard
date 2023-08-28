@@ -1,7 +1,7 @@
-﻿namespace TheDashboard.DataConsumerService.Jobs;
+﻿namespace TheDashboard.DataSourceService.Jobs;
 
 public class JobParams
 {
-    public int DataConsumerId { get; set; }
-    
+  public int DataConsumerId { get; set; }
+
 }

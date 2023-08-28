@@ -1,12 +1,11 @@
 ﻿using MassTransit;
 using Quartz;
-using TheDashboard.DataConsumerService.BusinessLogic;
-using TheDashboard.DataConsumerService.Infrastructure;
-using TheDashboard.DataConsumerService.Infrastructure.Integration;
+using TheDashboard.DataSourceService.BusinessLogic;
+using TheDashboard.DataSourceService.Infrastructure;
 using TheDashboard.SharedEntities;
 using static MassTransit.Logging.DiagnosticHeaders.Messaging;
 
-namespace TheDashboard.DataConsumerService.Jobs;
+namespace TheDashboard.DataSourceService.Jobs;
 
 /// <summary>
 /// Each tile connected to a data consumer may create an instance of the consumer job.
@@ -17,15 +16,15 @@ namespace TheDashboard.DataConsumerService.Jobs;
 public class ConsumerJob : IJob
 {
   private readonly ILogger? _logger;
-  private readonly IDataSourceService _dataConsumerService;
+  private readonly IDataSourceService _dataSourceService;
   private readonly IPublishEndpoint _publishEndpoint;
   private readonly DataConsumerDbContext _dbConsumerContext;
   private readonly IBusControl _bus;
 
-  public ConsumerJob(ILogger<ConsumerJob> logger, IConfiguration configuration, IDataSourceService dataConsumerService, IPublishEndpoint publishEndpoint, DataConsumerDbContext dbConsumerContext)
+  public ConsumerJob(ILogger<ConsumerJob> logger, IConfiguration configuration, IDataSourceService dataSourceService, IPublishEndpoint publishEndpoint, DataConsumerDbContext dbConsumerContext)
   {
     _logger = logger;
-    _dataConsumerService = dataConsumerService;
+    _dataSourceService = dataSourceService;
     _publishEndpoint = publishEndpoint;
     _dbConsumerContext = dbConsumerContext;
     _bus = Bus.Factory.CreateUsingRabbitMq(cfg =>
@@ -35,13 +34,13 @@ public class ConsumerJob : IJob
         h.Username(configuration["rabbitmq:User"]);
         h.Password(configuration["rabbitmq:Password"]);
       });
-  });
+    });
     // try connection before continue
     try
     {
       _bus.Start();
       _bus.Stop();
-    } 
+    }
     catch (Exception ex)
     {
       _logger?.LogError(ex.Message);
@@ -53,18 +52,18 @@ public class ConsumerJob : IJob
     var map = context.MergedJobDataMap;
     await _bus.StartAsync();
     try
-    {      
+    {
       var consumerId = map.GetInt("dataConsumerId");
       if (consumerId == 0)
       {
         // if no id is sent we assume this is the heartbeat job
-        await _publishEndpoint.Publish<DataEvent>(new DataEvent(DateTime.Now.ToLongTimeString()));
+        await _publishEndpoint.Publish(new DataEvent(DateTime.Now.ToLongTimeString()));
         await _dbConsumerContext.SaveChangesAsync();
         return;
       }
 
       // get task data
-      var source = await _dataConsumerService.GetDataSource(consumerId);
+      var source = await _dataSourceService.GetDataSource(consumerId);
       if (source == null) return;
 
       // execute desired action

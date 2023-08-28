@@ -1,4 +1,4 @@
-﻿namespace TheDashboard.DataConsumerService;
+﻿namespace TheDashboard.DataSourceService.Domain;
 
 public enum Kind
 {

@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using MassTransit;
 using Quartz;
-using TheDashboard.DataConsumerService.BusinessLogic;
-using TheDashboard.DataConsumerService.Jobs;
+using TheDashboard.DataSourceService.BusinessLogic;
+using TheDashboard.DataSourceService.Jobs;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.DataConsumerService.Infrastructure.Integration;
+namespace TheDashboard.DataSourceService.Infrastructure.Integration;
 
 public class JobStartHandler : IConsumer<JobStartEvent>
 {

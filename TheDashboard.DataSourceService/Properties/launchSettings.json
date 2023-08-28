@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "TheDashboard.DataConsumerService": {
+    "TheDashboard.DataSourceService": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

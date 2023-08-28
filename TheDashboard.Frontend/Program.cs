@@ -121,6 +121,8 @@ public class Program
     //{
     //  builder.Configuration.Bind("AzureAdB2C", options);
     //});
+
+    // KeyCloak
     builder.Services.AddAuthentication(options =>
     {
       options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -131,18 +133,16 @@ public class Program
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
     {
-      options.Authority = "http://host.docker.internal:8080/auth/realms/master";
+      options.Authority = builder.Configuration["KeyCloak:Authority"];
       options.RequireHttpsMetadata = builder.Environment.IsDevelopment() ? false : true;
-      options.ClientId = "thedashboard-frontend";
-      options.ClientSecret = "viDCW0m9PeFcidApMyd9qb5y5mBf913i";
+      options.ClientId = builder.Configuration["KeyCloak:ClientId"];
+      options.ClientSecret = builder.Configuration["KeyCloak:ClientSecret"];
       options.ResponseType = "code";
       options.SaveTokens = true;
       options.GetClaimsFromUserInfoEndpoint = true;     
     });
 
     // Enable Pii
-
-
 
     builder.Services.AddAuthorization();
 

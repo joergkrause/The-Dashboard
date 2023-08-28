@@ -8,17 +8,35 @@
 
 <PageTitle>Dashboard Manager</PageTitle>
 
-<h1>Manage your Dashboards</h1>
+<h1>The Dashboards</h1>
 
+<h2>Introduction</h2>
 <p>
-  <NavLink class="btn btn-primary" href="/dashboards">Manage your Dashboards</NavLink>
+  A thoroughly architectured application using .NET 6, Blazor, SignalR, Entity Framework Core, SQL Server, Bootstrap, and more. Based on CQRS/EventSourcing pattern and
+  with the usage of various OS projects such as KeyCloak, Grafana, Prometheus, RabbitMQ, and more.
+</p>
+<h2>Next steps</h2>
+<p>
+  There is a plan to create the very same app using a cloud native approach, replacing RabbitMQ with Azure Service Bus, Quartz with Azure Functions, and KeyCloak with Azure AD B2C.
+  This shall give a benchmarlk regarding perfomance, scaling, and pricing (Azure functions versus AKS, actually).
 </p>
 
+<h2>Get Started</h2>
 <p>
   Start creating a dashboard. Add a standard layout or create a new one. Add tiles with visalization and transformation instructions of your data.
   Any data source can be used. The dashboard will be rendered as a web page. You can share the URL with others.
   Add an manage users to protect your dashboard. Set refresh rates and design rules.
 </p>
+
+<h2>Environment</h2>
+<ul>
+  <li><b>Prometheus</b>: No authentication</li>
+  <li><b>Grafana</b>: Admin password=mypassword</li>
+  <li><b>Key Cloak</b>: user=admin, password=admin</li>
+  <li><b>RabbitMQ</b>: user=user, password=p@ssw0rd</li>
+  <li><b>Event Store</b>: No athentication</li>
+  <li><b>SQL Server</b>: user=SA, password=p@ssw0rd</li>
+</ul>
 
 <b>@Data</b>
 

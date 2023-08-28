@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using TheDashboard.DataConsumerService.Domain;
-using TheDashboard.DataConsumerService.Infrastructure;
+using TheDashboard.DataSourceService.Domain;
+using TheDashboard.DataSourceService.Infrastructure;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.DataConsumerService.BusinessLogic;
+namespace TheDashboard.DataSourceService.BusinessLogic;
 
 public class DataSourceService : IDataSourceService
 {

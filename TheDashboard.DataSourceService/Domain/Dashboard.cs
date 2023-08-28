@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TheDashboard.DatabaseLayer.Domain;
 
-namespace TheDashboard.DataConsumerService.Domain;
+namespace TheDashboard.DataSourceService.Domain;
 
 public class Dashboard : EntityBase<Guid>
 {

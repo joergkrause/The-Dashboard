@@ -183,7 +183,7 @@ The project of the project is divided into frontend and backend. The frontend is
 
 * DashboardService: Create a dashboard, manage Dashboards, assign Tiles to dashboard.
 * TileService: Manage Tiles independently from Dashboards. Define data sources and views.
-* DataConsumerService: Pull data from datasource and establish Websocket connection to tiles.
+* DataSourceService: Pull data from datasource and establish Websocket connection to tiles.
 * UiInfoService: Manage UI information, such as available Tiles, available views, etc.
 
 Authentication is handled by Azure AD B2C with default policies. The frontend is protected by a proxy (YARP) that handles authentication and forwards requests to the backend. The backend is protected by Azure AD B2C as well, but the proxy forwards the authentication token to the backend. The backend then validates the token and extracts the user information from it. The backend is not accessible from the outside, only the proxy can access it.

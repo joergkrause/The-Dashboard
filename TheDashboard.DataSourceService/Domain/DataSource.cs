@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using TheDashboard.DatabaseLayer.Domain;
 
-namespace TheDashboard.DataConsumerService.Domain;
+namespace TheDashboard.DataSourceService.Domain;
 
 public abstract class DataSource : NamedEntity<int>
 {

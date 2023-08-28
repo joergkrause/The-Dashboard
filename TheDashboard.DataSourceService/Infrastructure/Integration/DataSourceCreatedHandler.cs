@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using MassTransit;
-using TheDashboard.DataConsumerService.BusinessLogic;
+using TheDashboard.DataSourceService.BusinessLogic;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.DataConsumerService.Infrastructure.Integration;
+namespace TheDashboard.DataSourceService.Infrastructure.Integration;
 
 public class DataSourceCreatedHandler : IConsumer<DataSourceAdded>
 {
@@ -20,7 +20,7 @@ public class DataSourceCreatedHandler : IConsumer<DataSourceAdded>
 
   public async Task Consume(ConsumeContext<DataSourceAdded> context)
   {
-    var id = context.Message.DataSourceId;    
+    var id = context.Message.DataSourceId;
     var ds = await _dataSourceService.GetDataSource(id);
     if (ds == null)
     {

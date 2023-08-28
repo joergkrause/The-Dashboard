@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using TheDashboard.DataConsumerService.Domain;
+using TheDashboard.DataSourceService.Domain;
 using TheDashboard.SharedEntities;
 
-namespace TheDatabase.DataConsumerService.BusinessLogic.MappingProfiles;
+namespace TheDashboard.DataSourceService.BusinessLogic.MappingProfiles;
 
 public class MappingProfile : Profile
 {
@@ -25,6 +25,6 @@ public class MappingProfile : Profile
         };
       });
 
-    CreateMap<DataSourceDto, HttpDataSource>();    
+    CreateMap<DataSourceDto, HttpDataSource>();
   }
 }

@@ -1,6 +1,6 @@
 ﻿using TheDashboard.SharedEntities;
 
-namespace TheDashboard.DataConsumerService.BusinessLogic;
+namespace TheDashboard.DataSourceService.BusinessLogic;
 
 public interface IDashboardService
 {

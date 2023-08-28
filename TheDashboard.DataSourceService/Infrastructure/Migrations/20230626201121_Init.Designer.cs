@@ -3,14 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TheDashboard.DataConsumerService.Infrastructure;
 
 #nullable disable
 
-namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
+namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-    [DbContext(typeof(DataConsumerDbContext))]
+  [DbContext(typeof(DataConsumerDbContext))]
     [Migration("20230626201121_Init")]
     partial class Init
     {
@@ -23,7 +21,7 @@ namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("TheDashboard.DataConsumerService.Domain.DataSource", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.DataSource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,9 +56,9 @@ namespace TheDashboard.DataConsumerService.Infrastructure.Migrations
                     b.HasDiscriminator<int>("Kind");
                 });
 
-            modelBuilder.Entity("TheDashboard.DataConsumerService.Domain.HttpDataSource", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.HttpDataSource", b =>
                 {
-                    b.HasBaseType("TheDashboard.DataConsumerService.Domain.DataSource");
+                    b.HasBaseType("TheDashboard.DataSourceService.Domain.DataSource");
 
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");

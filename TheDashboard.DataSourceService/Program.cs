@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Quartz;
 using Quartz.AspNetCore;
 using TheDashboard.BuildingBlocks.Extensions;
-using TheDashboard.DataConsumerService.BusinessLogic;
-using TheDashboard.DataConsumerService.Domain;
-using TheDashboard.DataConsumerService.Infrastructure;
-using TheDashboard.DataConsumerService.Jobs;
-using TheDatabase.DataConsumerService.BusinessLogic.MappingProfiles;
 using System.Diagnostics;
+using TheDashboard.DataSourceService.BusinessLogic;
+using TheDashboard.DataSourceService.Jobs;
+using TheDashboard.DataSourceService.Domain;
+using TheDashboard.DataSourceService.Infrastructure;
+using TheDashboard.DataSourceService.BusinessLogic.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +32,7 @@ builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameo
 
 builder.Services.AddQuartz(config =>
 {
-  config.UseMicrosoftDependencyInjectionJobFactory();
+  // config.UseMicrosoftDependencyInjectionJobFactory();
 
   // configure persistence with EF Core
   config.UsePersistentStore(opt =>
