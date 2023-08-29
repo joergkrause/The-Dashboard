@@ -17,7 +17,7 @@ public class CommandConverter : JsonConverter<Command>
         var jsonObject = JsonDocument.ParseValue(ref reader).RootElement;
 
         var typeName = jsonObject.GetProperty("Type").GetString();
-        var type = Type.GetType($"TheDashboard.BuildingBlocks.Core.EventStore.{typeName}, TheDashboard.BuildingBlocks");
+        var type = Type.GetType($"TheDashboard.SharedEntities.{typeName}, TheDashboard.SharedEntities");
         if (type != null)
         {
             var command = JsonSerializer.Deserialize(jsonObject, type) as Command;
