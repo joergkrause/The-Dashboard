@@ -96,16 +96,16 @@
 
   private async Task OnRowInserted(SavedRowItem<DataSourceViewModel, Dictionary<string, object>> e)
   {
-    await DataSourceService.InvokeCommand<DataSourceAdded>(e.Item);
+    await DataSourceService.InvokeCommand<AddDataSource>(e.Item);
   }
 
   private async Task OnRowUpdated(SavedRowItem<DataSourceViewModel, Dictionary<string, object>> e)
   {
-    await DataSourceService.InvokeCommand<DataSourceUpdated>(e.Item);
+    await DataSourceService.InvokeCommand<UpdateDataSource>(e.Item);
   }
 
   private async Task OnRowRemoved(DataSourceViewModel item)
   {
-    await DataSourceService.InvokeCommand<DataSourceRemoved>(item);
+    await DataSourceService.InvokeCommand<RemoveDataSource>(item);
   }
 }

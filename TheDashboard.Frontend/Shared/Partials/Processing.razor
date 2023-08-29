@@ -1,0 +1,22 @@
+﻿@using Blazorise;
+<Blazorise.Icons.FontAwesome.Icon Name="IconName.Save" Visibility="@(Visible ? Visibility.Visible : Visibility.Invisible)"></Blazorise.Icons.FontAwesome.Icon>
+
+@code {
+
+  [Parameter]
+  public bool Visible { get; set; }
+
+  [Parameter]
+  public int Timeout { get; set; }
+
+
+  protected override async Task OnAfterRenderAsync(bool firstRender)
+  {
+    if (!firstRender && Timeout != 0)
+    {
+      await Task.Delay(Timeout);
+      Visible = false;
+    }
+  }
+
+}

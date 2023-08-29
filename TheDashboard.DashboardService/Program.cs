@@ -2,10 +2,8 @@ using TheDashboard.DatabaseLayer.Extensions;
 using Microsoft.EntityFrameworkCore;
 using TheDashboard.BuildingBlocks.Extensions;
 using TheDashboard.DashboardService.Infrastructure;
-using TheDashboard.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using TheDashboard.Services.Mappings;
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.DatabaseLayer.Interfaces;
 using TheDashboard.DatabaseLayer.Interceptors;
@@ -13,6 +11,8 @@ using TheDashboard.DatabaseLayer.Configurations;
 using TheDashboard.SharedEntities;
 using TheDashboard.DashboardService.Controllers.Implementation;
 using System.Diagnostics;
+using TheDashboard.DashboardService.BusinessLogic;
+using TheDashboard.DashboardService.BusinessLogic.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 

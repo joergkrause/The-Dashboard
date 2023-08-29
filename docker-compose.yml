@@ -1,6 +1,5 @@
 version: '3.4'
 
-# Note: Volume bindings are for Windows. For Linux, adjust the paths:
 # Prepare a certificate: 
 # dotnet dev-certs https -ep ${APPDATA}\ASP.NET\Https\localhost.pfx -p crypticpassword
 # dotnet dev-certs https --trust
@@ -12,6 +11,10 @@ services:
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/config/realm-export.json:override
+    volumes:
+      - ./volumes/keycloak_configs:/config
+      - ./volumes/keycloak_data:/opt/jboss/keycloak/standalone/data
     ports:
       - 8080:8080
 
@@ -41,7 +44,7 @@ services:
           memory: 4G
     volumes:
      - type: bind
-       source: "/D/Volumes/sqldata"
+       source: ./volumes/sql_data
        target: /var/opt/mssql/data
   
   eventbus:
@@ -80,10 +83,10 @@ services:
       - "2113:2113"
     volumes:
       - type: bind
-        source: "/D/Volumes/eventstore/data"
+        source: ./volumes/eventstore_data
         target: /var/lib/eventstore
       - type: bind
-        source: "/D/Volumes/eventstore/logs"
+        source: ./volumes/eventstore_data_logs
         target: /var/log/eventstore
 
   frontend:
@@ -192,12 +195,18 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - grafana_data:/var/lib/grafana
+      - ./volumes/grafana_data:/var/lib/grafana
     environment:
       GF_SECURITY_ADMIN_PASSWORD: mypassword
 
 volumes:
-  grafana_data:
+  keycloak_data:
+  keycloak_config:
+  sql_data:
+  eventstore_data:
+  eventstore_data_logs:
+  grafana_data:  
+  prometheus_data:
 
 networks:
   proxynet:

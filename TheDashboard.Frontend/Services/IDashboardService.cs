@@ -14,4 +14,6 @@ public interface IDashboardService
 
   Task<IList<TileViewModel>> GetAssignedTiles(Guid dashboardId);
 
+  bool IsBusy { get; }
+
 }

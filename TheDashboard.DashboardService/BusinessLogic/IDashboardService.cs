@@ -2,9 +2,9 @@
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.Services
+namespace TheDashboard.DashboardService.BusinessLogic
 {
-    public interface IDashboardService
+  public interface IDashboardService
   {
     Task<DashboardDto> AddDashboard(DashboardDto dashboard);
     Task DeleteDashboard(Guid id);

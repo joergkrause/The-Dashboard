@@ -8,7 +8,7 @@ using TheDashboard.DatabaseLayer;
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.Services;
+namespace TheDashboard.DashboardService.BusinessLogic;
 
 public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
 {
@@ -51,6 +51,11 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     return _mapper.Map<DashboardDto>(model);
   }
 
+  /// <summary>
+  /// Add a dashboard to local service's database and publish as "Added" event to all other services.
+  /// </summary>
+  /// <param name="dto"></param>
+  /// <returns></returns>
   public async Task<DashboardDto> AddDashboard(DashboardDto dto)
   {
     var dashboard = _mapper.Map<Dashboard>(dto);
@@ -62,8 +67,6 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     await (_publishEndpoint?.Publish(createdEvent) ?? Task.CompletedTask);
     Context.Dashboards.Add(dashboard);
     Context.Entry(defaultLayout).State = EntityState.Unchanged;
-    var dashboardDto = _mapper.Map<DashboardDto>(dashboard);
-    return dashboardDto;
     try
     {
       await Context.SaveChangesAsync();
@@ -73,6 +76,8 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
       _logger.LogError("Exception adding Dashboard: {Message}", ex.Message);
       throw; // TODO: enapsulate exceptions
     }
+    var dashboardDto = _mapper.Map<DashboardDto>(dashboard);
+    return dashboardDto;    
   }
 
   public async Task UpdateDashboard(DashboardDto dto)
@@ -99,9 +104,10 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     await Context.SaveChangesAsync();
   }
 
-  public void CleanUp() { 
+  public void CleanUp()
+  {
     BeginTransaction();
-    
+
     // Remove all dashboards of a tenant
 
     Commit();

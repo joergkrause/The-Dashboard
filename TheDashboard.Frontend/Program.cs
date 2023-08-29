@@ -70,7 +70,6 @@ public class Program
 
     /* Blazor */
     builder.Services.AddResponseCaching();
-    //builder.Services.AddControllers();
     builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
     builder.Services.AddRazorPages();
     builder.Services.AddWebOptimizer(options =>

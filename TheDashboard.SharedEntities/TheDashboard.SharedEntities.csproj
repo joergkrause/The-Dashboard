@@ -45,4 +45,5 @@
         <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/datasource_openapi.json /classname:DataSourceBase /namespace:TheDashboard.SharedEntities /output:Controllers/DataSourceBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
         <Exec Command="$(NSwagExe_Net60) openapi2cscontroller /input:openapi/uiinfo_openapi.json /classname:UiInfoBase /namespace:TheDashboard.SharedEntities /output:Controllers/UiInfoBase.cs /dateTimeType:System.DateTime /jsonLibrary:SystemTextJson " />
     </Target>
+    <ProjectExtensions><VisualStudio><UserProperties openapi_4dashboard_3openapi_1json__JsonSchema="open" /></VisualStudio></ProjectExtensions>
 </Project>

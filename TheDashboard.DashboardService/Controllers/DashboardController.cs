@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.Controllers;
+namespace TheDashboard.DashboardService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

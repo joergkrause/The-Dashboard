@@ -10,10 +10,19 @@
 
 <h3>Dashboard Manager</h3>
 
+<CodeInfo>
+  A standard action page sends commands using a services' <i>InvokeCommand</i> method. The command goes through the proxy to the service bus and distributes through an 
+  exchange fanout to all backend services that are listening to the command. The backend services will then execute the command and publish a generic event. It just confirms
+  that the backend has successfully processed the command. The backend may also publish a generic error event in case it's needed. The frontend can also subscribe to the event 
+  and update the UI accordingly. The subscription is using SignalR/WebSocket to continously watching for changes.
+</CodeInfo>
+
 <Blazorise.Alert Color="Blazorise.Color.Info">
   Here you manage all your dashboards. Each dashboard has a distinct URL for data viewing. To make use of a dashboard you need to assign two tasks:
   1) Add datasources to retrieve any kind of data. 2) Add tiles that consume data and provide a view, along with filter and transformation capabilities.
 </Blazorise.Alert>
+
+<Processing Visible="@DashboardService.IsBusy" />
 
 <DataGrid TItem="DashboardViewModel"
 @bind-SelectedRow="@selectedDashboard"
@@ -96,16 +105,16 @@
 
   private async Task OnRowInserted(SavedRowItem<DashboardViewModel, Dictionary<string, object>> e)
   {
-    await DashboardService.InvokeCommand<DashboardAdded>(e.Item);
+    await DashboardService.InvokeCommand<AddDashboard>(e.Item);
   }
 
   private async Task OnRowUpdated(SavedRowItem<DashboardViewModel, Dictionary<string, object>> e)
   {
-    await DashboardService.InvokeCommand<DashboardUpdated>(e.Item);
+    await DashboardService.InvokeCommand<UpdateDashboard>(e.Item);
   }
 
   private async Task OnRowRemoved(DashboardViewModel item)
   {
-    await DashboardService.InvokeCommand<DashboardRemoved>(item);
+    await DashboardService.InvokeCommand<RemoveDashboard>(item);
   }
 }

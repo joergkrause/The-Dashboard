@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TheDashboard.Controllers;
-using TheDashboard.Services;
+using TheDashboard.DashboardService.BusinessLogic;
 using TheDashboard.SharedEntities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860

@@ -130,17 +130,17 @@
 
   private async Task OnRowInserted(SavedRowItem<TileViewModel, Dictionary<string, object>> e)
   {
-    await TileDataService.InvokeCommand<TileAdded>(e.Item);
+    await TileDataService.InvokeCommand<AddTile>(e.Item);
   }
 
   private async Task OnRowUpdated(SavedRowItem<TileViewModel, Dictionary<string, object>> e)
   {
-    await TileDataService.InvokeCommand<TileUpdated>(e.Item);
+    await TileDataService.InvokeCommand<UpdateTile>(e.Item);
   }
 
   private async Task OnRowRemoved(TileViewModel item)
   {
-    await TileDataService.InvokeCommand<TileRemoved>(item);
+    await TileDataService.InvokeCommand<RemoveTile>(item);
   }
 
   private async Task AssignDataSource()

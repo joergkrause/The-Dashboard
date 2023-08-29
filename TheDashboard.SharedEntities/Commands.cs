@@ -1,27 +1,30 @@
 ﻿namespace TheDashboard.SharedEntities;
 
-public record DashboardAdded(Guid Id, DashboardDto Item) : Command;
+// Commands are being sent from the frontend to the queue and being consumed by one of the backend services.
+// Commands are supposed to have ONE endpoint only.
 
-public record DashboardRemoved(Guid Id) : Command;
+public record AddDashboard(Guid Id, DashboardDto Item) : Command;
 
-public record DashboardUpdated(Guid Id, DashboardDto Item) : Command;
+public record RemoveDashboard(Guid Id) : Command;
 
-public record TileAdded(int Id, TileDto Item) : Command;
+public record UpdateDashboard(Guid Id, DashboardDto Item) : Command;
 
-public record TileRemoved(int TileId) : Command;
+public record AddTile(int Id, TileDto Item) : Command;
 
-public record TileUpdated(int TileId, TileDto Item) : Command;
+public record RemoveTile(int TileId) : Command;
 
-public record TileAssigned(int TileId, Guid DashboardId) : Command;
+public record UpdateTile(int TileId, TileDto Item) : Command;
 
-public record TileUnAssigned(int TileId, Guid DashboardId) : Command;
+public record AssigneTile(int TileId, Guid DashboardId) : Command;
 
-public record DataSourceAdded(int DataSourceId, DataSourceDto Item) : Command;
+public record UnAssigneTile(int TileId, Guid DashboardId) : Command;
 
-public record DataSourceRemoved(int DataSourceId, int TileId) : Command;
+public record AddDataSource(int DataSourceId, DataSourceDto Item) : Command;
 
-public record DataSourceUpdated(int DataSourceId, DataSourceDto Item) : Command;
+public record RemoveDataSource(int DataSourceId, int TileId) : Command;
 
-public record DataSourceAssigned(int DataSourceId, int TileId) : Command;
+public record UpdateDataSource(int DataSourceId, DataSourceDto Item) : Command;
 
-public record DataSourceUnAssigned(int DataSourceId, int TileId) : Command;
+public record AssignDataSource(int DataSourceId, int TileId) : Command;
+
+public record UnAssignDataSource(int DataSourceId, int TileId) : Command;

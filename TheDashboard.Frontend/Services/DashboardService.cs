@@ -12,6 +12,10 @@ public sealed class DashboardService : ServiceInvokeCommand, IDashboardService
   private readonly IDashboardClient _dashboardClient;
   private readonly ITilesClient _tilesClient;
 
+  private bool _isBusy;
+
+  public bool IsBusy => _isBusy;
+
   public DashboardService(IMapper mapper, IHttpClientFactory httpClientFactory, IDashboardClient dashboardClient, ITilesClient tilesClient) : base(mapper, httpClientFactory)
   {
     
@@ -41,6 +45,8 @@ public sealed class DashboardService : ServiceInvokeCommand, IDashboardService
 
   public async Task InvokeCommand<TEvent>(DashboardViewModel model) where TEvent : Command
   {
+    _isBusy = true;
     await base.InvokeCommand<TEvent, DashboardViewModel, Guid>(model);
+    _isBusy = false;
   }
 }

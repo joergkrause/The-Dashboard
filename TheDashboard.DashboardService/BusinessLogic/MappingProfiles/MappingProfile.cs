@@ -2,7 +2,7 @@
 using TheDashboard.DashboardService.Domain;
 using TheDashboard.SharedEntities;
 
-namespace TheDashboard.Services.Mappings;
+namespace TheDashboard.DashboardService.BusinessLogic.MappingProfiles;
 
 public class MappingProfile : Profile
 {
