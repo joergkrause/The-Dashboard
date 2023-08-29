@@ -11,9 +11,9 @@ services:
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
-      - KEYCLOAK_IMPORT=/config/realm-export.json:override
+      - KEYCLOAK_IMPORT=/config/realm-export.json -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
     volumes:
-      - ./volumes/keycloak_configs:/config
+      - ./keycloak-configs:/config
       - ./volumes/keycloak_data:/opt/jboss/keycloak/standalone/data
     ports:
       - 8080:8080
@@ -200,8 +200,7 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: mypassword
 
 volumes:
-  keycloak_data:
-  keycloak_config:
+  keycloak_data:  
   sql_data:
   eventstore_data:
   eventstore_data_logs:

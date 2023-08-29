@@ -105,12 +105,12 @@
 
   private async Task OnRowInserted(SavedRowItem<DashboardViewModel, Dictionary<string, object>> e)
   {
-    await DashboardService.InvokeCommand<AddDashboard>(e.Item);
+    await DashboardService.InvokeCommand<AddDashboard>(e.NewItem);
   }
 
   private async Task OnRowUpdated(SavedRowItem<DashboardViewModel, Dictionary<string, object>> e)
   {
-    await DashboardService.InvokeCommand<UpdateDashboard>(e.Item);
+    await DashboardService.InvokeCommand<UpdateDashboard>(e.NewItem);
   }
 
   private async Task OnRowRemoved(DashboardViewModel item)
