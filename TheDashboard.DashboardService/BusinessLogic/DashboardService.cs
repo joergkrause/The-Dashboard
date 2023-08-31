@@ -51,6 +51,11 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
     return _mapper.Map<DashboardDto>(model);
   }
 
+  public async Task<bool> DashboardExists(Guid id)
+  {
+    return await Context.Dashboards.AnyAsync(d => d.Id == id);
+  }
+
   /// <summary>
   /// Add a dashboard to local service's database and publish as "Added" event to all other services.
   /// </summary>
@@ -60,21 +65,25 @@ public class DashboardService : UnitOfWork<DashboardContext>, IDashboardService
   {
     var dashboard = _mapper.Map<Dashboard>(dto);
     // add some defaults
-    var defaultLayout = await Context.Layouts.SingleAsync(l => l.Id == dto.LayoutId);
-    dashboard.Layout = defaultLayout;
+    var defaultLayout = await Context.Layouts.SingleOrDefaultAsync(l => l.Id == dto.LayoutId);
+    dashboard.Layout = defaultLayout ?? new AdminLayout();
     dashboard.Theme = "Light";
     var createdEvent = new DashboardAdded(dashboard.Id, dto);
     await (_publishEndpoint?.Publish(createdEvent) ?? Task.CompletedTask);
     Context.Dashboards.Add(dashboard);
-    Context.Entry(defaultLayout).State = EntityState.Unchanged;
+    Context.Entry(dashboard.Layout).State = EntityState.Unchanged;
     try
     {
       await Context.SaveChangesAsync();
-    }
+    }    
     catch (DbUpdateException ex)
     {
       _logger.LogError("Exception adding Dashboard: {Message}", ex.Message);
       throw; // TODO: enapsulate exceptions
+    }
+    catch (Exception ex)
+    {
+      _logger.LogError("Generic Exception adding Dashboard: {Message}", ex.Message);      
     }
     var dashboardDto = _mapper.Map<DashboardDto>(dashboard);
     return dashboardDto;    

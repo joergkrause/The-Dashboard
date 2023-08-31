@@ -5,7 +5,7 @@ using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DashboardService.Infrastructure.Integration;
 
-public class UpdateDashboardHandler : IConsumer<DashboardUpdated>
+public class UpdateDashboardHandler : IConsumer<UpdateDashboard>
 {
 
   private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public class UpdateDashboardHandler : IConsumer<DashboardUpdated>
   }
 
 
-  public async Task Consume(ConsumeContext<DashboardUpdated> context)
+  public async Task Consume(ConsumeContext<UpdateDashboard> context)
   {
     var id = context.Message.Id;
     var dashboard = await _dashboardService.GetDashboard(id);

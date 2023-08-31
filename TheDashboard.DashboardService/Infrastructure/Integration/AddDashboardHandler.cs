@@ -5,7 +5,7 @@ using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DashboardService.Infrastructure.Integration;
 
-public class AddDashboardHandler : IConsumer<DashboardAdded>
+public class AddDashboardHandler : IConsumer<AddDashboard>
 {
 
   private readonly IMapper _mapper;
@@ -18,14 +18,13 @@ public class AddDashboardHandler : IConsumer<DashboardAdded>
   }
 
 
-  public async Task Consume(ConsumeContext<DashboardAdded> context)
+  public async Task Consume(ConsumeContext<AddDashboard> context)
   {
     var id = context.Message.Id;
-    var dashboard = await _dashboardService.GetDashboard(id);
-    if (dashboard == null)
+    var exists = await _dashboardService.DashboardExists(id);
+    if (!exists)
     {
-      dashboard = new() { Id = id, Name = context.Message.Item.Name };
-      await _dashboardService.AddDashboard(dashboard);
+      await _dashboardService.AddDashboard(context.Message.Item);
     }
   }
 }

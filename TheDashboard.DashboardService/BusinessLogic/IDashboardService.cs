@@ -9,6 +9,7 @@ namespace TheDashboard.DashboardService.BusinessLogic
     Task<DashboardDto> AddDashboard(DashboardDto dashboard);
     Task DeleteDashboard(Guid id);
     Task<DashboardDto> GetDashboard(Guid id);
+    Task<bool> DashboardExists(Guid id);
     Task<IEnumerable<DashboardDto>> GetDashboards(params Expression<Func<Dashboard, object>>[] includes);
     Task UpdateDashboard(DashboardDto dashboard);
   }

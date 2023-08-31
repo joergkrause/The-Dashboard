@@ -7,30 +7,36 @@ namespace TheDashboard.Proxy.Services;
 
 public class CommandConverter : JsonConverter<Command>
 {
-    public override bool CanConvert(Type typeToConvert)
-    {
-        return typeof(Command).IsAssignableFrom(typeToConvert);
-    }
+  public override bool CanConvert(Type typeToConvert)
+  {
+    return typeof(Command).IsAssignableFrom(typeToConvert);
+  }
 
-    public override Command Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-    {
-        var jsonObject = JsonDocument.ParseValue(ref reader).RootElement;
+  public override Command Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  {
+    var jsonObject = JsonDocument.ParseValue(ref reader).RootElement;
 
-        var typeName = jsonObject.GetProperty("Type").GetString();
-        var type = Type.GetType($"TheDashboard.SharedEntities.{typeName}, TheDashboard.SharedEntities");
-        if (type != null)
+    try
+    {
+      var typeName = jsonObject.GetProperty("Type").GetString();
+      var type = Type.GetType($"TheDashboard.SharedEntities.{typeName}, TheDashboard.SharedEntities");
+      if (type != null)
+      {
+        var command = JsonSerializer.Deserialize(jsonObject, type) as Command;
+        if (command != null)
         {
-            var command = JsonSerializer.Deserialize(jsonObject, type) as Command;
-            if (command != null)
-            {
-                return command;
-            }
+          return command;
         }
-        throw new SerializationException($"Unable to deserialize command: {jsonObject}");
+      }
     }
-
-    public override void Write(Utf8JsonWriter writer, Command value, JsonSerializerOptions options)
+    catch
     {
-        throw new NotImplementedException();
     }
+    throw new SerializationException($"Unable to deserialize command: {jsonObject}");
+  }
+
+  public override void Write(Utf8JsonWriter writer, Command value, JsonSerializerOptions options)
+  {
+    throw new NotImplementedException();
+  }
 }

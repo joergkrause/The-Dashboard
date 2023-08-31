@@ -5,7 +5,7 @@ using TheDashboard.SharedEntities;
 
 namespace TheDashboard.DashboardService.Infrastructure.Integration;
 
-public class RemoveDashboardHandler : IConsumer<DashboardRemoved>
+public class RemoveDashboardHandler : IConsumer<RemoveDashboard>
 {
 
   private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public class RemoveDashboardHandler : IConsumer<DashboardRemoved>
   }
 
 
-  public async Task Consume(ConsumeContext<DashboardRemoved> context)
+  public async Task Consume(ConsumeContext<RemoveDashboard> context)
   {
     var id = context.Message.Id;
     var dashboard = await _dashboardService.GetDashboard(id);
