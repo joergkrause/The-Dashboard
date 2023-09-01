@@ -22,7 +22,7 @@ public class DashboardService : IDashboardService
 
   public async Task<DashboardDto?> GetDashboard(Guid dashboardId)
   {
-    var model = await _dataconsumerDbContext.Set<DashboardDto>().SingleOrDefaultAsync(e => e.Id == dashboardId);
+    var model = await _dataconsumerDbContext.Set<Dashboard>().SingleOrDefaultAsync(e => e.Id == dashboardId);
     if (model == null)
     {
       return null;

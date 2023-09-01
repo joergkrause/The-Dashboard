@@ -3,17 +3,19 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TheDashboard.DashboardService.Infrastructure;
+using TheDashboard.DataSourceService.Infrastructure;
 
 #nullable disable
 
-namespace TheDashboard.DashboardService.Infrastructure.Migrations
+namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-    [DbContext(typeof(DashboardContext))]
-    partial class DashboardContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(DataConsumerDbContext))]
+    [Migration("20230901121917_OutboxVersion")]
+    partial class OutboxVersion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,65 +196,24 @@ namespace TheDashboard.DashboardService.Infrastructure.Migrations
                     b.ToTable("OutboxState");
                 });
 
-            modelBuilder.Entity("TheDashboard.DashboardService.Domain.Dashboard", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.Dashboard", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsDefault")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("LayoutId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("LayoutId1")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Theme")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("int")
-                        .HasColumnName("Ver");
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LayoutId");
-
-                    b.HasIndex("LayoutId1");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Dashboards", (string)null);
                 });
 
-            modelBuilder.Entity("TheDashboard.DashboardService.Domain.Layout", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.DataSource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -260,86 +221,73 @@ namespace TheDashboard.DashboardService.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("LayoutType")
+                    b.Property<bool>("Authenticated")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("DashboardId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("Kind")
                         .HasColumnType("int");
 
-                    b.Property<int>("XDimension")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(true)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("YDimension")
-                        .HasColumnType("int");
+                    b.Property<string>("Url")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Layouts", (string)null);
+                    b.HasIndex("DashboardId");
 
-                    b.HasDiscriminator<int>("LayoutType");
+                    b.ToTable("DataSources", (string)null);
+
+                    b.HasDiscriminator<int>("Kind");
                 });
 
-            modelBuilder.Entity("TheDashboard.DashboardService.Domain.AdminLayout", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.HttpDataSource", b =>
                 {
-                    b.HasBaseType("TheDashboard.DashboardService.Domain.Layout");
+                    b.HasBaseType("TheDashboard.DataSourceService.Domain.DataSource");
 
-                    b.ToTable("Layouts", (string)null);
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasDiscriminator().HasValue(2);
-                });
+                    b.Property<string>("Headers")
+                        .HasColumnType("nvarchar(max)");
 
-            modelBuilder.Entity("TheDashboard.DashboardService.Domain.UserLayout", b =>
-                {
-                    b.HasBaseType("TheDashboard.DashboardService.Domain.Layout");
+                    b.Property<string>("Method")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ValidFrom")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("Query")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ValidTo")
-                        .HasColumnType("datetime2");
-
-                    b.ToTable("Layouts", (string)null);
+                    b.ToTable("DataSources", (string)null);
 
                     b.HasDiscriminator().HasValue(1);
                 });
 
-            modelBuilder.Entity("TheDashboard.DashboardService.Domain.Dashboard", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.DataSource", b =>
                 {
-                    b.HasOne("TheDashboard.DashboardService.Domain.Layout", "Layout")
-                        .WithMany()
-                        .HasForeignKey("LayoutId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("TheDashboard.DataSourceService.Domain.Dashboard", "Dashboard")
+                        .WithMany("DataSources")
+                        .HasForeignKey("DashboardId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheDashboard.DashboardService.Domain.Layout", null)
-                        .WithMany("Dashboards")
-                        .HasForeignKey("LayoutId1");
-
-                    b.OwnsOne("TheDashboard.DashboardService.Domain.Setting", "Settings", b1 =>
-                        {
-                            b1.Property<Guid>("DashboardId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("PropertyBag")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("Type")
-                                .HasColumnType("int");
-
-                            b1.HasKey("DashboardId");
-
-                            b1.ToTable("Dashboards");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DashboardId");
-                        });
-
-                    b.Navigation("Layout");
-
-                    b.Navigation("Settings")
-                        .IsRequired();
+                    b.Navigation("Dashboard");
                 });
 
-            modelBuilder.Entity("TheDashboard.DashboardService.Domain.Layout", b =>
+            modelBuilder.Entity("TheDashboard.DataSourceService.Domain.Dashboard", b =>
                 {
-                    b.Navigation("Dashboards");
+                    b.Navigation("DataSources");
                 });
 #pragma warning restore 612, 618
         }

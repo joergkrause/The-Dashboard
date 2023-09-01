@@ -8,12 +8,10 @@ namespace TheDashboard.DashboardService.Infrastructure.Integration;
 public class AddDashboardHandler : IConsumer<AddDashboard>
 {
 
-  private readonly IMapper _mapper;
   private readonly IDashboardService _dashboardService;
 
-  public AddDashboardHandler(IMapper mapper, IDashboardService dashboardService)
+  public AddDashboardHandler(IDashboardService dashboardService)
   {
-    _mapper = mapper;
     _dashboardService = dashboardService;
   }
 
@@ -24,7 +22,7 @@ public class AddDashboardHandler : IConsumer<AddDashboard>
     var exists = await _dashboardService.DashboardExists(id);
     if (!exists)
     {
-      await _dashboardService.AddDashboard(context.Message.Item);
+      await _dashboardService.AddDashboard(context.Message.Item);      
     }
   }
 }

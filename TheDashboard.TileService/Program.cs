@@ -24,7 +24,7 @@ builder.Services.AddDbContext<TileDbContext>(opt =>
 
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<ITileService, TileService>();
-builder.Services.AddScoped<DashboardCreatedHandler>();
+builder.Services.AddScoped<DashboardAddedHandler>();
 builder.Services.AddScoped<DashboardUpdatedHandler>();
 builder.Services.AddScoped<DashboardRemovedHandler>();
 

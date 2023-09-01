@@ -5,13 +5,13 @@ using TheDashboard.TileService.BusinessLogic;
 
 namespace TheDashboard.TileService.Infrastructure.Integration;
 
-public class DashboardCreatedHandler : IConsumer<DashboardAdded>
+public class DashboardAddedHandler : IConsumer<DashboardAdded>
 {
 
   private readonly IMapper _mapper;
   private readonly IDashboardService _dashboardService;
 
-  public DashboardCreatedHandler(IMapper mapper, IDashboardService dashboardService)
+  public DashboardAddedHandler(IMapper mapper, IDashboardService dashboardService)
   {
     _mapper = mapper;
     _dashboardService = dashboardService;

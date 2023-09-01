@@ -72,11 +72,9 @@ public class Program
 
     app.UseRouting();
     app.UseMiddleware<HttpInspectorMiddleware>();
-    app.UseEndpoints(async (endpoints) =>
+    app.UseEndpoints((endpoints) =>
     {
 
-      //var transformer = new ServiceTransformer(app.Services.GetRequiredService<ICommandServiceRepository>()); // or HttpTransformer.Default;
-      // var store = app.Services.GetRequiredService<ICommandServiceRepository>();
       var forwarder = app.Services.GetRequiredService<IHttpForwarder>();
       var eventStoreClient = app.Services.GetRequiredService<EventStoreClient>();
       var busEndpoint = app.Services.GetRequiredService<IPublishEndpoint>();
@@ -113,7 +111,7 @@ public class Program
                 {
                   var lf = proxyPipeline.ApplicationServices.GetRequiredService<ILoggerFactory>();
                   var logger = lf.CreateLogger("ReverseProxy");
-                  logger.LogInformation("Proxying request: {0}", context.Request.GetDisplayUrl());
+                  logger.LogInformation("Proxying request: {RequestUrl}", context.Request.GetDisplayUrl());
 
                   // filter POST only and retrieve request body
                   if (context.Request.Method == "POST" && context.Request.Headers.ContainsKey("X-Command"))

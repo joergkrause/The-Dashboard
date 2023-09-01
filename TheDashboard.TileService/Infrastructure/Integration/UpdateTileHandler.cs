@@ -5,22 +5,22 @@ using TheDashboard.TileService.BusinessLogic;
 
 namespace TheDashboard.TileService.Infrastructure.Integration;
 
-public class TileCreatedHandler : IConsumer<TileAdded>
+public class UpdateTileHandler : IConsumer<UpdateTile>
 {
 
   private readonly IMapper _mapper;
   private readonly ITileService _tileService;
 
-  public TileCreatedHandler(IMapper mapper, ITileService tileService)
+  public UpdateTileHandler(IMapper mapper, ITileService tileService)
   {
     _mapper = mapper;
     _tileService = tileService;
   }
 
 
-  public async Task Consume(ConsumeContext<TileAdded> context)
+  public async Task Consume(ConsumeContext<UpdateTile> context)
   {
     var tileDto = _mapper.Map<TileDto>(context.Message.Item);
-    await _tileService.AddTile(tileDto);
+    await _tileService.UpdateTile(tileDto);
   }
 }

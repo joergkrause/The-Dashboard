@@ -10,7 +10,7 @@ using TheDashboard.DataSourceService.Infrastructure;
 
 namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-  [DbContext(typeof(DataConsumerDbContext))]
+    [DbContext(typeof(DataConsumerDbContext))]
     partial class DataConsumerDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -122,6 +122,10 @@ namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 
                     b.Property<Guid>("MessageId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("OutboxId")
                         .HasColumnType("uniqueidentifier");

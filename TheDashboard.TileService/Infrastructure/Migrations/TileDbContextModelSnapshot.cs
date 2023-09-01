@@ -123,6 +123,10 @@ namespace TheDashboard.TileService.Infrastructure.Migrations
                     b.Property<Guid>("MessageId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("OutboxId")
                         .HasColumnType("uniqueidentifier");
 
