@@ -13,6 +13,7 @@ using TheDashboard.DatabaseLayer.Configurations;
 using TheDashboard.SharedEntities;
 using TheDashboard.DashboardService.Controllers.Implementation;
 using System.Diagnostics;
+using TheDashboard.DashboardService.Infrastructure.Integration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,11 +42,13 @@ builder.Services.AddSingleton<IEncryptionService, EncryptionService>();
 builder.Services.AddScoped<IDateTime, CurrentDateTime>();
 builder.Services.AddScoped<IUser, CurrentUser>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
-
+builder.Services.AddScoped<DashboardCreatedHandler>();
+builder.Services.AddScoped<DashboardUpdatedHandler>();
+builder.Services.AddScoped<DashboardRemovedHandler>();
 // the generated controllers request this implementation to execute actual requests
 builder.Services.AddScoped<IDashboardBaseController, DashboardControllerImpl>();
 
-builder.Services.AddEventbus<DashboardContext>(builder.Configuration, nameof(DashboardService));
+builder.Services.AddEventbus<DashboardContext, DashboardCreatedHandler>(builder.Configuration, nameof(DashboardService));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

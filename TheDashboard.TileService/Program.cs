@@ -30,7 +30,7 @@ builder.Services.AddScoped<DashboardRemovedHandler>();
 
 builder.Services.AddScoped<ITileBaseController, TileControllerImpl>();
 
-builder.Services.AddEventbus<TileDbContext>(builder.Configuration, nameof(TileService));
+builder.Services.AddEventbus<TileDbContext, DashboardCreatedHandler>(builder.Configuration, nameof(TileService));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 

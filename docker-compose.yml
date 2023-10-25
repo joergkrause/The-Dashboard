@@ -41,7 +41,7 @@ services:
           memory: 4G
     volumes:
      - type: bind
-       source: "/D/Volumes/sqldata"
+       source: "/C/Volumes/sqldata"
        target: /var/opt/mssql/data
   
   eventbus:
@@ -80,10 +80,10 @@ services:
       - "2113:2113"
     volumes:
       - type: bind
-        source: "/D/Volumes/eventstore/data"
+        source: "/C/Volumes/eventstore/data"
         target: /var/lib/eventstore
       - type: bind
-        source: "/D/Volumes/eventstore/logs"
+        source: "/C/Volumes/eventstore/logs"
         target: /var/log/eventstore
 
   frontend:
@@ -101,13 +101,13 @@ services:
      - thedashboard.datasourceservice
      - thedashboard.uiinfoservice
     ports:
-      - "5500:80"
+      - "7501:80"
       - "7500:443"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticpassword
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/localhost.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=cryptickey
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/TheDashboard.Frontend.pfx
     volumes:
       - ~/.aspnet/https:/https:ro
 

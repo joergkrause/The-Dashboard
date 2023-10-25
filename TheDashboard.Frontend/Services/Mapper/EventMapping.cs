@@ -13,6 +13,8 @@ public class EventMapping : Profile
   /// </summary>
   public EventMapping()
   {
+
+    // convert the viewmodels into the command objects
     CreateMap<DashboardViewModel, DashboardAdded>()
       .ForCtorParam(nameof(DashboardAdded.Id), opt => opt.MapFrom(s => s.Id))
       .ForCtorParam(nameof(DashboardAdded.Item), opt => opt.MapFrom(s => s));
@@ -23,6 +25,18 @@ public class EventMapping : Profile
     CreateMap<DashboardViewModel, DashboardUpdated>()
       .ForCtorParam(nameof(DashboardUpdated.Id), opt => opt.MapFrom(s => s.Id))
       .ForCtorParam(nameof(DashboardUpdated.Item), opt => opt.MapFrom(s => s));
+
+    CreateMap<TileViewModel, TileAdded>()
+      .ForCtorParam(nameof(TileAdded.Id), opt => opt.MapFrom(s => s.Id))
+      .ForCtorParam(nameof(TileAdded.Item), opt => opt.MapFrom(s => s));
+
+    CreateMap<TileViewModel, TileRemoved>()
+      .ForCtorParam(nameof(TileRemoved.TileId), opt => opt.MapFrom(s => s.Id));
+
+    CreateMap<TileViewModel, TileUpdated>()
+      .ForCtorParam(nameof(TileUpdated.TileId), opt => opt.MapFrom(s => s.Id))
+      .ForCtorParam(nameof(TileUpdated.Item), opt => opt.MapFrom(s => s));
+
   }
 }
 

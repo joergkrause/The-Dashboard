@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Diagnostics;
 using System.Net;
@@ -88,8 +89,8 @@ public class Program
                     var logger = lf.CreateLogger("ReverseProxy");
                     logger.LogInformation("Proxying request: {0}", context.Request.GetDisplayUrl());
 
-                    // filter POST only and retrieve request body
-                    if (context.Request.Method == "POST")
+                  // filter POST only and retrieve request body
+                    if (context.Request.Method == "POST" && context.Request.Headers.ContainsKey("X-Command"))
                     {
                         context.Request.EnableBuffering();
                         var requestBody = context.Request.Body;
@@ -114,7 +115,7 @@ public class Program
                                 return;
                             }
                         }
-                        catch
+                        catch(Exception ex)
                         {
                             logger.LogWarning("Invalid request error: {0}", body);
                             context.Response.StatusCode = StatusCodes.Status400BadRequest;

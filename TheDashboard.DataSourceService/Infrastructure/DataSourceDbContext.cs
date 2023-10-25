@@ -5,9 +5,9 @@ using TheDashboard.DataSourceService.Domain;
 
 namespace TheDashboard.DataSourceService.Infrastructure;
 
-public class DataConsumerDbContext : DbContext
+public class DataSourceDbContext : DbContext
 {
-  public DataConsumerDbContext(DbContextOptions<DataConsumerDbContext> options) : base(options)
+  public DataSourceDbContext(DbContextOptions<DataSourceDbContext> options) : base(options)
   {
   }
 

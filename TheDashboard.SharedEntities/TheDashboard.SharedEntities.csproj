@@ -8,6 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Models\**" />
+      <Content Remove="Models\**" />
+      <EmbeddedResource Remove="Models\**" />
+      <None Remove="Models\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <None Remove="nswag.json" />
         <None Remove="openapi\dashboard_openapi.json" />
         <None Remove="openapi\tiles_openapi.json" />
@@ -20,10 +27,6 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Models\" />
     </ItemGroup>
 
     <ItemGroup>
