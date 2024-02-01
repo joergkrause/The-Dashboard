@@ -10,7 +10,7 @@ using TheDashboard.DataSourceService.Infrastructure;
 
 namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-    [DbContext(typeof(DataConsumerDbContext))]
+  [DbContext(typeof(DataSourceDbContext))]
     partial class DataConsumerDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

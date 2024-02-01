@@ -1,21 +1,13 @@
-using Azure.Identity;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
-using Blazorise.RichTextEdit;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Rewrite;
-using Microsoft.Extensions.Configuration.AzureAppConfiguration;
-using Microsoft.FeatureManagement;
-using Microsoft.FeatureManagement.FeatureFilters;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using Prometheus;
 using TheDashboard.Frontend.Services;
 using TheDashboard.Frontend.Services.Mapper;
 using TheDashboard.SharedEntities;
@@ -176,7 +168,7 @@ public class Program
       return new UiInfoClient(builder.Configuration["QueryServices:BaseUrl"], httpClient);
     });
 
-    builder.Services.AddAutoMapper(typeof(ModelMappings).Assembly);
+    builder.Services.AddAutoMapper(typeof(EventMapping).Assembly);
 
     builder.Services.AddResponseCompression(opts =>
     {

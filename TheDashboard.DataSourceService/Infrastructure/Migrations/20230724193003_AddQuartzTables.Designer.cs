@@ -11,7 +11,7 @@ using TheDashboard.DataSourceService.Infrastructure;
 
 namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-  [DbContext(typeof(DataConsumerDbContext))]
+  [DbContext(typeof(DataSourceDbContext))]
     [Migration("20230724193003_AddQuarftTables")]
     partial class AddQuartzTables
     {

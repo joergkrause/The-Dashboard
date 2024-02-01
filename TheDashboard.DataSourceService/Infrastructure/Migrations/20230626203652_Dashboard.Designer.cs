@@ -11,7 +11,7 @@ using TheDashboard.DataSourceService.Infrastructure;
 
 namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-  [DbContext(typeof(DataConsumerDbContext))]
+  [DbContext(typeof(DataSourceDbContext))]
     [Migration("20230626203652_Dashboard")]
     partial class Dashboard
     {

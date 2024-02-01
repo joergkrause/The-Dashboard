@@ -1,24 +1,23 @@
-using TheDashboard.DatabaseLayer.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
-using Microsoft.EntityFrameworkCore.Storage;
 using Quartz;
-using Quartz.AspNetCore;
-using TheDashboard.BuildingBlocks.Extensions;
 using System.Diagnostics;
+using TheDashboard.BuildingBlocks.Extensions;
+using TheDashboard.DatabaseLayer.Extensions;
 using TheDashboard.DataSourceService.BusinessLogic;
-using TheDashboard.DataSourceService.Jobs;
+using TheDashboard.DataSourceService.BusinessLogic.MappingProfiles;
+using TheDashboard.DataSourceService.Controllers.Implementation;
 using TheDashboard.DataSourceService.Domain;
 using TheDashboard.DataSourceService.Infrastructure;
-using TheDashboard.DataSourceService.BusinessLogic.MappingProfiles;
+using TheDashboard.DataSourceService.Infrastructure.Integration;
+using TheDashboard.DataSourceService.Jobs;
+using TheDashboard.SharedEntities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDefaultServices();
 
 var cs = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DataConsumerDbContext>(opt =>
+builder.Services.AddDbContext<DataSourceDbContext>(opt =>
 {
   opt.LogTo(s => Debug.WriteLine(s), LogLevel.Warning);
   opt.UseSqlServer(cs);
@@ -26,8 +25,14 @@ builder.Services.AddDbContext<DataConsumerDbContext>(opt =>
 
 builder.Services.AddScoped<IDashboardService, DashboardService>();
 builder.Services.AddScoped<IDataSourceService, DataSourceService>();
+builder.Services.AddScoped<DashboardAddedHandler>();
+builder.Services.AddScoped<DashboardUpdatedHandler>();
+builder.Services.AddScoped<DashboardRemovedHandler>();
+builder.Services.AddScoped<DataSourceCreatedHandler>();
 
-builder.Services.AddEventbus<DataConsumerDbContext>(builder.Configuration, nameof(DataSourceService));
+builder.Services.AddScoped<IDataSourceBaseController, DataSourceControllerImpl>();
+
+builder.Services.AddEventbus<DataSourceDbContext, DashboardAddedHandler>(builder.Configuration, nameof(DataSourceService));
 // add eventbus channel for direct publish
 
 builder.Services.AddQuartz(config =>
@@ -72,7 +77,7 @@ var app = builder.Build();
 app.MapControllers();
 app.UseHttpsRedirection();
 
-await app.ExecuteMigration<DataConsumerDbContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));
+await app.ExecuteMigration<DataSourceDbContext, Dashboard, Guid>(async (ctx, _) => await SeedDatabase.Seed(ctx));
 
 app.Run();
 

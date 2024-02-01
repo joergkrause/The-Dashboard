@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TheDashboard.DataSourceService.Infrastructure.Migrations
 {
-  [DbContext(typeof(DataConsumerDbContext))]
+  [DbContext(typeof(DataSourceDbContext))]
     [Migration("20230626201121_Init")]
     partial class Init
     {

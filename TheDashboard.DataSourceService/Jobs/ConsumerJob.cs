@@ -18,10 +18,10 @@ public class ConsumerJob : IJob
   private readonly ILogger? _logger;
   private readonly IDataSourceService _dataSourceService;
   private readonly IPublishEndpoint _publishEndpoint;
-  private readonly DataConsumerDbContext _dbConsumerContext;
+  private readonly DataSourceDbContext _dbConsumerContext;
   private readonly IBusControl _bus;
 
-  public ConsumerJob(ILogger<ConsumerJob> logger, IConfiguration configuration, IDataSourceService dataSourceService, IPublishEndpoint publishEndpoint, DataConsumerDbContext dbConsumerContext)
+  public ConsumerJob(ILogger<ConsumerJob> logger, IConfiguration configuration, IDataSourceService dataSourceService, IPublishEndpoint publishEndpoint, DataSourceDbContext dbConsumerContext)
   {
     _logger = logger;
     _dataSourceService = dataSourceService;

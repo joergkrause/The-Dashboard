@@ -5,7 +5,7 @@ namespace TheDashboard.DataSourceService.Infrastructure;
 public static class SeedDatabase
 {
 
-  public static async Task Seed(DataConsumerDbContext context)
+  public static async Task Seed(DataSourceDbContext context)
   {
 
     var hasSeed = context.Set<Dashboard>().Any(e => e.Id == Guid.Parse("8BFE41C6-45BC-420A-8AF9-356D96B200AB"));

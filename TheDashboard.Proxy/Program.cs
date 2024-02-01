@@ -1,6 +1,6 @@
 using EventStore.Client;
 using MassTransit;
-using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Diagnostics;

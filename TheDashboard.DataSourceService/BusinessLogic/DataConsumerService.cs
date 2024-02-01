@@ -10,10 +10,10 @@ public class DataSourceService : IDataSourceService
 {
 
   private readonly ILogger<DashboardService> _logger;
-  private readonly DataConsumerDbContext _dataconsumerDbContext;
+  private readonly DataSourceDbContext _dataconsumerDbContext;
   private readonly IMapper _mapper;
 
-  public DataSourceService(ILogger<DashboardService> logger, DataConsumerDbContext tileDbContext, IMapper mapper)
+  public DataSourceService(ILogger<DashboardService> logger, DataSourceDbContext tileDbContext, IMapper mapper)
   {
     _logger = logger;
     _dataconsumerDbContext = tileDbContext;
