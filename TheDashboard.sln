@@ -45,6 +45,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA94CB8F-ABF3-48BD-B3B2-E98E9AC68DF3}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		Credentials.txt = Credentials.txt
 		prometheus.yml = prometheus.yml
 		README.md = README.md
